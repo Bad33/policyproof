@@ -9,9 +9,16 @@ and evaluate each pipeline component.
 
 ## Status
 
-Phase 0: Project definition and environment initialization.
+Phase 1: Controlled corpus ingestion.
 
-No application pipeline has been implemented yet.
+Completed:
+
+- Approved four-document source manifest
+- Secure PDF downloading and SHA-256 snapshots
+- Page-level extraction with document-specific extractor selection
+- Automated manifest, download, and extraction tests
+
+Next: section detection, metadata preservation, and citation-ready chunking.
 
 ## Responsible-use notice
 

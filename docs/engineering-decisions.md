@@ -431,3 +431,106 @@ document.
 **Date:**
 
 2026-07-18
+
+---
+
+## PP-011: pypdf for initial page extraction
+
+**Status:**
+
+Superseded by PP-012 after measured extraction tests showed that pypdf layout
+mode produced severe spacing corruption in the controlled corpus.
+
+**Decision:**
+
+Use pypdf layout-mode extraction as the initial page-level PDF extraction
+method.
+
+**Context:**
+
+The controlled corpus consists of four digitally generated PDFs. PolicyProof
+needs page text and page-number provenance before it needs advanced table,
+coordinate, or OCR capabilities.
+
+**Options considered:**
+
+- pypdf
+- pdfplumber
+- PyMuPDF
+- OCR-first extraction
+
+**Selected option:**
+
+pypdf using layout extraction with excess vertical spacing disabled.
+
+**Why:**
+
+pypdf is a small pure-Python dependency, provides page-level extraction, and is
+sufficient for establishing an inspectable baseline. Extraction quality will be
+measured manually before chunking begins.
+
+**Trade-offs:**
+
+Reading order, tables, footnotes, and multi-column layouts may not be recovered
+correctly. pypdf cannot extract text from image-only pages.
+
+**How we will verify it:**
+
+Extract every page, report empty pages and character counts, and manually compare
+representative extracted pages against the rendered PDFs. A more advanced parser
+will be considered only for confirmed extraction failures.
+
+**Date:**
+
+2026-07-18
+
+---
+
+## PP-012: Document-specific PDF extraction
+
+**Decision:**
+
+Use pdfplumber default extraction for the EU AI Act and pypdf plain extraction
+for the other initial corpus documents.
+
+**Context:**
+
+The initial pypdf layout extraction completed structurally but produced severe
+spacing corruption. A controlled comparison tested pypdf plain and pdfplumber
+default extraction on the same representative pages.
+
+**Options considered:**
+
+- pypdf layout for all documents
+- pypdf plain for all documents
+- pdfplumber default for all documents
+- Document-specific extraction
+
+**Selected option:**
+
+Document-specific extraction.
+
+**Why:**
+
+On the evaluated pages, pypdf plain preserved expected phrases for the NIST AI
+RMF, NIST Generative AI Profile, and GPT-4o System Card. pdfplumber preserved
+the EU AI Act heading and text that both pypdf modes split internally.
+
+No single tested extractor produced the best result for all four documents.
+
+**Trade-offs:**
+
+The extraction pipeline now has two PDF dependencies and records different
+extraction methods across documents. Future corpus additions require a small
+extraction-quality review before selecting a method.
+
+**How we will verify it:**
+
+Every page record stores its extraction method, library, and version. The final
+corpus extraction will be manually checked on representative pages and tested
+for contiguous page numbers, stable checksums, unique page IDs, and readable
+expected phrases.
+
+**Date:**
+
+2026-07-18

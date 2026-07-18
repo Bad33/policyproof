@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "corpus_id": "policyproof-initial-corpus",
+  "corpus_version": "0.1.0",
+  "extracted_date": "2026-07-18",
+  "extraction_policy": "document_specific_v1",
+  "extractors": {
+    "pdfplumber": "0.11.10",
+    "pypdf": "6.14.2"
+  },
+  "document_count": 4,
+  "page_count": 289,
+  "character_count": 941574,
+  "empty_page_count": 0,
+  "output_file": "data/processed/pages.jsonl",
+  "documents": [
+    {
+      "document_id": "nist-ai-rmf-1.0",
+      "filename": "nist-ai-rmf-1.0.pdf",
+      "document_sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "page_count": 48,
+      "character_count": 106446,
+      "empty_page_count": 0,
+      "extraction_method": "pypdf_plain",
+      "extractor": "pypdf",
+      "extractor_version": "6.14.2"
+    },
+    {
+      "document_id": "nist-ai-600-1-genai-profile",
+      "filename": "nist-ai-600-1-genai-profile.pdf",
+      "document_sha256": "6e73620ab6b64e90ef2c04bf0e0d6246185a2f4b1b13cab0df494496cff89b6a",
+      "page_count": 64,
+      "character_count": 160684,
+      "empty_page_count": 0,
+      "extraction_method": "pypdf_plain",
+      "extractor": "pypdf",
+      "extractor_version": "6.14.2"
+    },
+    {
+      "document_id": "eu-ai-act-2024-1689",
+      "filename": "eu-ai-act-2024-1689.pdf",
+      "document_sha256": "bba630444b3278e881066774002a1d7824308934f49ccfa203e65be43692f55e",
+      "page_count": 144,
+      "character_count": 595563,
+      "empty_page_count": 0,
+      "extraction_method": "pdfplumber_default",
+      "extractor": "pdfplumber",
+      "extractor_version": "0.11.10"
+    },
+    {
+      "document_id": "openai-gpt-4o-system-card-2024-08-08",
+      "filename": "openai-gpt-4o-system-card-2024-08-08.pdf",
+      "document_sha256": "e2579ecb185cbc13bac39f9dbf25e1917f78e1ea5a3a5023165c6614fb5db724",
+      "page_count": 33,
+      "character_count": 78881,
+      "empty_page_count": 0,
+      "extraction_method": "pypdf_plain",
+      "extractor": "pypdf",
+      "extractor_version": "6.14.2"
+    }
+  ]
+}

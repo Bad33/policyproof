@@ -8,7 +8,10 @@ version = "0.1.0"
 description = "Research-driven RAG and citation verification for public AI governance documents."
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
-dependencies = []
+dependencies = [
+    "pdfplumber==0.11.10",
+    "pypdf==6.14.2",
+]
 
 [project.optional-dependencies]
 dev = [
