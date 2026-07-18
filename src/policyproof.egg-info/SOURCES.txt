@@ -1,8 +1,0 @@
-README.md
-pyproject.toml
-src/policyproof/__init__.py
-src/policyproof.egg-info/PKG-INFO
-src/policyproof.egg-info/SOURCES.txt
-src/policyproof.egg-info/dependency_links.txt
-src/policyproof.egg-info/requires.txt
-src/policyproof.egg-info/top_level.txt

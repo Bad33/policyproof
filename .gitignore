@@ -13,3 +13,8 @@ data/raw/*
 
 data/processed/*
 !data/processed/.gitkeep
+
+# Python packaging artifacts
+*.egg-info/
+build/
+dist/
