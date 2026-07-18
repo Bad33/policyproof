@@ -341,3 +341,46 @@ result, or documented implementation difference.
 **Date:**
 
 2026-07-18
+
+---
+
+## PP-009: Manifest-controlled corpus entry
+
+**Decision:**
+
+Every source document must be declared in a version-controlled source manifest
+before it can be downloaded or processed.
+
+**Context:**
+
+Retrieval experiments are meaningful only when the exact corpus identity,
+version, provenance, and source locations are known.
+
+**Options considered:**
+
+- Hard-coded download URLs inside scripts
+- Manual document downloads without metadata
+- Version-controlled source manifest
+
+**Selected option:**
+
+Version-controlled source manifest.
+
+**Why:**
+
+The manifest separates source approval from downloading and extraction. It also
+creates stable document identifiers and an explicit source-domain allowlist.
+
+**Trade-offs:**
+
+Adding or replacing a document requires a reviewed manifest change before
+ingestion can proceed.
+
+**How we will verify it:**
+
+Manifest validation must pass before any download command runs. The downloader
+will accept only records from the validated manifest.
+
+**Date:**
+
+2026-07-18
