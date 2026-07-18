@@ -1,0 +1,30 @@
+Metadata-Version: 2.4
+Name: policyproof
+Version: 0.1.0
+Summary: Research-driven RAG and citation verification for public AI governance documents.
+Requires-Python: <3.13,>=3.12
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: ruff>=0.9; extra == "dev"
+
+# PolicyProof
+
+PolicyProof is a research-driven RAG and citation-verification system for public
+AI-governance and regulatory documents.
+
+The system is designed to retrieve supporting evidence, produce claim-level
+citations, identify insufficient evidence, abstain from unsupported questions,
+and evaluate each pipeline component.
+
+## Status
+
+Phase 0: Project definition and environment initialization.
+
+No application pipeline has been implemented yet.
+
+## Responsible-use notice
+
+PolicyProof is a research and compliance-support application. It does not provide
+legal advice, determine legal compliance, or replace review by qualified
+professionals.
