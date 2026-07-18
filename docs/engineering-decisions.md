@@ -534,3 +534,72 @@ expected phrases.
 **Date:**
 
 2026-07-18
+
+---
+
+## PP-013: Document-specific heading candidate detection
+
+**Decision:**
+
+Use deterministic, document-specific heading patterns to generate reviewable
+heading candidates before constructing sections.
+
+**Context:**
+
+The four controlled documents use different heading systems. The EU AI Act uses
+chapters, sections, articles, and annexes. NIST publications use numbered
+headings and AI RMF function identifiers. The GPT-4o System Card uses numbered
+sections and subsections.
+
+A single generic numbered-heading rule produced table-of-contents entries,
+numbered risk definitions, and numbered prose items as false positives.
+
+**Options considered:**
+
+- One generic heading pattern for all documents
+- LLM-based heading classification
+- Document-specific deterministic patterns
+- Building chunks directly from page boundaries
+
+**Selected option:**
+
+Document-specific deterministic candidate detection followed by measured manual
+review.
+
+**Why:**
+
+The controlled corpus is small and structurally distinct. Explicit rules are
+auditable, reproducible, offline, and preserve exact page and line provenance.
+They also fail closed for unknown documents.
+
+**Measured refinements:**
+
+The initial detector produced 397 candidates. Conservative filters removed
+table-of-contents pages, long numbered definitions, numbered prose
+continuations, and an annex cross-reference incorrectly detected as Article 49.
+
+The accepted candidate baseline contains 347 candidates:
+
+- EU AI Act: 157
+- NIST Generative AI Profile: 54
+- NIST AI RMF: 108
+- GPT-4o System Card: 28
+
+All EU AI Act Articles 1 through 113 were detected exactly once.
+
+**Trade-offs:**
+
+These records are heading candidates, not completed sections. Some headings span
+multiple extracted lines, and function-category tables may contain semantic
+headings that require continuation-line reconstruction. New document formats
+will require an explicit extraction and heading review.
+
+**How we will verify it:**
+
+Automated tests cover known heading formats and false-positive cases. Stable
+anchor headings are checked across all four documents, and EU article numbering
+is validated for completeness and uniqueness.
+
+**Date:**
+
+2026-07-18

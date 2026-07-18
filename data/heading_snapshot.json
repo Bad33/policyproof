@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "corpus_id": "policyproof-initial-corpus",
+  "corpus_version": "0.1.0",
+  "generated_date": "2026-07-18",
+  "heading_policy": "document_specific_candidates_v1",
+  "source_pages_file": "data/processed/pages.jsonl",
+  "source_pages_sha256": "24ca9fa778e73ee82fd4d60aafe80c338db39ab3fabaec357b84e82f941db07c",
+  "source_page_count": 289,
+  "candidate_output_file": "data/processed/heading-candidates.jsonl",
+  "candidate_output_sha256": "799504657e470641d5d825cbb1bb2b7d242b74ebb67bd307119e61e564657a94",
+  "candidate_count": 347,
+  "documents": [
+    {
+      "document_id": "eu-ai-act-2024-1689",
+      "candidate_count": 157,
+      "candidate_types": {
+        "annex": 13,
+        "article": 113,
+        "chapter": 13,
+        "section": 18
+      }
+    },
+    {
+      "document_id": "nist-ai-600-1-genai-profile",
+      "candidate_count": 54,
+      "candidate_types": {
+        "appendix": 2,
+        "numbered_heading": 3,
+        "rmf_function_heading": 49
+      }
+    },
+    {
+      "document_id": "nist-ai-rmf-1.0",
+      "candidate_count": 108,
+      "candidate_types": {
+        "numbered_heading": 10,
+        "numbered_subheading": 17,
+        "rmf_function_heading": 81
+      }
+    },
+    {
+      "document_id": "openai-gpt-4o-system-card-2024-08-08",
+      "candidate_count": 28,
+      "candidate_types": {
+        "named_heading": 1,
+        "numbered_heading": 6,
+        "numbered_subheading": 21
+      }
+    }
+  ],
+  "validations": {
+    "eu_article_count": 113,
+    "eu_article_range": "1-113",
+    "eu_missing_articles": [],
+    "eu_duplicate_articles": []
+  }
+}

@@ -71,3 +71,48 @@ Measured accepted output:
 
 These limitations must be considered during section detection, chunking,
 retrieval evaluation, and citation verification.
+
+## Heading detection false positives
+
+### Initial result
+
+The first document-specific heading detector produced 397 candidates.
+
+Manual inspection found three recurring false-positive classes:
+
+- Numbered entries on table-of-contents pages
+- Numbered GAI risk definitions mistaken for section headings
+- Numbered prose or design principles mistaken for headings
+
+The EU AI Act also produced a duplicate Article 49 candidate. The second
+occurrence was not an article heading; it was a wrapped reference inside the
+title of Annex VIII.
+
+### Correction
+
+The detector was refined to:
+
+- Skip pages explicitly identified as contents pages
+- Reject unusually long numbered prose candidates
+- Reject numbered candidates whose text continues as ordinary prose
+- Reject standalone Article references appearing after an Annex heading on the
+  same EU AI Act page
+
+### Accepted result
+
+The refined detector produced 347 candidates while retaining the expected anchor
+headings in all four documents.
+
+EU legal-structure validation confirmed:
+
+- 113 article headings
+- Complete range from Article 1 through Article 113
+- No missing article numbers
+- No duplicate article numbers
+
+### Remaining limitations
+
+- Heading titles that wrap across lines are not yet merged.
+- Table-contained AI RMF subcategories require hierarchy-aware reconstruction.
+- Candidate type does not yet represent a completed section hierarchy.
+- Page furniture removal remains conservative.

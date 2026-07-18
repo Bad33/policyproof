@@ -18,7 +18,7 @@ Completed:
 - Page-level extraction with document-specific extractor selection
 - Automated manifest, download, and extraction tests
 
-Next: section detection, metadata preservation, and citation-ready chunking.
+Next: reconstruct complete section headings and hierarchy before citation-ready chunking.
 
 ## Responsible-use notice
 
