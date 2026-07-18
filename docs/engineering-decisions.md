@@ -603,3 +603,80 @@ is validated for completeness and uniqueness.
 **Date:**
 
 2026-07-18
+
+---
+
+## PP-014: Provenance-preserving heading reconstruction
+
+**Decision:**
+
+Reconstruct complete heading text from reviewed heading candidates while
+preserving the exact page lines that contributed to every reconstructed
+heading.
+
+**Context:**
+
+The controlled documents contain several structurally different heading forms.
+EU legal headings separate structural markers such as Article 49 or Annex VIII
+from their title text. NIST AI RMF function statements frequently wrap across
+multiple extracted lines. Some NIST appendix markers are also separated from
+their titles.
+
+Using the candidate line alone produced incomplete headings. An initial generic
+continuation policy also introduced several errors:
+
+- EU article body paragraphs were appended to article titles.
+- A four-line continuation limit truncated valid NIST function statements.
+- Joining wrapped lines introduced spaces after extraction hyphens.
+- Numbered Appendix D attributes were misclassified as headings while the split
+  Appendix D marker was missed.
+
+**Selected approach:**
+
+Use document-specific reconstruction policies:
+
+- EU chapters, sections, and articles consume one following title line.
+- EU annexes may consume multiple title lines with conservative body-start
+  stopping rules.
+- NIST RMF function statements continue until terminal punctuation, the next
+  heading candidate, an explicit table/action boundary, or a twelve-line safety
+  limit.
+- Split NIST appendix markers consume one following title line.
+- Wrapped source lines are joined without inserting whitespace after a
+  line-ending hyphen.
+- Every output stores the exact source lines and source line numbers used.
+
+**Measured result:**
+
+The accepted output contains 347 reconstructed headings from 347 reviewed
+candidates:
+
+- EU AI Act: 157
+- NIST Generative AI Profile: 54
+- NIST AI RMF: 108
+- GPT-4o System Card: 28
+
+Validation confirmed:
+
+- 347 unique heading identifiers
+- EU Articles 1 through 113 detected exactly once
+- Appendix D reconstructed as `Appendix D: Attributes of the AI RMF`
+- No late NIST numbered-list candidates
+- No spaces introduced after line-ending hyphens
+- No NIST action identifiers appended
+- No headings reached the twelve-line continuation limit
+- No RMF function headings ended with suspicious continuation words
+
+**Trade-offs:**
+
+The reconstruction preserves extracted characters rather than attempting
+dictionary-based dehyphenation. Forms such as `inte-grated` can therefore remain
+even when the original visual word was likely `integrated`. Exact source lines
+remain available for later citation verification.
+
+The output represents complete heading labels, but it does not yet assign
+parent-child hierarchy or section boundaries.
+
+**Date:**
+
+2026-07-18

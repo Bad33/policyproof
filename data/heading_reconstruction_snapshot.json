@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "corpus_id": "policyproof-initial-corpus",
+  "corpus_version": "0.1.0",
+  "generated_date": "2026-07-18",
+  "reconstruction_policy": "document_specific_heading_reconstruction_v1",
+  "candidate_input_file": "data/processed/heading-candidates.jsonl",
+  "candidate_input_sha256": "3899eac9b873622f5f7f268f556d3a046b958d9bc2223445d0c4941602951ddd",
+  "heading_output_file": "data/processed/reconstructed-headings.jsonl",
+  "heading_output_sha256": "d6cc569b4ee397127aede2a2e70d03c385b550fc4bc557d5ecd51c1e4748aa96",
+  "heading_count": 347,
+  "headings_with_continuations": 282,
+  "continuation_line_distribution": {
+    "0": 65,
+    "1": 195,
+    "2": 41,
+    "3": 25,
+    "4": 11,
+    "5": 4,
+    "6": 1,
+    "7": 2,
+    "8": 1,
+    "9": 2
+  },
+  "documents": [
+    {
+      "document_id": "eu-ai-act-2024-1689",
+      "heading_count": 157,
+      "headings_with_continuations": 157,
+      "candidate_types": {
+        "annex": 13,
+        "article": 113,
+        "chapter": 13,
+        "section": 18
+      },
+      "reconstruction_methods": {
+        "eu_structural_title": 157
+      }
+    },
+    {
+      "document_id": "nist-ai-600-1-genai-profile",
+      "heading_count": 54,
+      "headings_with_continuations": 40,
+      "candidate_types": {
+        "appendix": 2,
+        "numbered_heading": 3,
+        "rmf_function_heading": 49
+      },
+      "reconstruction_methods": {
+        "nist_function_continuation": 49,
+        "single_line": 5
+      }
+    },
+    {
+      "document_id": "nist-ai-rmf-1.0",
+      "heading_count": 108,
+      "headings_with_continuations": 85,
+      "candidate_types": {
+        "appendix": 4,
+        "numbered_heading": 6,
+        "numbered_subheading": 17,
+        "rmf_function_heading": 81
+      },
+      "reconstruction_methods": {
+        "nist_appendix_title": 4,
+        "nist_function_continuation": 81,
+        "single_line": 23
+      }
+    },
+    {
+      "document_id": "openai-gpt-4o-system-card-2024-08-08",
+      "heading_count": 28,
+      "headings_with_continuations": 0,
+      "candidate_types": {
+        "named_heading": 1,
+        "numbered_heading": 6,
+        "numbered_subheading": 21
+      },
+      "reconstruction_methods": {
+        "single_line": 28
+      }
+    }
+  ],
+  "validations": {
+    "unique_heading_id_count": 347,
+    "appendix_d_heading": "Appendix D: Attributes of the AI RMF",
+    "hyphen_space_artifact_count": 0,
+    "appended_action_id_count": 0,
+    "continuation_cap_hit_count": 0,
+    "suspicious_rmf_ending_count": 0
+  }
+}

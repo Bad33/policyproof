@@ -178,3 +178,36 @@ def test_eu_real_article_after_body_text_is_preserved() -> None:
     assert candidates[0]["candidate_type"] == "article"
     assert candidates[0]["text"] == "Article 49"
     assert candidates[0]["next_line"] == "Registration"
+
+
+def test_detects_marker_only_nist_appendix() -> None:
+    assert (
+        classify_heading(
+            "nist-ai-rmf-1.0",
+            "Appendix D:",
+        )
+        == "appendix"
+    )
+
+
+def test_nist_appendix_d_attributes_are_not_headings() -> None:
+    record = make_page_record(
+        "nist-ai-rmf-1.0",
+        (
+            "Appendix D:\n"
+            "Attributes of the AI RMF\n"
+            "The AI RMF strives to:\n"
+            "1. Be risk-based, resource-efficient, "
+            "pro-innovation, and voluntary.\n"
+            "4. Provide common language and understanding "
+            "to manage AI risks.\n"
+            "5. Be easily usable and fit well with other "
+            "aspects of risk management."
+        ),
+    )
+
+    candidates = detect_heading_candidates(record)
+
+    assert len(candidates) == 1
+    assert candidates[0]["candidate_type"] == "appendix"
+    assert candidates[0]["text"] == "Appendix D:"

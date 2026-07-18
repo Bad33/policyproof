@@ -79,7 +79,8 @@ NIST_PATTERNS = (
     (
         "appendix",
         re.compile(
-            r"^Appendix\s+[A-Z](?:[.:]\s*|\s+).+",
+            r"^Appendix\s+[A-Z](?:[.:]?"
+            r"|[.:]?\s+.+)$",
             re.IGNORECASE,
         ),
     ),
@@ -189,6 +190,31 @@ def is_numbered_list_item(
         return True
 
     return False
+
+
+def is_nist_appendix_d_numbered_attribute(
+    document_id: str,
+    candidate_type: str,
+    lines: list[str],
+) -> bool:
+    """Reject numbered attribute-list items on NIST RMF Appendix D."""
+    if document_id != NIST_AI_RMF_ID or candidate_type not in {
+        "numbered_heading",
+        "numbered_subheading",
+    }:
+        return False
+
+    normalized_lines = {normalize_line(line).casefold() for line in lines if normalize_line(line)}
+
+    has_appendix_marker = bool(
+        normalized_lines
+        & {
+            "appendix d",
+            "appendix d:",
+        }
+    )
+
+    return has_appendix_marker and "attributes of the ai rmf" in normalized_lines
 
 
 def patterns_for_document(
@@ -317,6 +343,13 @@ def detect_heading_candidates(
             candidate_type,
             lines,
             line_index,
+        ):
+            continue
+
+        if is_nist_appendix_d_numbered_attribute(
+            document_id,
+            candidate_type,
+            lines,
         ):
             continue
 

@@ -116,3 +116,49 @@ EU legal-structure validation confirmed:
 - Table-contained AI RMF subcategories require hierarchy-aware reconstruction.
 - Candidate type does not yet represent a completed section hierarchy.
 - Page furniture removal remains conservative.
+
+## Heading reconstruction boundary failures
+
+### Rejected initial reconstruction
+
+The first reconstruction policy generated 347 headings, but manual audits found
+three recurring issues:
+
+- EU article and annex headings could absorb body paragraphs.
+- A four-line NIST continuation limit truncated valid RMF function statements.
+- Joining extracted lines with ordinary spaces produced artifacts such as
+  `or- ganizational`.
+
+A later audit also found numbered prose items in NIST AI RMF Appendix D being
+treated as headings while the split `Appendix D:` structural marker was missed.
+
+### Correction
+
+The accepted reconstruction policy:
+
+- Limits EU chapter, section, and article titles to one following line.
+- Applies conservative multi-line title handling only to EU annexes.
+- Extends NIST function reconstruction until punctuation or a structural stop.
+- Uses a twelve-line safety limit rather than the rejected four-line limit.
+- Preserves line-ending hyphens without inserting additional whitespace.
+- Detects split NIST appendix markers and joins them to one following title line.
+- Rejects numbered attribute-list items on the Appendix D page.
+
+### Accepted result
+
+The final candidate and reconstruction sets each contain 347 records.
+
+Quality validation confirmed:
+
+- Appendix D appears once as a structural heading.
+- No numbered Appendix D attributes remain as candidates.
+- No late-document NIST numbered-list candidates remain.
+- No hyphen-space artifacts remain.
+- No action identifiers were appended.
+- No NIST heading reached the continuation safety limit.
+- No RMF function statement has a suspicious grammatical ending.
+
+### Remaining limitation
+
+This phase reconstructs complete labels but does not yet infer hierarchy,
+section spans, or cross-page section boundaries.
