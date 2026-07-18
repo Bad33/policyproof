@@ -5,11 +5,11 @@
   "verified_date": "2026-07-18",
   "allowed_domains": [
     "www.nist.gov",
-    "tsapps.nist.gov",
     "doi.org",
     "eur-lex.europa.eu",
     "openai.com",
-    "cdn.openai.com"
+    "cdn.openai.com",
+    "nvlpubs.nist.gov"
   ],
   "documents": [
     {
@@ -17,7 +17,7 @@
       "title": "Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
       "organization": "National Institute of Standards and Technology",
       "source_url": "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10",
-      "download_url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=936225",
+      "download_url": "https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf",
       "doi_url": "https://doi.org/10.6028/NIST.AI.100-1",
       "publication_date": "2023-01-26",
       "adoption_date": null,
@@ -35,7 +35,7 @@
       "title": "Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile",
       "organization": "National Institute of Standards and Technology",
       "source_url": "https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence",
-      "download_url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=958388",
+      "download_url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
       "doi_url": "https://doi.org/10.6028/NIST.AI.600-1",
       "publication_date": "2024-07-26",
       "adoption_date": null,

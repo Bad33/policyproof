@@ -384,3 +384,50 @@ will accept only records from the validated manifest.
 **Date:**
 
 2026-07-18
+
+---
+
+## PP-010: Controlled downloads with checksum snapshots
+
+**Decision:**
+
+Download approved corpus artifacts through a small standard-library downloader
+that validates HTTPS destinations, file type, PDF signatures, size limits, and
+SHA-256 checksums.
+
+**Context:**
+
+Manual downloads do not provide consistent safety controls or reproducible
+artifact-integrity metadata.
+
+**Options considered:**
+
+- Manual browser or curl downloads
+- Third-party HTTP client dependency
+- Python standard-library downloader
+
+**Selected option:**
+
+Python standard-library downloader.
+
+**Why:**
+
+The initial corpus contains only four static documents. Python's standard
+library is sufficient for streamed HTTPS downloads, redirect checks, timeouts,
+atomic writes, and hashing.
+
+**Trade-offs:**
+
+The urllib API is less convenient than a dedicated HTTP client and does not
+provide advanced retry or connection-pooling features.
+
+**How we will verify it:**
+
+Offline tests must cover successful downloads, unapproved destinations,
+incorrect content types, invalid PDF signatures, oversized files, and overwrite
+protection. Real downloads must produce a checksum snapshot for every approved
+document.
+
+**Date:**
+
+2026-07-18

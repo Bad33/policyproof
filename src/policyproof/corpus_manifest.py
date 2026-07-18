@@ -97,22 +97,17 @@ def validate_url(
         return
 
     if not isinstance(value, str) or not value:
-        raise ManifestValidationError(
-            f"{document_id}: {field_name} must be a non-empty URL."
-        )
+        raise ManifestValidationError(f"{document_id}: {field_name} must be a non-empty URL.")
 
     parsed = urlparse(value)
 
     if parsed.scheme != "https":
-        raise ManifestValidationError(
-            f"{document_id}: {field_name} must use HTTPS."
-        )
+        raise ManifestValidationError(f"{document_id}: {field_name} must use HTTPS.")
 
     hostname = parsed.hostname
     if hostname not in allowed_domains:
         raise ManifestValidationError(
-            f"{document_id}: hostname {hostname!r} from {field_name} "
-            "is not in allowed_domains."
+            f"{document_id}: hostname {hostname!r} from {field_name} is not in allowed_domains."
         )
 
 
@@ -125,9 +120,7 @@ def require_non_empty_string(
     value = document.get(field_name)
 
     if not isinstance(value, str) or not value.strip():
-        raise ManifestValidationError(
-            f"{document_id}: {field_name} must be a non-empty string."
-        )
+        raise ManifestValidationError(f"{document_id}: {field_name} must be a non-empty string.")
 
     return value
 
@@ -137,23 +130,14 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
     missing_top_level = REQUIRED_TOP_LEVEL_FIELDS - manifest.keys()
     if missing_top_level:
         missing = ", ".join(sorted(missing_top_level))
-        raise ManifestValidationError(
-            f"Manifest is missing top-level fields: {missing}"
-        )
+        raise ManifestValidationError(f"Manifest is missing top-level fields: {missing}")
 
     allowed_domains_value = manifest["allowed_domains"]
     if not isinstance(allowed_domains_value, list) or not allowed_domains_value:
-        raise ManifestValidationError(
-            "allowed_domains must be a non-empty list."
-        )
+        raise ManifestValidationError("allowed_domains must be a non-empty list.")
 
-    if not all(
-        isinstance(domain, str) and domain.strip()
-        for domain in allowed_domains_value
-    ):
-        raise ManifestValidationError(
-            "Every allowed domain must be a non-empty string."
-        )
+    if not all(isinstance(domain, str) and domain.strip() for domain in allowed_domains_value):
+        raise ManifestValidationError("Every allowed domain must be a non-empty string.")
 
     allowed_domains = set(allowed_domains_value)
     if len(allowed_domains) != len(allowed_domains_value):
@@ -175,18 +159,14 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
 
     for index, document in enumerate(documents):
         if not isinstance(document, dict):
-            raise ManifestValidationError(
-                f"Document at index {index} must be a JSON object."
-            )
+            raise ManifestValidationError(f"Document at index {index} must be a JSON object.")
 
         missing_fields = REQUIRED_DOCUMENT_FIELDS - document.keys()
         provisional_id = document.get("document_id", f"index-{index}")
 
         if missing_fields:
             missing = ", ".join(sorted(missing_fields))
-            raise ManifestValidationError(
-                f"{provisional_id}: missing fields: {missing}"
-            )
+            raise ManifestValidationError(f"{provisional_id}: missing fields: {missing}")
 
         document_id = require_non_empty_string(
             document,
@@ -201,9 +181,7 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
             )
 
         if document_id in seen_ids:
-            raise ManifestValidationError(
-                f"Duplicate document_id: {document_id}"
-            )
+            raise ManifestValidationError(f"Duplicate document_id: {document_id}")
         seen_ids.add(document_id)
 
         for field_name in (
@@ -226,9 +204,7 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
 
         filename = document["expected_filename"]
         if not filename.endswith(".pdf"):
-            raise ManifestValidationError(
-                f"{document_id}: expected_filename must end with .pdf."
-            )
+            raise ManifestValidationError(f"{document_id}: expected_filename must end with .pdf.")
 
         if "/" in filename or "\\" in filename:
             raise ManifestValidationError(
@@ -236,9 +212,7 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
             )
 
         if filename in seen_filenames:
-            raise ManifestValidationError(
-                f"Duplicate expected_filename: {filename}"
-            )
+            raise ManifestValidationError(f"Duplicate expected_filename: {filename}")
         seen_filenames.add(filename)
 
         validate_url(
@@ -263,9 +237,7 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
 
         download_url = document["download_url"]
         if download_url in seen_download_urls:
-            raise ManifestValidationError(
-                f"Duplicate download_url: {download_url}"
-            )
+            raise ManifestValidationError(f"Duplicate download_url: {download_url}")
         seen_download_urls.add(download_url)
 
         validate_iso_date(
@@ -294,9 +266,7 @@ def validate_manifest_file(path: Path) -> dict[str, Any]:
 
 def main() -> int:
     """Command-line entry point."""
-    parser = argparse.ArgumentParser(
-        description="Validate the PolicyProof source manifest."
-    )
+    parser = argparse.ArgumentParser(description="Validate the PolicyProof source manifest.")
     parser.add_argument(
         "manifest",
         type=Path,

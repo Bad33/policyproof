@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "corpus_id": "policyproof-initial-corpus",
+  "corpus_version": "0.1.0",
+  "retrieved_date": "2026-07-18",
+  "document_count": 4,
+  "documents": [
+    {
+      "document_id": "nist-ai-rmf-1.0",
+      "download_url": "https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf",
+      "resolved_url": "https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf",
+      "filename": "nist-ai-rmf-1.0.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 1946127,
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "retrieved_date": "2026-07-18"
+    },
+    {
+      "document_id": "nist-ai-600-1-genai-profile",
+      "download_url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+      "resolved_url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+      "filename": "nist-ai-600-1-genai-profile.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 1174643,
+      "sha256": "6e73620ab6b64e90ef2c04bf0e0d6246185a2f4b1b13cab0df494496cff89b6a",
+      "retrieved_date": "2026-07-18"
+    },
+    {
+      "document_id": "eu-ai-act-2024-1689",
+      "download_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ:L_202401689",
+      "resolved_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ:L_202401689",
+      "filename": "eu-ai-act-2024-1689.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 2583319,
+      "sha256": "bba630444b3278e881066774002a1d7824308934f49ccfa203e65be43692f55e",
+      "retrieved_date": "2026-07-18"
+    },
+    {
+      "document_id": "openai-gpt-4o-system-card-2024-08-08",
+      "download_url": "https://cdn.openai.com/gpt-4o-system-card.pdf",
+      "resolved_url": "https://cdn.openai.com/gpt-4o-system-card.pdf",
+      "filename": "openai-gpt-4o-system-card-2024-08-08.pdf",
+      "content_type": "application/pdf",
+      "size_bytes": 1402648,
+      "sha256": "e2579ecb185cbc13bac39f9dbf25e1917f78e1ea5a3a5023165c6614fb5db724",
+      "retrieved_date": "2026-07-18"
+    }
+  ]
+}

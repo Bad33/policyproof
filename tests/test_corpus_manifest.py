@@ -26,9 +26,7 @@ def test_manifest_rejects_unapproved_download_domain() -> None:
     manifest = load_manifest(MANIFEST_PATH)
     invalid_manifest = copy.deepcopy(manifest)
 
-    invalid_manifest["documents"][0]["download_url"] = (
-        "https://example.com/copied-framework.pdf"
-    )
+    invalid_manifest["documents"][0]["download_url"] = "https://example.com/copied-framework.pdf"
 
     with pytest.raises(
         ManifestValidationError,
@@ -41,9 +39,9 @@ def test_manifest_rejects_duplicate_document_id() -> None:
     manifest = load_manifest(MANIFEST_PATH)
     invalid_manifest = copy.deepcopy(manifest)
 
-    invalid_manifest["documents"][1]["document_id"] = (
-        invalid_manifest["documents"][0]["document_id"]
-    )
+    invalid_manifest["documents"][1]["document_id"] = invalid_manifest["documents"][0][
+        "document_id"
+    ]
 
     with pytest.raises(
         ManifestValidationError,
