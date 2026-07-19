@@ -764,3 +764,127 @@ the body-text span governed by each heading.
 **Date:**
 
 2026-07-19
+
+---
+
+## PP-016: Coordinate-only heading spans with separate synthetic envelopes
+
+**Decision:**
+
+Assign every source hierarchy node both a direct-body span and a subtree span
+using deterministic page-and-line coordinates. Synthetic hierarchy nodes will
+not claim direct source spans; they may receive a separately labeled source
+descendant envelope.
+
+**Context:**
+
+Phase 1.4b assigned parent-child hierarchy to 347 reconstructed source headings
+and 33 synthetic RMF organizational nodes, but it did not determine which source
+lines each node governed.
+
+A single section span was insufficient for downstream retrieval design because
+two different ranges are needed:
+
+- body text belonging directly to the current heading
+- the complete source range governed by the heading and all descendants
+
+Synthetic nodes also require special treatment. They improve hierarchy
+navigation but do not represent headings printed in the source documents.
+
+**Options considered:**
+
+- Assign only one body span to every hierarchy node
+- Copy descendant text into synthetic nodes
+- Assemble and store body text during boundary assignment
+- Store separate coordinate-only source spans and synthetic descendant envelopes
+
+**Selected approach:**
+
+- A source node's `direct_body` starts after the final source line used to
+  reconstruct its own heading.
+- The direct body stops immediately before the next source heading, regardless
+  of hierarchy depth.
+- A source node's `subtree` starts after its own heading and stops before the
+  next source heading at the same or a shallower depth, or at document end.
+- Consecutive headings produce explicit empty direct-body spans.
+- Final headings terminate using an explicit document-end boundary.
+- Multi-page spans retain exact page and line coordinates.
+- Source subtree spans may contain descendant heading lines, but never the
+  current node's own heading lines.
+- Synthetic nodes have null source-heading provenance, null direct bodies, and
+  null source subtrees.
+- A synthetic node may receive a `source_descendant_envelope` covering its
+  contiguous source descendants, beginning at the first descendant heading.
+- Span records contain coordinates and derived measurements only. They do not
+  contain assembled text or citation chunks.
+- Output order exactly preserves `heading-hierarchy.jsonl` order.
+- Generated `data/processed/` artifacts remain local and ignored by Git.
+
+**Measured result:**
+
+The accepted production output contains 380 span records:
+
+- 347 source records
+- 33 synthetic records
+- 92 exact-empty source direct bodies
+- 0 blank-only source direct bodies
+- 166 multi-page source direct bodies
+- 201 multi-page source subtrees
+- 33 synthetic source descendant envelopes
+
+Boundary combinations are:
+
+- 686 source spans from `after_source_line` to `before_source_heading`
+- 8 source spans from `after_source_line` to `after_document_line`
+- 33 synthetic envelopes from `at_source_heading` to
+  `before_source_heading`
+
+The production artifact contains no assembled text, source-line copies,
+retrieval chunks, or citation chunks.
+
+Its accepted SHA-256 checksum is:
+
+`e863d78800faceeeedbd08ea2b5a406bb4e8e81cecf9dfae9bf08d6600604c5d`
+
+**Why:**
+
+Coordinate-only spans preserve auditable source provenance while postponing text
+materialization until chunking requirements are defined. Separating direct-body
+and subtree ranges supports both leaf-level retrieval and hierarchy-aware
+aggregation without duplicating source ownership.
+
+Keeping synthetic descendant envelopes distinct prevents organizational nodes
+created by PolicyProof from being mistaken for headings or passages present in
+the original documents.
+
+**Trade-offs:**
+
+The JSONL records repeat boundary metadata and are larger than a minimal pair of
+integer offsets. The accepted local artifact is approximately 792 KiB for 380
+records.
+
+Consumers must resolve coordinates against `pages.jsonl` before reading span
+text. This adds a materialization step but preserves one authoritative copy of
+the extracted source text.
+
+Synthetic envelopes contain descendant heading lines by design and therefore
+must not be presented as direct body text belonging to the synthetic label.
+
+**How we verified it:**
+
+- Unit tests cover direct-body boundaries, subtree containment, exact-empty
+  spans, blank-only spans, multi-page EOF spans, synthetic envelopes, hierarchy
+  order, overlapping-heading rejection, and overwrite protection.
+- The full test suite passes with 67 tests.
+- Ruff passes across `src` and `tests`.
+- The production builder reproduces the accepted discovery prototype exactly
+  after normalizing schema version and hierarchy order.
+- Manual review covers EU Chapter III, EU Annex XI, NIST AI RMF source and
+  synthetic nodes, NIST Generative AI Profile source and synthetic nodes,
+  GPT-4o depth-three headings, exact-empty spans, multi-page ranges, and all
+  four final-heading EOF boundaries.
+- The generated artifact is byte-identical to the accepted dry run.
+
+**Date:**
+
+2026-07-19
