@@ -162,3 +162,45 @@ Quality validation confirmed:
 
 This phase reconstructs complete labels but does not yet infer hierarchy,
 section spans, or cross-page section boundaries.
+
+## EU section parent assumption failed for Annex XI
+
+### Failure
+
+The first EU hierarchy policy required every section to have an active chapter.
+
+Generation failed at:
+
+`eu-ai-act-2024-1689:page-0141:line-0006`
+
+The source sequence showed that Annex XI contains two internal sections and no
+active chapter.
+
+### Root cause
+
+The initial implementation modeled only the dominant legal structure:
+
+`chapter → section → article`
+
+It did not account for annex-local subdivisions.
+
+### Correction
+
+The hierarchy builder now tracks both an active chapter and an active annex.
+
+- A section attaches to the active chapter when one exists.
+- Otherwise, it attaches to the active annex.
+- Starting a chapter clears annex context.
+- Starting an annex clears chapter and section context.
+- Consecutive sections under an annex remain siblings.
+
+### Validation
+
+Annex XI now contains exactly two source section children:
+
+- Section 1 — Information to be provided by all providers of general-purpose
+  AI models
+- Section 2 — Additional information to be provided by providers of
+  general-purpose AI models with systemic risk
+
+Both sections have depth 2 and the same Annex XI parent.
