@@ -18,7 +18,7 @@ Completed:
 - Page-level extraction with document-specific extractor selection
 - Automated manifest, download, and extraction tests
 
-Next: assign document hierarchy and section boundaries before citation-ready chunking.
+Next: assign section boundaries and page spans before citation-ready chunking.
 
 ## Responsible-use notice
 

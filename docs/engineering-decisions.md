@@ -680,3 +680,87 @@ parent-child hierarchy or section boundaries.
 **Date:**
 
 2026-07-18
+
+---
+
+## PP-015: Document-specific heading hierarchy with explicit synthetic nodes
+
+**Decision:**
+
+Assign hierarchy using document-specific structural rules. Introduce synthetic
+RMF function or category nodes only where a document uses subcategory labels
+without providing the corresponding source heading.
+
+**Context:**
+
+The reconstructed corpus contains 347 source headings, but the documents do not
+share one hierarchy convention.
+
+The EU AI Act uses chapters, sections, articles, and annexes. Most sections
+belong to chapters, while Annex XI contains two internal sections.
+
+The GPT-4o System Card and ordinary NIST numbered headings use dotted numeric
+depth.
+
+NIST RMF function statements use identifiers such as `GOVERN 1.1` and
+`MEASURE 2.3`. Some category headings such as `MAP 1` are present in the source,
+while others such as `GOVERN 1` are omitted. The NIST Generative AI Profile
+contains neither explicit function containers nor explicit category headings.
+
+**Selected approach:**
+
+- EU chapters and annexes are top-level nodes.
+- EU sections attach to the active chapter or annex.
+- EU articles attach to the active section, or directly to the active chapter
+  when no section is active.
+- Numbered headings use the number of dotted components as their structural
+  depth.
+- NIST AI RMF uses the real `5.1 Govern`, `5.2 Map`, `5.3 Measure`, and
+  `5.4 Manage` headings as function containers.
+- Source RMF category headings such as `MAP 1` remain source nodes.
+- Missing RMF categories become synthetic nodes anchored to the first source
+  subcategory that requires them.
+- The NIST Generative AI Profile receives four synthetic function containers
+  under `3. Suggested Actions to Manage GAI Risks`.
+- Synthetic nodes never claim page-level source provenance. They store an
+  explicit anchor heading instead.
+
+**Measured result:**
+
+The accepted hierarchy contains 380 nodes:
+
+- 347 source nodes
+- 33 synthetic nodes
+- 4 synthetic RMF function nodes
+- 29 synthetic RMF category nodes
+
+Document totals:
+
+- EU AI Act: 157
+- NIST Generative AI Profile: 77
+- NIST AI RMF: 118
+- GPT-4o System Card: 28
+
+Validation confirmed:
+
+- Every reconstructed heading appears exactly once.
+- All parent links resolve within the same document.
+- Depth, ancestor lists, and hierarchy paths are consistent.
+- No parent cycles exist.
+- Source and synthetic provenance remain distinct.
+- Annex XI contains two sibling sections.
+- NIST AI RMF uses four real source function containers.
+- The Generative AI Profile uses four explicit synthetic function containers.
+
+**Trade-offs:**
+
+Synthetic nodes improve traversal and retrieval consistency but are not source
+claims. Downstream citation and user-facing output must distinguish synthetic
+organizational metadata from headings printed in the original documents.
+
+This phase assigns parent-child relationships only. It does not yet determine
+the body-text span governed by each heading.
+
+**Date:**
+
+2026-07-19

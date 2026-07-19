@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "generated_date": "2026-07-19",
+  "hierarchy_policy": "document_specific_heading_hierarchy_v1",
+  "source_headings_file": "data/processed/reconstructed-headings.jsonl",
+  "source_headings_sha256": "d6cc569b4ee397127aede2a2e70d03c385b550fc4bc557d5ecd51c1e4748aa96",
+  "hierarchy_output_file": "data/processed/heading-hierarchy.jsonl",
+  "hierarchy_output_sha256": "c16d0d060a7edcf830fe2d3ddf28aee8e4578dc53bca33ec1d267ea56e76a7a1",
+  "node_count": 380,
+  "source_node_count": 347,
+  "synthetic_node_count": 33,
+  "synthetic_type_counts": {
+    "rmf_category": 29,
+    "rmf_function": 4
+  },
+  "depth_distribution": {
+    "1": 48,
+    "2": 82,
+    "3": 129,
+    "4": 121
+  },
+  "documents": [
+    {
+      "document_id": "eu-ai-act-2024-1689",
+      "node_count": 157,
+      "source_node_count": 157,
+      "synthetic_node_count": 0,
+      "maximum_depth": 3
+    },
+    {
+      "document_id": "nist-ai-600-1-genai-profile",
+      "node_count": 77,
+      "source_node_count": 54,
+      "synthetic_node_count": 23,
+      "maximum_depth": 4
+    },
+    {
+      "document_id": "nist-ai-rmf-1.0",
+      "node_count": 118,
+      "source_node_count": 108,
+      "synthetic_node_count": 10,
+      "maximum_depth": 4
+    },
+    {
+      "document_id": "openai-gpt-4o-system-card-2024-08-08",
+      "node_count": 28,
+      "source_node_count": 28,
+      "synthetic_node_count": 0,
+      "maximum_depth": 3
+    }
+  ],
+  "validations": {
+    "unique_node_id_count": 380,
+    "unique_source_heading_id_count": 347,
+    "missing_source_heading_count": 0,
+    "parent_cycle_count": 0,
+    "invalid_parent_count": 0,
+    "invalid_provenance_count": 0,
+    "annex_xi_section_count": 2,
+    "genai_synthetic_function_count": 4,
+    "nist_rmf_real_function_container_count": 4
+  }
+}
