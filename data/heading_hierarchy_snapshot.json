@@ -1,20 +1,20 @@
 {
   "schema_version": "1.0",
-  "generated_date": "2026-07-19",
+  "generated_date": "2026-07-20",
   "hierarchy_policy": "document_specific_heading_hierarchy_v1",
   "source_headings_file": "data/processed/reconstructed-headings.jsonl",
-  "source_headings_sha256": "d6cc569b4ee397127aede2a2e70d03c385b550fc4bc557d5ecd51c1e4748aa96",
+  "source_headings_sha256": "fb3c6d3d9b3615e78bcca5f9e075c88bda50eed5c5ef1a3643335fcd45c5d621",
   "hierarchy_output_file": "data/processed/heading-hierarchy.jsonl",
-  "hierarchy_output_sha256": "c16d0d060a7edcf830fe2d3ddf28aee8e4578dc53bca33ec1d267ea56e76a7a1",
-  "node_count": 380,
-  "source_node_count": 347,
+  "hierarchy_output_sha256": "a49c97741378e0ee60c531b0eee2d3f6d66c37057b56556e8c06523e8f19b928",
+  "node_count": 382,
+  "source_node_count": 349,
   "synthetic_node_count": 33,
   "synthetic_type_counts": {
     "rmf_category": 29,
     "rmf_function": 4
   },
   "depth_distribution": {
-    "1": 48,
+    "1": 50,
     "2": 82,
     "3": 129,
     "4": 121
@@ -43,21 +43,22 @@
     },
     {
       "document_id": "openai-gpt-4o-system-card-2024-08-08",
-      "node_count": 28,
-      "source_node_count": 28,
+      "node_count": 30,
+      "source_node_count": 30,
       "synthetic_node_count": 0,
       "maximum_depth": 3
     }
   ],
   "validations": {
-    "unique_node_id_count": 380,
-    "unique_source_heading_id_count": 347,
+    "unique_node_id_count": 382,
+    "unique_source_heading_id_count": 349,
     "missing_source_heading_count": 0,
     "parent_cycle_count": 0,
     "invalid_parent_count": 0,
     "invalid_provenance_count": 0,
     "annex_xi_section_count": 2,
     "genai_synthetic_function_count": 4,
-    "nist_rmf_real_function_container_count": 4
+    "nist_rmf_real_function_container_count": 4,
+    "openai_compact_appendix_root_count": 2
   }
 }

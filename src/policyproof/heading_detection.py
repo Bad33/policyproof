@@ -93,6 +93,25 @@ NIST_PATTERNS = (
     ),
 )
 
+OPENAI_COMPACT_APPENDIX_HEADINGS = frozenset(
+    {
+        (
+            31,
+            30,
+            (
+                "A Violative & Disallowed Content "
+                "- Full Evaluations"
+            ),
+        ),
+        (
+            32,
+            13,
+            "B Sample tasks from METR Evaluations",
+        ),
+    }
+)
+
+
 OPENAI_PATTERNS = (
     (
         "numbered_heading",
@@ -334,6 +353,18 @@ def detect_heading_candidates(
             document_id,
             normalized,
         )
+
+        if (
+            candidate_type is None
+            and document_id == OPENAI_GPT4O_ID
+            and (
+                page_record["page_number"],
+                line_index + 1,
+                normalized,
+            )
+            in OPENAI_COMPACT_APPENDIX_HEADINGS
+        ):
+            candidate_type = "appendix"
 
         if candidate_type is None:
             continue

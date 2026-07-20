@@ -2,14 +2,14 @@
   "schema_version": "1.1",
   "corpus_id": "policyproof-initial-corpus",
   "corpus_version": "0.1.0",
-  "generated_date": "2026-07-18",
+  "generated_date": "2026-07-20",
   "heading_policy": "document_specific_candidates_v2",
   "source_pages_file": "data/processed/pages.jsonl",
   "source_pages_sha256": "24ca9fa778e73ee82fd4d60aafe80c338db39ab3fabaec357b84e82f941db07c",
   "source_page_count": 289,
   "candidate_output_file": "data/processed/heading-candidates.jsonl",
-  "candidate_output_sha256": "3899eac9b873622f5f7f268f556d3a046b958d9bc2223445d0c4941602951ddd",
-  "candidate_count": 347,
+  "candidate_output_sha256": "0842bb2e6cfaa05103918cd24579ad252203e384bab6015a3ee864218b8796d0",
+  "candidate_count": 349,
   "documents": [
     {
       "document_id": "eu-ai-act-2024-1689",
@@ -42,8 +42,9 @@
     },
     {
       "document_id": "openai-gpt-4o-system-card-2024-08-08",
-      "candidate_count": 28,
+      "candidate_count": 30,
       "candidate_types": {
+        "appendix": 2,
         "named_heading": 1,
         "numbered_heading": 6,
         "numbered_subheading": 21
@@ -57,6 +58,7 @@
     "eu_duplicate_articles": [],
     "appendix_d_candidate_count": 1,
     "appendix_d_marker": "Appendix D:",
-    "late_nist_numbered_candidate_count": 0
+    "late_nist_numbered_candidate_count": 0,
+    "openai_compact_appendix_candidate_count": 2
   }
 }

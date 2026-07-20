@@ -61,13 +61,13 @@ EXPECTED_DOCUMENT_ORDER = (
     GPT_ID,
 )
 EXPECTED_PAGE_COUNT = 289
-EXPECTED_HIERARCHY_COUNT = 380
-EXPECTED_SPAN_COUNT = 380
+EXPECTED_HIERARCHY_COUNT = 382
+EXPECTED_SPAN_COUNT = 382
 EXPECTED_TOTAL_LINE_COUNT = 12_008
-EXPECTED_SOURCE_SPAN_COUNT = 347
+EXPECTED_SOURCE_SPAN_COUNT = 349
 EXPECTED_SYNTHETIC_SPAN_COUNT = 33
-EXPECTED_LOGICAL_SOURCE_COUNT = 485
-EXPECTED_UNIT_COUNT = 579
+EXPECTED_LOGICAL_SOURCE_COUNT = 487
+EXPECTED_UNIT_COUNT = 581
 EXPECTED_INTERNAL_BOUNDARY_COUNT = 94
 
 RECITAL_PATTERN = re.compile(
@@ -111,14 +111,14 @@ PAGE_FURNITURE_REASONS = frozenset(
 EXPECTED_UNIT_KIND_COUNTS = {
     "eu_recital": 181,
     "frontmatter_body": 3,
-    "heading_body": 342,
+    "heading_body": 344,
     "heading_only": 53,
 }
 
 EXPECTED_DOCUMENT_UNIT_COUNTS = {
     EU_ID: 363,
     GENAI_ID: 76,
-    GPT_ID: 34,
+    GPT_ID: 36,
     RMF_ID: 106,
 }
 
@@ -127,7 +127,7 @@ EXPECTED_BOUNDARY_COUNTS = {
     "before_reference_entry": 8,
     "before_structured_start": 27,
     "end_of_heading_source": 53,
-    "end_of_source_unit": 432,
+    "end_of_source_unit": 434,
 }
 
 EXPECTED_CLASSIFICATION_COUNTS = {
@@ -136,8 +136,8 @@ EXPECTED_CLASSIFICATION_COUNTS = {
     "excluded_page_furniture": 555,
     "excluded_reference_region": 144,
     "excluded_structural_metadata": 311,
-    "heading_context": 622,
-    "retrieval_content": 10_021,
+    "heading_context": 624,
+    "retrieval_content": 10_019,
 }
 
 EXPECTED_REASON_COUNTS = {

@@ -451,3 +451,216 @@ Warnings from pinned dependencies should be evaluated as compatibility signals,
 not automatically suppressed. When the lower-level public API can reproduce
 the reviewed behavior exactly, it provides a clearer and more durable
 production contract.
+
+## GPT-4o compact appendix headings absorbed into References
+
+### Failure
+
+The accepted GPT-4o System Card heading set omitted two compact appendix
+headings:
+
+- page 31, line 30:
+  `A Violative & Disallowed Content - Full Evaluations`
+- page 32, line 13:
+  `B Sample tasks from METR Evaluations`
+
+Because neither line was recognized as a heading, the `References` span that
+began on page 29 continued through the end of the document.
+
+The final parsed reference entry therefore absorbed Appendix A, Appendix B,
+evaluation tables, and the Figure 3 caption.
+
+### Root cause
+
+The generic detector recognized explicit forms such as `Appendix A`, but the
+GPT-4o System Card used compact single-letter appendix headings.
+
+A generic pattern for lines beginning with a single capital letter was unsafe.
+The same document also contains ordinary prose such as:
+
+`A second concern may be whether...`
+
+Word-count or capitalization heuristics could not reliably distinguish that
+sentence from the two appendix headings.
+
+The bibliography parser was not the source of the defect. It correctly followed
+the incorrect upstream `References` span.
+
+### Correction
+
+The heading detector now contains a document-scoped, coordinate-and-text
+allowlist for the two reviewed compact appendix headings.
+
+The rule requires all of the following to match:
+
+- the GPT-4o System Card document ID,
+- the exact page number,
+- the exact line number,
+- and the normalized expected text.
+
+Both candidates are classified as `appendix` headings. The general heading
+classifier remains unchanged, and ordinary single-letter prose remains
+unclassified.
+
+Requiring exact text as well as coordinates makes future source changes fail
+closed instead of silently accepting a stale anchor.
+
+### Validation
+
+The exact structural delta is limited to:
+
+- 2 added heading candidates,
+- 2 added reconstructed headings,
+- 2 added root-level hierarchy source nodes,
+- 2 added span records,
+- and 1 changed existing span: `References`.
+
+The corrected `References` direct-body and subtree spans now end at page 31,
+line 29 instead of page 33, line 2.
+
+The regenerated heading artifacts contain:
+
+- 349 candidates,
+- 349 reconstructed headings,
+- 382 hierarchy nodes,
+- 382 span records,
+- 349 source nodes,
+- and 33 synthetic nodes.
+
+The rebuilt production retrieval corpus contains:
+
+- 581 retrieval units,
+- 487 logical sources,
+- 12,008 coordinate-ledger records,
+- 10,019 retrieval-content coordinates,
+- 624 heading-context coordinates,
+- 94 reviewed internal boundaries,
+- and 0 semantic-boundary risks.
+
+The corrected GPT sources contain:
+
+- 5 `References` units,
+- 1 Appendix A unit,
+- and 1 Appendix B unit.
+
+Coordinate ownership confirms:
+
+- both appendix heading lines are `heading_context`,
+- Appendix A body content belongs to Appendix A,
+- the Figure 3 caption belongs to Appendix B,
+- and GPT page-number lines remain excluded page furniture.
+
+All 130 project tests pass. Ruff and `git diff --check` pass.
+
+### Lesson
+
+A bibliography parser cannot compensate for a missing upstream section
+boundary.
+
+Compact headings that are visually clear to a human may be indistinguishable
+from prose under a generic text pattern. When the corpus is pinned and the
+ambiguous headings are known, exact document, coordinate, and text anchors are
+safer than broad heuristics.
+
+Downstream token-budget and retrieval audits must be rerun whenever section
+boundaries change, even when the raw extracted text is unchanged.
+
+
+## Line-only retrieval boundaries exceeded the pinned token budget
+
+### Failure
+
+The accepted coordinate-only retrieval units were semantically valid but were
+not all compatible with the pinned 512-token model-input contract.
+
+With 64 tokens reserved for a query and three tokens reserved for BERT pair
+formatting, passages must contain no more than 445 tokens.
+
+The initial token audit found:
+
+- 174 accepted units above 445 passage tokens
+- 14 EU recitals that could not be split below 445 tokens using only existing
+  line-level boundaries
+- a minimum required cap of 714 tokens if only the existing boundaries were
+  allowed
+
+Increasing the cap to 461 or 477 did not solve the structural problem while
+remaining compatible with the intended query reservation.
+
+### Root cause
+
+The extracted corpus stores source coordinates at line granularity.
+
+Several EU recital lines contain multiple complete sentences. The retrieval
+packing policy recognized safe boundaries only after an entire extracted line,
+so valid sentence endings inside those lines were unavailable to the packer.
+
+The coordinate-only ledger also requires each source line to have exactly one
+retrieval-content owner. Reusing the same coordinate in two accepted retrieval
+units would create an ownership overlap.
+
+This was therefore not a tokenizer defect, a section-boundary defect, or a
+bibliography-entry defect. It was a mismatch between line-granular provenance
+ownership and model-compatible passage packing.
+
+### Correction
+
+Keep the accepted coordinate-only units and ledger unchanged.
+
+Add a separate derived passage layer with optional character offsets inside
+source slices.
+
+A controlled audit selected exactly one sentence boundary for each of the 14
+blocking recitals. Each boundary is anchored by:
+
+- logical source key
+- page and line coordinate
+- character offset
+- expected left-side source text
+- expected right-side source text
+
+The passage builder validates every anchor against the pinned source before
+using it.
+
+All other boundaries continue to use the previously reviewed line-level
+semantic policy. Bibliography passages split only between complete entries.
+
+### Validation
+
+The corrected passage build produces:
+
+- 707 passages from all 487 logical sources
+- 14 reviewed intra-line boundaries
+- 27 complete-reference-entry passages
+- maximum passage length of 445 tokens
+- 0 passages over the hard limit
+
+A character-level provenance audit confirmed:
+
+- all accepted source coordinates remain represented
+- every accepted source character is covered exactly once within its logical
+  source
+- each reviewed split line forms two adjacent ranges
+- no character gap or overlap exists
+- no unexpected character split exists
+- all passage-to-unit links are complete
+- all passage numbers and passage counts are consistent
+- all reference-entry ordinal ranges are continuous
+
+The generated artifacts are reproducible: temporary and permanent builds have
+identical SHA-256 checksums.
+
+The complete project suite passes with 134 tests, and the focused passage and
+materialization suite passes with 10 tests.
+
+### Lesson
+
+A semantically correct coordinate unit is not automatically a valid model
+passage.
+
+Provenance ownership and model packing should be separate layers when their
+granularity requirements differ.
+
+Character offsets should be introduced narrowly, only after proving that
+line-level boundaries are insufficient, and should be protected by exact
+source-context validation rather than a broad unreviewed sentence splitter.

@@ -211,3 +211,81 @@ def test_nist_appendix_d_attributes_are_not_headings() -> None:
     assert len(candidates) == 1
     assert candidates[0]["candidate_type"] == "appendix"
     assert candidates[0]["text"] == "Appendix D:"
+
+
+@pytest.mark.parametrize(
+    (
+        "page_number",
+        "line_number",
+        "heading_text",
+    ),
+    [
+        (
+            31,
+            30,
+            (
+                "A Violative & Disallowed Content "
+                "- Full Evaluations"
+            ),
+        ),
+        (
+            32,
+            13,
+            "B Sample tasks from METR Evaluations",
+        ),
+    ],
+)
+def test_detects_reviewed_openai_compact_appendix_heading(
+    page_number: int,
+    line_number: int,
+    heading_text: str,
+) -> None:
+    document_id = (
+        "openai-gpt-4o-system-card-2024-08-08"
+    )
+    record = make_page_record(
+        document_id,
+        "\n".join(
+            [
+                *(["Body text"] * (line_number - 1)),
+                heading_text,
+            ]
+        ),
+    )
+    record["page_number"] = page_number
+    record["page_id"] = (
+        f"{document_id}:page-{page_number:04d}"
+    )
+
+    candidates = detect_heading_candidates(record)
+
+    assert len(candidates) == 1
+    assert candidates[0]["candidate_type"] == "appendix"
+    assert candidates[0]["page_number"] == page_number
+    assert candidates[0]["line_number"] == line_number
+    assert candidates[0]["text"] == heading_text
+
+
+def test_openai_single_letter_prose_is_not_appendix() -> None:
+    document_id = (
+        "openai-gpt-4o-system-card-2024-08-08"
+    )
+    record = make_page_record(
+        document_id,
+        "\n".join(
+            [
+                *(["Body text"] * 5),
+                (
+                    "A second concern may be whether the "
+                    "TTS inputs are representative of the "
+                    "distribution of audio"
+                ),
+            ]
+        ),
+    )
+    record["page_number"] = 5
+    record["page_id"] = (
+        f"{document_id}:page-0005"
+    )
+
+    assert detect_heading_candidates(record) == []

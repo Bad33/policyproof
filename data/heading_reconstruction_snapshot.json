@@ -2,16 +2,16 @@
   "schema_version": "1.0",
   "corpus_id": "policyproof-initial-corpus",
   "corpus_version": "0.1.0",
-  "generated_date": "2026-07-18",
+  "generated_date": "2026-07-20",
   "reconstruction_policy": "document_specific_heading_reconstruction_v1",
   "candidate_input_file": "data/processed/heading-candidates.jsonl",
-  "candidate_input_sha256": "3899eac9b873622f5f7f268f556d3a046b958d9bc2223445d0c4941602951ddd",
+  "candidate_input_sha256": "0842bb2e6cfaa05103918cd24579ad252203e384bab6015a3ee864218b8796d0",
   "heading_output_file": "data/processed/reconstructed-headings.jsonl",
-  "heading_output_sha256": "d6cc569b4ee397127aede2a2e70d03c385b550fc4bc557d5ecd51c1e4748aa96",
-  "heading_count": 347,
+  "heading_output_sha256": "fb3c6d3d9b3615e78bcca5f9e075c88bda50eed5c5ef1a3643335fcd45c5d621",
+  "heading_count": 349,
   "headings_with_continuations": 282,
   "continuation_line_distribution": {
-    "0": 65,
+    "0": 67,
     "1": 195,
     "2": 41,
     "3": 25,
@@ -69,24 +69,26 @@
     },
     {
       "document_id": "openai-gpt-4o-system-card-2024-08-08",
-      "heading_count": 28,
+      "heading_count": 30,
       "headings_with_continuations": 0,
       "candidate_types": {
+        "appendix": 2,
         "named_heading": 1,
         "numbered_heading": 6,
         "numbered_subheading": 21
       },
       "reconstruction_methods": {
-        "single_line": 28
+        "single_line": 30
       }
     }
   ],
   "validations": {
-    "unique_heading_id_count": 347,
+    "unique_heading_id_count": 349,
     "appendix_d_heading": "Appendix D: Attributes of the AI RMF",
     "hyphen_space_artifact_count": 0,
     "appended_action_id_count": 0,
     "continuation_cap_hit_count": 0,
-    "suspicious_rmf_ending_count": 0
+    "suspicious_rmf_ending_count": 0,
+    "openai_compact_appendix_heading_count": 2
   }
 }

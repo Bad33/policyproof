@@ -1,6 +1,6 @@
 # Architecture
 
-Status: Phase 1.4d coordinate-only retrieval-unit builder implemented, independently audited, and regression tested.
+Status: Phase 1.4e token-safe derived retrieval passages implemented, independently audited, and regression tested.
 
 PolicyProof will use a framework-independent Python pipeline for ingestion,
 retrieval, reranking, evidence-sufficiency assessment, grounded generation,
@@ -62,18 +62,20 @@ For NIST AI RMF function headings, the implemented policy:
 - does not use dictionary lookup, language-model inference, or generic
   corpus-wide dehyphenation
 
-The normalization changes 40 of 347 reconstructed headings. It does not change
+The normalization changes 40 of 349 reconstructed headings. It does not change
 heading identifiers, source ordering, hierarchy parents, hierarchy depths,
 direct-body coordinates, subtree coordinates, or synthetic envelopes.
 
 Accepted local artifact checksums are:
 
+- `heading-candidates.jsonl`:
+  `0842bb2e6cfaa05103918cd24579ad252203e384bab6015a3ee864218b8796d0`
 - `reconstructed-headings.jsonl`:
-  `911f8379ba1633ffa189102143514aeff7e7e98e163fe89c7af806fffb169356`
+  `fb3c6d3d9b3615e78bcca5f9e075c88bda50eed5c5ef1a3643335fcd45c5d621`
 - `heading-hierarchy.jsonl`:
-  `690f640e5cc44a4dc76785b5b2ec6e4878811f956a646bdd757c8432ae790303`
+  `a49c97741378e0ee60c531b0eee2d3f6d66c37057b56556e8c06523e8f19b928`
 - `heading-spans.jsonl`:
-  `e863d78800faceeeedbd08ea2b5a406bb4e8e81cecf9dfae9bf08d6600604c5d`
+  `67ad7444bd77a384df85e0fdef8f3f18aba18c76646b08a661c405c216817871`
 
 ## Generated artifacts
 
@@ -84,13 +86,15 @@ reproduce them.
 The accepted local ingestion artifacts are:
 
 - `data/processed/pages.jsonl`
+- `data/processed/heading-candidates.jsonl`
 - `data/processed/reconstructed-headings.jsonl`
 - `data/processed/heading-hierarchy.jsonl`
 - `data/processed/heading-spans.jsonl`
 
-`heading-spans.jsonl` is derived from the first three artifacts. The
-normalization correction changes reconstructed display text and derived
-hierarchy paths, but the coordinate-only span artifact remains byte-identical.
+`heading-spans.jsonl` is derived from the pages, reconstructed headings, and
+hierarchy artifacts. Reviewed display-text normalization does not alter source
+coordinates. The compact GPT-4o appendix correction deliberately adds two
+source spans and shortens the existing `References` span to page 31, line 29.
 
 ## Production Phase 1.4d retrieval-unit builder
 
@@ -108,8 +112,9 @@ or prototype-script dependency.
 
 The production build contains:
 
-- 579 retrieval units from 485 logical sources
-- 10,021 retrieval-content coordinates, each owned exactly once
+- 581 retrieval units from 487 logical sources
+- 10,019 retrieval-content coordinates, each owned exactly once
+- 624 heading-context coordinates
 - a complete 12,008-record coordinate ledger
 - 53 heading-only evidence units
 - 180 complete EU recitals represented by 181 units
@@ -122,7 +127,7 @@ The production build contains:
 
 The final unit distribution is:
 
-- 342 heading-body units
+- 344 heading-body units
 - 53 heading-only units
 - 181 EU-recital units
 - 3 frontmatter-body units
@@ -140,19 +145,92 @@ Generated artifacts remain local and ignored. Their accepted production
 SHA-256 checksums are:
 
 - `retrieval-units.jsonl`:
-  `e9675edc15a8cc7651a17ad8c9134f4b9166a5fc039d679602c7db542cf2aa07`
+  `4726f293b6cea614e86c6d61bd240f4da87c5fb139169ae2b5e81faba7d658c0`
 - `retrieval-coordinate-ledger.jsonl`:
-  `0b59132e7cdd6b68b667e07ad54efe762ba7b6a7572584f4c2fd94fcc8bf3a78`
+  `dc599de4b2766e588adabb584912b1eb20080cca18b03403ab5bddd8b5f569e8`
 - `retrieval-units-summary.json`:
-  `7b4160740e682bf759f3f506c24d0e4fcd7e56bfa106e4ed09e30d671c0fdd15`
+  `324f146626c620917fe7178e0fd9a721104d224531894f4e2b6545676a60f2a4`
 - `retrieval-units-review.txt`:
-  `f683f4dd2d5a3487704ad397ec4a93d005054068990e16f0df19f87cd31dddaa`
+  `46167f087bd99a6a2f5a2076fd59248b226dc89d60e08c25a6bdc03fdc47ff17`
 
 The accepted temporary prototype remains useful only as an independent parity
 oracle. It is not a runtime dependency or a committed generated artifact.
 
+## Production Phase 1.4e token-safe passage layer
+
+Phase 1.4e derives model-safe passages from the accepted Phase 1.4d
+coordinate-only retrieval units without changing their coordinate ownership or
+the accepted 12,008-record ledger.
+
+The implementation consists of:
+
+- `src/policyproof/retrieval_materialization.py`
+- `src/policyproof/retrieval_passages.py`
+- `src/policyproof/retrieval_tokenizer.py`
+
+The passage builder uses the pinned BERT WordPiece tokenizer and the following
+pair-input contract:
+
+- model maximum length: 512 tokens
+- reserved query budget: 64 tokens
+- pair special tokens: 3
+- passage hard limit: 445 tokens
+- passage packing target: 384 tokens
+
+The derived corpus contains:
+
+- 707 token-safe passages
+- all 487 logical sources
+- all 581 accepted coordinate-only retrieval units as provenance inputs
+- 203 EU-recital passages
+- 4 frontmatter-body passages
+- 447 heading-body passages
+- 53 heading-only passages
+- 27 complete-reference-entry passages
+- 14 reviewed sentence boundaries inside source lines
+- 0 passages above the 445-token hard limit
+- a maximum observed passage length of exactly 445 tokens
+
+The 14 intra-line boundaries are exact corpus-specific anchors. Each anchor
+includes the logical source key, source coordinate, character offset, and
+expected text on both sides. They are used only where complete source lines
+cannot satisfy the pinned token budget.
+
+Character offsets exist only in the derived passage `source_slices`. The
+accepted retrieval units remain coordinate-only, and the coordinate ledger
+continues to assign each extracted source line to exactly one retrieval-content
+owner.
+
+A complete provenance audit confirmed:
+
+- every accepted source character is represented exactly once within its
+  logical source
+- each split line forms two adjacent character ranges
+- there are no character gaps or overlaps
+- passage numbering and passage counts are contiguous
+- every passage links to the complete ordered set of source retrieval units
+- reference-entry ordinal ranges are continuous
+- no unreviewed intra-line split was introduced
+
+The production passage writer refuses overwrite, writes atomically, and rolls
+back earlier outputs if any later output fails.
+
+Generated passage artifacts remain local and ignored. Their accepted SHA-256
+checksums are:
+
+- `retrieval-passages.jsonl`:
+  `918e6d30f2e1900386f5f3e9f5311042f47560c6aaca90168bfc4008f807f874`
+- `retrieval-passages-summary.json`:
+  `a4d0e9afc004f8da8fa93d5ff895d3ff3cf5540c65cfb0c1b182c026f985a626`
+- `retrieval-passages-review.txt`:
+  `9f03dbe06bb74f2d59cc05b49c0ca36758ad47398b5cfe8e4e150ead6658fa45`
+
+The passage artifacts contain source-slice provenance and token counts. They do
+not yet persist retrieval text, citation text, embeddings, or vector-index
+records.
+
 ## Deferred production stages
 
-Citation-unit identity, retrieval-text materialization, tokenizer selection,
-final token budgets, indexing, retrieval, reranking, evidence-sufficiency
-checks, generation, and citation verification remain downstream stages.
+Persisted retrieval text, citation text, embeddings, vector indexing,
+retrieval, reranking, evidence-sufficiency checks, generation, and citation
+verification remain downstream stages.

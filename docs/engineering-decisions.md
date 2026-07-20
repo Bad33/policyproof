@@ -1397,3 +1397,328 @@ handling remain separate Phase 1.4e decisions.
 **Date:**
 
 2026-07-20
+---
+
+## PP-021: Anchor reviewed compact GPT-4o appendix headings
+
+**Decision:**
+
+Recognize the two compact appendix headings in the GPT-4o System Card through a
+document-scoped coordinate-and-text allowlist, while leaving the generic heading
+classifier unchanged.
+
+**Context:**
+
+During retrieval token-budget auditing, the final GPT bibliography entry was
+found to contain safety-evaluation material and the Figure 3 caption.
+
+The underlying `References` source span began on page 29 and incorrectly
+continued through page 33 because these source lines had not been detected as
+headings:
+
+- page 31, line 30:
+  `A Violative & Disallowed Content - Full Evaluations`
+- page 32, line 13:
+  `B Sample tasks from METR Evaluations`
+
+The source uses compact `A ...` and `B ...` forms rather than explicit
+`Appendix A ...` and `Appendix B ...` markers.
+
+The document also contains ordinary prose beginning with `A`, so a generic
+single-letter heading rule would introduce false positives.
+
+**Options considered:**
+
+- Leave the accepted heading set unchanged and repair bibliography parsing.
+- Treat every line beginning with one capital letter as an appendix.
+- Add word-count, capitalization, or punctuation heuristics.
+- Add exact document-and-coordinate anchors.
+- Add exact document, coordinate, and normalized-text anchors.
+
+**Selected option:**
+
+Add two exact GPT-4o System Card anchors containing:
+
+- document ID,
+- page number,
+- line number,
+- normalized source text,
+- and the `appendix` candidate type.
+
+Apply the anchors only when the generic classifier returns no heading type.
+
+Keep the generic classifier unchanged so ordinary prose such as
+`A second concern may be whether...` remains non-heading.
+
+Require the expected text to match the pinned coordinate. A changed source line
+therefore fails closed rather than being accepted solely because it occupies a
+previously reviewed location.
+
+**Measured result:**
+
+The regenerated heading pipeline produces:
+
+- 349 candidates instead of 347,
+- 349 reconstructed headings instead of 347,
+- 382 hierarchy nodes instead of 380,
+- 349 source nodes and 33 synthetic nodes,
+- 382 span records instead of 380,
+- and 2 new root-level GPT appendix nodes.
+
+The only changed pre-existing span is GPT `References`:
+
+- previous included end: page 33, line 2,
+- corrected included end: page 31, line 29.
+
+The production retrieval corpus now produces:
+
+- 581 units,
+- 487 logical sources,
+- 12,008 ledger records,
+- 10,019 retrieval-content coordinates,
+- 624 heading-context coordinates,
+- 344 heading-body units,
+- 53 heading-only units,
+- 181 EU-recital units,
+- 3 frontmatter-body units,
+- 36 GPT units,
+- 94 internal boundaries,
+- 0 semantic risks,
+- and 0 remaining previously rejected boundaries.
+
+Reference packing remains unchanged at five units for each of the two reference
+sections. The maximum indexed-word count remains 580, with EU recital 29 as the
+only approved standard-ceiling exception.
+
+Accepted heading artifact SHA-256 checksums:
+
+- `heading-candidates.jsonl`:
+  `0842bb2e6cfaa05103918cd24579ad252203e384bab6015a3ee864218b8796d0`
+- `reconstructed-headings.jsonl`:
+  `fb3c6d3d9b3615e78bcca5f9e075c88bda50eed5c5ef1a3643335fcd45c5d621`
+- `heading-hierarchy.jsonl`:
+  `a49c97741378e0ee60c531b0eee2d3f6d66c37057b56556e8c06523e8f19b928`
+- `heading-spans.jsonl`:
+  `67ad7444bd77a384df85e0fdef8f3f18aba18c76646b08a661c405c216817871`
+
+Accepted retrieval artifact SHA-256 checksums:
+
+- `retrieval-units.jsonl`:
+  `4726f293b6cea614e86c6d61bd240f4da87c5fb139169ae2b5e81faba7d658c0`
+- `retrieval-coordinate-ledger.jsonl`:
+  `dc599de4b2766e588adabb584912b1eb20080cca18b03403ab5bddd8b5f569e8`
+- `retrieval-units-summary.json`:
+  `324f146626c620917fe7178e0fd9a721104d224531894f4e2b6545676a60f2a4`
+- `retrieval-units-review.txt`:
+  `46167f087bd99a6a2f5a2076fd59248b226dc89d60e08c25a6bdc03fdc47ff17`
+
+**Why:**
+
+The root cause is a missing structural boundary, not a bibliography-packing
+defect. Repairing the section boundary preserves the architecture in which
+heading detection defines spans and downstream retrieval consumes those spans.
+
+A broad single-letter rule would weaken precision across the corpus. Exact
+reviewed anchors are appropriate because the production corpus is pinned,
+corpus-specific invariants already fail closed, and both coordinates have been
+manually verified.
+
+**Trade-offs:**
+
+The allowlist is intentionally corpus-specific. A revised GPT-4o System Card
+layout or changed source text will require explicit review.
+
+Exact anchors do not generalize to unknown documents. Future ingestion of
+unreviewed documents will need a separate compact-heading discovery policy
+rather than silently inheriting these two exceptions.
+
+The corrected structure changes accepted downstream counts and hashes, so
+retrieval artifacts, snapshots, documentation, and token-budget audits must be
+regenerated together.
+
+**How we verified it:**
+
+- Failing-first tests demonstrated that the two headings were initially missed.
+- Positive tests cover both reviewed compact appendices.
+- A negative regression test preserves ordinary single-letter prose.
+- The exact temporary structural comparison showed no removed records and no
+  changed existing candidate, reconstructed-heading, or hierarchy records.
+- Only the existing `References` span changed.
+- The original seven heading artifacts were archived with verified SHA-256
+  equality before regeneration.
+- Snapshot values and hashes were recomputed from the regenerated artifacts.
+- A path-level snapshot audit confirmed only reviewed fields changed.
+- The complete production retrieval builder passed all controlled validations.
+- All 12,008 source coordinates remain classified exactly once.
+- All 94 internal boundaries pass with zero semantic risks.
+- Temporary and accepted retrieval builds are byte-identical.
+- All 130 project tests pass.
+- Ruff and `git diff --check` pass.
+
+**Date:**
+
+2026-07-20
+
+---
+
+## PP-022: Derive token-safe passages without changing coordinate ownership
+
+**Decision:**
+
+Create a separate token-safe passage layer derived from the accepted
+coordinate-only retrieval units.
+
+Do not add character-offset ownership to the Phase 1.4d retrieval units or
+coordinate ledger.
+
+Use exact reviewed character offsets only for the 14 EU recitals that cannot
+fit the 445-token passage limit using existing line-level semantic boundaries.
+
+**Context:**
+
+The pinned tokenizer has a 512-token model limit. Reserving 64 tokens for the
+query and three pair special tokens leaves a hard passage budget of 445 tokens.
+
+A corpus-wide audit found:
+
+- 122 of the original 581 materialized units exceeded 512 single-sequence
+  tokens
+- 174 units exceeded the 445-token passage budget
+- all complete bibliography entries individually fit the budget
+- 14 EU recitals could not fit using only existing line-level boundaries
+- the limiting existing-boundary source required 714 tokens
+
+The blocking recitals contained valid sentence endings inside extracted source
+lines. A reviewed dynamic-programming audit found one suitable intra-line
+sentence boundary for each recital.
+
+The accepted coordinate ledger requires every source coordinate to have exactly
+one retrieval-content owner. Splitting a coordinate between two Phase 1.4d units
+would therefore violate the existing ownership contract.
+
+**Options considered:**
+
+- Increase the passage limit above the model-compatible budget.
+- Reduce the reserved query budget.
+- Truncate long passages.
+- Apply a generic sentence tokenizer to all source text.
+- Add character offsets directly to the accepted retrieval units and ledger.
+- Derive a separate passage layer with optional reviewed character offsets.
+
+**Selected option:**
+
+Keep the 581 accepted retrieval units and their coordinate ledger unchanged.
+
+Build a derived passage schema containing:
+
+- a deterministic passage ID
+- logical-source identity
+- ordered source-unit IDs
+- source coordinate slices
+- optional start and end character offsets
+- the reviewed boundary reason
+- the pinned tokenizer count
+
+Use a minimum-piece dynamic-programming partition over approved semantic
+endpoints. Minimize, in order:
+
+1. passage count
+2. reviewed intra-line boundaries
+3. deviation from the 384-token packing target
+
+Require every passage to remain at or below 445 tokens.
+
+Reference sections may split only between complete parsed bibliography entries.
+
+**Measured result:**
+
+The production passage corpus contains:
+
+- 707 passages
+- 487 logical sources
+- 203 EU-recital passages
+- 4 frontmatter-body passages
+- 447 heading-body passages
+- 53 heading-only passages
+- 27 reference passages
+- 14 reviewed intra-line boundaries
+- 0 passages over 445 tokens
+- maximum passage length of 445 tokens
+
+Document passage counts are:
+
+- EU AI Act: 423
+- NIST Generative AI Profile: 111
+- NIST AI RMF: 120
+- GPT-4o System Card: 53
+
+Boundary counts are:
+
+- 14 `after_sentence_in_line`
+- 123 `after_strong_terminal`
+- 25 `before_reference_entry`
+- 58 `before_structured_start`
+- 53 `end_of_heading_source`
+- 434 `end_of_source_unit`
+
+Accepted artifact SHA-256 checksums:
+
+- `retrieval-passages.jsonl`:
+  `918e6d30f2e1900386f5f3e9f5311042f47560c6aaca90168bfc4008f807f874`
+- `retrieval-passages-summary.json`:
+  `a4d0e9afc004f8da8fa93d5ff895d3ff3cf5540c65cfb0c1b182c026f985a626`
+- `retrieval-passages-review.txt`:
+  `9f03dbe06bb74f2d59cc05b49c0ca36758ad47398b5cfe8e4e150ead6658fa45`
+
+**Why:**
+
+The coordinate-only units and ledger answer which extracted lines belong to
+each reviewed logical source. Token-safe passages answer how those accepted
+sources should be packed for a specific model-input contract.
+
+Separating those responsibilities preserves the already audited provenance
+layer while allowing a narrow character-offset representation where the model
+budget requires it.
+
+Exact source-key, coordinate, offset, and text-context checks make all 14
+exceptions fail closed if the pinned corpus changes.
+
+**Trade-offs:**
+
+The passage corpus contains more records than the coordinate-only corpus.
+
+Fourteen source lines are represented by two adjacent passage slices, although
+each line still has only one owner in the accepted coordinate ledger.
+
+The 445-token budget is tied to the current 64-token query reservation and
+BERT-compatible 512-token pair contract. A different query reservation,
+tokenizer, or model limit requires a new corpus-wide audit and an explicit
+decision.
+
+The reviewed sentence anchors are intentionally corpus-specific and should not
+be generalized to unknown documents.
+
+**How we verified it:**
+
+- All 14 blocking recitals received exactly one reviewed intra-line boundary.
+- Every projected passage fit the 445-token limit before implementation.
+- Focused passage and materialization tests pass.
+- The complete project suite passes with 134 tests.
+- Ruff and `git diff --check` pass before documentation finalization.
+- Temporary and permanent passage builds are byte-identical.
+- All 707 passage IDs are unique.
+- All 487 logical sources are represented.
+- Maximum passage length is 445 tokens.
+- No passage exceeds the hard limit.
+- All bibliography entry ordinal ranges are continuous.
+- Every accepted source character is covered exactly once within its logical
+  source.
+- All 14 split coordinates form adjacent ranges with no gaps or overlaps.
+- Passage-to-unit links and passage numbering are complete.
+- The production writer was tested for non-overwrite behavior, unique output
+  paths, and rollback after a simulated intermediate failure.
+- The generated passage artifacts remain ignored under `data/processed/`.
+
+**Date:**
+
+2026-07-20
