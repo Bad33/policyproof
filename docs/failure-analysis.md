@@ -273,3 +273,53 @@ because `theMAP` becomes two words. This does not violate the provisional
 Citation verification must continue to use raw source coordinates and extracted
 source lines. Normalized heading text is an indexing and display representation,
 not a replacement for source provenance.
+
+## Production retrieval-unit output ordering mismatch
+
+### Failure
+
+The first production builder generated the correct 579 units and correct
+coordinate ownership, but semantic parity failed at record 4.
+
+The implementation returned logical-source construction order:
+
+1. RMF executive-summary frontmatter
+2. EU recitals
+3. source-heading units
+
+The accepted artifact used deterministic document-grouped order.
+
+### Root cause
+
+`document_unit_order` was assigned while units were being constructed.
+Construction order is an implementation detail and does not match the output
+contract established by the accepted prototype.
+
+The builder had preserved unit content, identity, boundaries, and ownership but
+had not reproduced final corpus serialization order.
+
+### Correction
+
+The builder now completes all unit construction first, then:
+
+1. iterates through the validated corpus document order,
+2. collects units for each document without reordering them internally,
+3. assigns `document_unit_order` within that document, and
+4. publishes the resulting document-grouped sequence.
+
+### Validation
+
+After the correction:
+
+- all 579 production units have exact semantic parity with the accepted units,
+- all 12,008 ledger records have exact semantic parity with the accepted
+  ledger,
+- explicit CLI and in-memory builds produce identical hashes,
+- all 118 project tests pass,
+- Ruff and `git diff --check` pass.
+
+### Lesson
+
+Deterministic content is insufficient when artifact ordering is part of the
+reviewed contract. Production parity checks must compare ordered records, not
+only sets of unit IDs or coordinate ownership.

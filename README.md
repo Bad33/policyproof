@@ -20,9 +20,11 @@ Completed:
 - Document-specific heading detection and reviewed reconstruction
 - Reviewed NIST RMF heading normalization with immutable raw provenance
 - Document-specific hierarchy and coordinate-only heading spans
-- Independently audited 579-unit coordinate-only retrieval design
+- Tested production builder for 579 coordinate-only retrieval units
+- Complete 12,008-record coordinate ledger with explicit ownership and exclusions
+- Exact semantic parity with the independently audited retrieval design
 
-Next: promote the audited coordinate-only retrieval-unit design into a tested production builder before materializing retrieval text, selecting a tokenizer, creating citation units, embeddings, or indexes.
+Next: define and test retrieval-text materialization, tokenizer, and citation-unit requirements before creating embeddings or indexes.
 
 ## Responsible-use notice
 

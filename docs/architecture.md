@@ -1,6 +1,6 @@
 # Architecture
 
-Status: Phase 1.4c ingestion foundation implemented; Phase 1.4d retrieval-unit design independently audited.
+Status: Phase 1.4d coordinate-only retrieval-unit builder implemented, independently audited, and regression tested.
 
 PolicyProof will use a framework-independent Python pipeline for ingestion,
 retrieval, reranking, evidence-sufficiency assessment, grounded generation,
@@ -92,41 +92,67 @@ The accepted local ingestion artifacts are:
 normalization correction changes reconstructed display text and derived
 hierarchy paths, but the coordinate-only span artifact remains byte-identical.
 
-## Audited Phase 1.4d retrieval-unit design
+## Production Phase 1.4d retrieval-unit builder
 
-Phase 1.4d has produced an independently audited, temporary coordinate-only
-retrieval-unit candidate. It is a design artifact, not a production chunk
-corpus and not a committed generated artifact.
+Phase 1.4d promotes the independently audited coordinate-only design into
+production Python modules:
 
-The audited candidate contains:
+- `src/policyproof/retrieval_units.py`
+- `src/policyproof/retrieval_policy.py`
+- `src/policyproof/retrieval_builder.py`
+
+The builder accepts explicit paths for `pages.jsonl`,
+`heading-hierarchy.jsonl`, and `heading-spans.jsonl`. It has no `runpy`
+coupling, environment-variable namespace coupling, embedded temporary paths,
+or prototype-script dependency.
+
+The production build contains:
 
 - 579 retrieval units from 485 logical sources
 - 10,021 retrieval-content coordinates, each owned exactly once
-- 53 heading-only evidence units covering 188 NIST AI RMF source coordinates
+- a complete 12,008-record coordinate ledger
+- 53 heading-only evidence units
 - 180 complete EU recitals represented by 181 units
 - 94 reviewed internal boundaries with zero known semantic defects
 - 146 explicit blank-line exclusions
-- 72 EU ELI footer exclusions
-- 5 GenAI reference units and 5 GPT-4o reference units
-- one approved semantic-integrity exception: EU recital 29 at 580 words
-  under a 640-word exception ceiling
+- 72 explicit EU ELI footer exclusions
+- 39 omitted empty hierarchy containers
+- one reviewed semantic exception: EU recital 29 at 580 indexed words under a
+  640-word ceiling
 
-The candidate stores coordinates and metadata only. It contains no assembled
-retrieval text, citation text, embeddings, or character offsets.
+The final unit distribution is:
 
-Its accepted temporary checksums are:
+- 342 heading-body units
+- 53 heading-only units
+- 181 EU-recital units
+- 3 frontmatter-body units
 
-- corrected candidate JSONL:
-  `2fc8308ad1a221ebee7bde31c9ff9d76fda8de42391b0632ff5d673cb47c723f`
-- corrected coordinate ledger:
-  `d5b258efa67e0067146777893d2817955b29025a992ab68e2a8b8955c8bd1fc5`
-- final independent audit:
-  `57c93cbba08e6026577665a77c76b8f164491a72ee6144af922116e81b42a2be`
+Outputs remain coordinate-only. They contain no retrieval text, citation text,
+embeddings, character offsets, or vector-index records.
+
+The production builder preserves deterministic document ordering, terminal
+`:part-NNN` unit IDs, complete bibliography entries, URL continuation,
+footnote continuation, list structure, and the reviewed EU recital 53 split.
+All outputs refuse overwrite and are written atomically with rollback across
+the multi-file build.
+
+Generated artifacts remain local and ignored. Their accepted production
+SHA-256 checksums are:
+
+- `retrieval-units.jsonl`:
+  `e9675edc15a8cc7651a17ad8c9134f4b9166a5fc039d679602c7db542cf2aa07`
+- `retrieval-coordinate-ledger.jsonl`:
+  `0b59132e7cdd6b68b667e07ad54efe762ba7b6a7572584f4c2fd94fcc8bf3a78`
+- `retrieval-units-summary.json`:
+  `7b4160740e682bf759f3f506c24d0e4fcd7e56bfa106e4ed09e30d671c0fdd15`
+- `retrieval-units-review.txt`:
+  `f683f4dd2d5a3487704ad397ec4a93d005054068990e16f0df19f87cd31dddaa`
+
+The accepted temporary prototype remains useful only as an independent parity
+oracle. It is not a runtime dependency or a committed generated artifact.
 
 ## Deferred production stages
 
-A tested production retrieval-unit builder has not yet been added to the
-repository. Citation-unit identity, retrieval-text materialization, tokenizer
-selection, final token budgets, indexing, retrieval, reranking,
-evidence-sufficiency checks, generation, and citation verification remain
-downstream stages.
+Citation-unit identity, retrieval-text materialization, tokenizer selection,
+final token budgets, indexing, retrieval, reranking, evidence-sufficiency
+checks, generation, and citation verification remain downstream stages.

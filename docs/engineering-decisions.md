@@ -1005,3 +1005,135 @@ normalized string as the original PDF byte sequence.
 **Date:**
 
 2026-07-19
+---
+
+## PP-018: Production coordinate-only retrieval builder
+
+**Decision:**
+
+Promote the independently audited Phase 1.4d coordinate-only retrieval design
+into production modules with explicit inputs, deterministic outputs, complete
+coordinate ownership, atomic multi-file publication, and exact semantic parity
+with the accepted prototype.
+
+**Context:**
+
+The accepted Phase 1.4d design established the correct logical sources,
+document-specific exclusions, semantic boundaries, bibliography packing,
+heading-only evidence behavior, and coordinate ledger. Its implementation,
+however, depended on temporary scripts, `runpy`, environment variables, global
+mutable state, absolute temporary paths, and destructive output cleanup.
+
+Those properties were suitable for controlled discovery but not for a
+production ingestion pipeline.
+
+**Options considered:**
+
+- Keep the temporary scripts as the production implementation.
+- Copy the temporary scripts into the package with minimal changes.
+- Reimplement only the final unit serialization layer.
+- Port the accepted policies into explicit, independently tested production
+  modules.
+- Materialize retrieval text and citations during the same change.
+
+**Selected option:**
+
+Create three production modules:
+
+- `retrieval_units.py` for immutable corpus indexes, coordinate expansion,
+  logical-source grouping, validation, and atomic writers.
+- `retrieval_policy.py` for explicit document policies, semantic-boundary
+  selection, GenAI footnote handling, EU ELI removal, and entry-aware
+  bibliography packing.
+- `retrieval_builder.py` for controlled source construction, exclusion
+  planning, unit materialization, complete ledger generation, semantic audits,
+  explicit command-line inputs and outputs, and multi-output rollback.
+
+The builder remains coordinate-only. It does not create retrieval text,
+citation text, embeddings, character offsets, or indexes.
+
+The accepted `candidate-v2` terminal `:part-NNN` identity contract is retained
+for parity. It is not yet declared a public external API.
+
+**Measured result:**
+
+The production builder creates:
+
+- 579 retrieval units
+- 485 logical sources
+- 12,008 coordinate-ledger records
+- 10,021 retrieval-content coordinates
+- 622 heading-context coordinates
+- 94 internal boundaries
+- 0 semantic-boundary risks
+- 0 remaining previously rejected boundaries
+- 39 omitted empty hierarchy containers
+- 53 heading-only units
+- 10 reference units across two reference sections
+- one standard-ceiling exception: EU recital 29 at 580/640 indexed words
+
+Unit kinds are:
+
+- 342 heading-body
+- 53 heading-only
+- 181 EU-recital
+- 3 frontmatter-body
+
+The builder reproduces the accepted prototype units and ledger exactly after
+normalizing the production schema version. A second explicit CLI execution
+produces identical output hashes.
+
+Accepted production SHA-256 checksums:
+
+- `retrieval-units.jsonl`:
+  `e9675edc15a8cc7651a17ad8c9134f4b9166a5fc039d679602c7db542cf2aa07`
+- `retrieval-coordinate-ledger.jsonl`:
+  `0b59132e7cdd6b68b667e07ad54efe762ba7b6a7572584f4c2fd94fcc8bf3a78`
+- `retrieval-units-summary.json`:
+  `7b4160740e682bf759f3f506c24d0e4fcd7e56bfa106e4ed09e30d671c0fdd15`
+- `retrieval-units-review.txt`:
+  `f683f4dd2d5a3487704ad397ec4a93d005054068990e16f0df19f87cd31dddaa`
+
+**Why:**
+
+Separating indexing, policy, and orchestration makes document-specific behavior
+explicit and testable without preserving prototype coupling.
+
+Coordinate-only outputs retain one authoritative source-text representation in
+`pages.jsonl`, prevent premature citation or text-schema commitments, and allow
+coverage validation to remain independent from word-count validation.
+
+Fail-closed atomic publication prevents a partially written corpus from being
+mistaken for a successful production build.
+
+**Trade-offs:**
+
+The production code intentionally contains corpus-specific anchors, expected
+counts, and reviewed exception checks. A corpus update must fail closed and
+undergo a new review rather than silently adapting.
+
+The builder is larger than the temporary prototype's final serialization
+layer because it owns input validation, rollback, semantic-boundary auditing,
+ledger completeness, and deterministic output ordering.
+
+Generated artifacts remain local and ignored, so users must run the builder to
+inspect them.
+
+**How we verified it:**
+
+- 38 focused foundation and policy tests pass.
+- 9 focused builder tests pass.
+- The complete project suite passes with 118 tests.
+- Ruff and `git diff --check` pass.
+- Production units have exact semantic parity with all 579 accepted units.
+- The production ledger has exact semantic parity with all 12,008 accepted
+  ledger records.
+- An explicit module CLI run reproduces all four accepted production hashes.
+- The semantic audit checks all 94 internal boundaries and confirms zero risks.
+- The builder confirms zero overlap, zero lost retained coordinates, complete
+  bibliography entries, no blank or ELI coordinates in units, and exact
+  document-grouped ordering.
+
+**Date:**
+
+2026-07-20
