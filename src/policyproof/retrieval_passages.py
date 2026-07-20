@@ -37,7 +37,7 @@ from policyproof.retrieval_units import (
     write_text_atomically,
 )
 
-PASSAGE_SCHEMA_VERSION = "1.0"
+PASSAGE_SCHEMA_VERSION = "1.1"
 QUERY_TOKEN_RESERVATION = 64
 PAIR_SPECIAL_TOKEN_COUNT = 3
 PASSAGE_HARD_TOKEN_LIMIT = 445
@@ -465,11 +465,11 @@ def _validated_offset(
     return value
 
 
-def materialize_passage_text(
+def _materialize_passage_body(
     passage: Mapping[str, Any],
     indexes: CorpusIndexes,
 ) -> str:
-    """Materialize one token-safe passage from source slices."""
+    """Materialize validated citation evidence from source slices."""
 
     label = passage.get("label")
     unit_kind = passage.get("unit_kind")
@@ -551,19 +551,20 @@ def materialize_passage_text(
         for line_position, coordinate in enumerate(
             coordinates
         ):
-            text = index.line_text[coordinate]
-            start = (
+            source_text = index.line_text[coordinate]
+            start_char = (
                 start_offset
                 if line_position == 0
                 else 0
             )
-            end = (
+            end_char = (
                 end_offset
-                if line_position
-                == len(coordinates) - 1
-                else len(text)
+                if line_position == len(coordinates) - 1
+                else len(source_text)
             )
-            lines.append(text[start:end].strip())
+            lines.append(
+                source_text[start_char:end_char].strip()
+            )
 
         slice_text = "\n".join(lines)
 
@@ -577,7 +578,7 @@ def materialize_passage_text(
 
     body_parts: list[str] = []
 
-    for position, text in enumerate(texts):
+    for position, source_text in enumerate(texts):
         if position:
             left = expanded[position - 1]
             right = expanded[position]
@@ -588,10 +589,84 @@ def materialize_passage_text(
             )
             body_parts.append(separator)
 
-        body_parts.append(text)
+        body_parts.append(source_text)
 
-    body = "".join(body_parts)
-    return f"{label}\n\n{body}"
+    return "".join(body_parts)
+
+
+def materialize_passage_citation_text(
+    passage: Mapping[str, Any],
+    indexes: CorpusIndexes,
+) -> str:
+    """Materialize citation evidence without retrieval-only context."""
+
+    return _materialize_passage_body(
+        passage,
+        indexes,
+    )
+
+
+def materialize_passage_text(
+    passage: Mapping[str, Any],
+    indexes: CorpusIndexes,
+) -> str:
+    """Materialize retrieval text from validated source slices."""
+
+    body = _materialize_passage_body(
+        passage,
+        indexes,
+    )
+
+    if passage.get("unit_kind") == "heading_only":
+        return body
+
+    return f"{passage['label']}\n\n{body}"
+
+
+PERSISTED_PASSAGE_TEXT_FIELDS = (
+    "retrieval_text",
+    "citation_text",
+    "passage_token_count",
+)
+
+
+def materialize_passage_record_texts(
+    passage: Mapping[str, Any],
+    indexes: CorpusIndexes,
+) -> dict[str, Any]:
+    """Return a new passage record with deterministic persisted text."""
+
+    existing_fields = [
+        field_name
+        for field_name in PERSISTED_PASSAGE_TEXT_FIELDS
+        if field_name in passage
+    ]
+
+    if existing_fields:
+        raise RetrievalUnitError(
+            "Passage already contains materialized fields: "
+            + ", ".join(existing_fields)
+            + "."
+        )
+
+    retrieval_text = materialize_passage_text(
+        passage,
+        indexes,
+    )
+    citation_text = materialize_passage_citation_text(
+        passage,
+        indexes,
+    )
+
+    result = dict(passage)
+    result["retrieval_text"] = retrieval_text
+    result["citation_text"] = citation_text
+    result["passage_token_count"] = count_tokens(
+        retrieval_text,
+        add_special_tokens=False,
+    )
+
+    return result
 
 
 def _reference_endpoints(
@@ -977,14 +1052,11 @@ def build_retrieval_passages(
                     endpoint.reference_entry_ordinal
                 )
 
-            text = materialize_passage_text(
+            record = materialize_passage_record_texts(
                 record,
                 indexes,
             )
-            token_count = count_tokens(
-                text,
-                add_special_tokens=False,
-            )
+            token_count = record["passage_token_count"]
 
             if (
                 token_count
@@ -995,9 +1067,6 @@ def build_retrieval_passages(
                     f"{token_count} tokens."
                 )
 
-            record["passage_token_count"] = (
-                token_count
-            )
             passages.append(record)
             previous_atom = end_atom
             previous_endpoint_position = (
@@ -1046,7 +1115,7 @@ def build_retrieval_passages(
 
 
 
-PASSAGE_SUMMARY_SCHEMA_VERSION = "1.0"
+PASSAGE_SUMMARY_SCHEMA_VERSION = "1.1"
 EXPECTED_SOURCE_UNIT_COUNT = 581
 EXPECTED_LOGICAL_SOURCE_COUNT = 487
 EXPECTED_PASSAGE_COUNT = 707
@@ -1280,8 +1349,8 @@ def build_retrieval_passage_artifacts(
         "reference_passage_count": (
             reference_passage_count
         ),
-        "contains_retrieval_text": False,
-        "contains_citation_text": False,
+        "contains_retrieval_text": True,
+        "contains_citation_text": True,
         "contains_embeddings": False,
         "contains_character_offsets": True,
         "changes_coordinate_ownership": False,
@@ -1341,10 +1410,10 @@ def build_retrieval_passage_artifacts(
         "- accepted coordinate ledger changed: no",
         "- complete bibliography entries preserved: yes",
         "",
-        "Deferred downstream fields",
+        "Persisted passage fields",
         "-" * 78,
-        "- retrieval text: absent",
-        "- citation text: absent",
+        "- retrieval text: present",
+        "- citation text: present",
         "- embeddings: absent",
         "- source character offsets: present where required",
         "",

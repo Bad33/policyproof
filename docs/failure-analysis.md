@@ -664,3 +664,72 @@ granularity requirements differ.
 Character offsets should be introduced narrowly, only after proving that
 line-level boundaries are insufficient, and should be protected by exact
 source-context validation rather than a broad unreviewed sentence splitter.
+
+## Token-safe passage artifacts omitted their accepted text
+
+### Failure
+
+The Phase 1.4e passage artifact stored source slices, labels, boundaries, and
+token counts but did not store the retrieval string whose token count had been
+accepted.
+
+It also did not store the citation evidence string that downstream grounded
+generation and citation verification will need.
+
+### Root cause
+
+Phase 1.4e deliberately separated model-compatible passage packing from the
+final persisted-text contract.
+
+The builder materialized label-prefixed passage text internally to calculate
+tokens, then discarded it. Citation/body behavior remained represented only by
+the earlier retrieval-unit materializer.
+
+This left downstream consumers responsible for independently recreating
+separator, offset, label, and heading-only behavior.
+
+### Correction
+
+Persist two explicitly governed passage representations:
+
+- `retrieval_text` for indexing and model-facing retrieval
+- `citation_text` for source evidence and citation display
+
+Calculate `passage_token_count` from the exact persisted `retrieval_text`.
+
+For ordinary passages, exclude the retrieval-only label from citation text. For
+heading-only passages, retain the reviewed heading as both representations
+because it is the accepted evidence.
+
+Reject records that already contain any governed text/count field before
+materialization.
+
+### Validation
+
+The regenerated schema `1.1` corpus contains all 707 accepted passages and
+preserves every pre-existing identity, ordering, provenance, boundary,
+source-slice, and token-count field.
+
+The audit confirmed:
+
+- 903,356 retrieval-text characters
+- 865,405 citation-text characters
+- 53 heading-only passages
+- 27 reference passages
+- 14 reviewed intra-line boundaries
+- maximum passage size of 445 tokens
+- zero passages above the limit
+- zero coordinate-ledger changes
+- zero changed pre-existing passage fields beyond the schema version
+
+The previous schema `1.0` artifacts were hash-verified and archived before the
+schema `1.1` artifacts were published.
+
+### Lesson
+
+A token count is not a complete retrieval-data contract unless the exact text
+being counted is also governed.
+
+Retrieval context and citation evidence should be persisted separately when one
+contains normalized labels that are useful for indexing but are not extracted
+body evidence.

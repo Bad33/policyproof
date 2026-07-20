@@ -1722,3 +1722,139 @@ be generalized to unknown documents.
 **Date:**
 
 2026-07-20
+---
+
+## PP-023: Persist retrieval and citation text on accepted passages
+
+**Decision:**
+
+Persist deterministic `retrieval_text` and `citation_text` fields directly on
+the accepted token-safe passage records.
+
+Use schema version `1.1` and calculate `passage_token_count` from the exact
+persisted `retrieval_text`.
+
+**Context:**
+
+Phase 1.4e established 707 token-safe passages with complete source-slice
+provenance but intentionally deferred persisted text.
+
+The passage builder already reconstructed label-prefixed text to calculate token
+counts and then discarded that string. Citation/body semantics existed only in
+the earlier retrieval-unit materializer.
+
+Leaving text unpersisted would require every downstream embedding, reranking,
+evaluation, and citation consumer to rematerialize it independently from
+`pages.jsonl`. That would create multiple opportunities for separator, label,
+offset, or normalization behavior to diverge from the text whose token count was
+accepted.
+
+**Options considered:**
+
+- Continue rematerializing all text at downstream runtime.
+- Create a separate passage-text artifact synchronized by passage ID.
+- Persist only retrieval text.
+- Persist retrieval and citation text directly on each passage.
+- Add per-record text hashes in addition to the whole-artifact checksum.
+
+**Selected option:**
+
+Extend each passage record with:
+
+- `retrieval_text`
+- `citation_text`
+- `passage_token_count` derived from `retrieval_text`
+
+For non-heading-only passages:
+
+- `citation_text` is the materialized source-slice body.
+- `retrieval_text` is `label`, two newlines, and `citation_text`.
+
+For heading-only passages, both fields contain the reviewed reconstructed
+heading because the heading is the accepted evidence itself.
+
+Reject any input passage that already contains `retrieval_text`,
+`citation_text`, or `passage_token_count` before deterministic materialization.
+
+Do not introduce a parallel passage-text artifact or per-record hashes. The
+canonical passage record and its whole-artifact SHA-256 are sufficient and
+avoid maintaining synchronized duplicate records.
+
+**Measured result:**
+
+The schema `1.1` production corpus contains:
+
+- 707 persisted passage records
+- 903,356 retrieval-text characters
+- 865,405 citation-text characters
+- 53 heading-only passages with identical retrieval and citation text
+- 27 complete-reference-entry passages
+- 14 reviewed intra-line boundaries
+- maximum passage size of 445 tokens
+- zero passages above the hard token limit
+- zero changed passage IDs
+- zero changed ordering
+- zero changed source slices
+- zero changed boundary fields
+- zero changed source-unit provenance links
+- zero changed token counts
+- zero changes to coordinate ownership or the accepted coordinate ledger
+
+Accepted schema `1.1` artifact SHA-256 checksums:
+
+- `retrieval-passages.jsonl`:
+  `5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96`
+- `retrieval-passages-summary.json`:
+  `aff873450e04744f71580fdf2792b56edceceb61259b3f20ea54bc735f3c1bb9`
+- `retrieval-passages-review.txt`:
+  `8cd2574c360765a8eb8fdac1cae7232db97ce1cf372a7a24b89a69c9c6f29bec`
+
+**Why:**
+
+Persisting the exact accepted text makes the passage artifact self-contained for
+the next retrieval-data stages while retaining source-slice provenance for
+audit and citation verification.
+
+Separating retrieval context from citation evidence prevents human-readable
+labels from being presented as though they were extracted body text while still
+allowing normalized headings to improve retrieval.
+
+Calculating the stored token count from the persisted retrieval string ensures
+that token safety and downstream model input refer to the same bytes.
+
+**Trade-offs:**
+
+The passage artifact is larger because it now stores two related strings.
+
+Citation text still reflects deterministic line trimming and reviewed
+same-page/cross-page separators rather than preserving original PDF layout.
+
+The reviewed heading text may differ from raw extracted heading lines where
+document-scoped normalization corrected known PDF wrapping defects. Raw source
+coordinates remain authoritative provenance.
+
+Any future change to labels, separators, normalization, tokenizer behavior, or
+citation-text policy requires schema review and a full corpus regeneration.
+
+**How we verified it:**
+
+- Failing-first tests established distinct retrieval and citation behavior.
+- Focused tests cover same-page gaps, page transitions, start and end character
+  offsets, heading-only evidence, immutable input records, and rejection of
+  preexisting materialized fields.
+- A builder-level regression proves production records contain both text fields
+  and derive token counts from persisted retrieval text.
+- A temporary 707-record production build was compared field by field with the
+  accepted schema `1.0` corpus after excluding only the two new fields and
+  normalizing the schema version.
+- No previously accepted identity, ordering, provenance, boundary, slice, or
+  token-count field changed.
+- The old three artifacts were hash-verified and archived before regeneration.
+- The permanent schema `1.1` artifacts exactly match the audited temporary
+  hashes.
+- The complete project suite passes with 144 tests.
+- Ruff and `git diff --check` pass.
+
+**Date:**
+
+2026-07-20

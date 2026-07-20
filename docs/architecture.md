@@ -1,6 +1,6 @@
 # Architecture
 
-Status: Phase 1.4e token-safe derived retrieval passages implemented, independently audited, and regression tested.
+Status: Phase 1.4f persisted retrieval and citation text implemented, independently audited, and regression tested.
 
 PolicyProof will use a framework-independent Python pipeline for ingestion,
 retrieval, reranking, evidence-sufficiency assessment, grounded generation,
@@ -229,8 +229,65 @@ The passage artifacts contain source-slice provenance and token counts. They do
 not yet persist retrieval text, citation text, embeddings, or vector-index
 records.
 
+## Production Phase 1.4f persisted passage text
+
+Phase 1.4f finalizes the text representations stored with each accepted
+Phase 1.4e passage. It does not change passage identity, source slices,
+coordinate ownership, semantic boundaries, passage ordering, or token budgets.
+
+The passage schema is now version `1.1` and persists two distinct strings:
+
+- `retrieval_text` is the exact label-prefixed text used for token accounting,
+  indexing, embedding, and reranking.
+- `citation_text` is the source-derived evidence text without the
+  retrieval-only label prefix.
+- For the 53 heading-only passages, the reviewed reconstructed heading is both
+  the retrieval text and the citation evidence because the heading itself is
+  the accepted evidence unit.
+
+`passage_token_count` is calculated from the exact persisted
+`retrieval_text`. Records that already contain `retrieval_text`,
+`citation_text`, or `passage_token_count` are rejected before materialization,
+preventing stale or externally supplied text from silently replacing the
+deterministic source-slice reconstruction.
+
+The accepted corpus remains:
+
+- 707 passages
+- 487 logical sources
+- 581 source retrieval units represented as provenance
+- 53 heading-only passages
+- 27 reference passages
+- 14 reviewed intra-line boundaries
+- maximum passage length of 445 tokens
+- zero passages over the hard limit
+- zero changed pre-existing passage fields other than the schema version
+
+The persisted corpus contains:
+
+- 903,356 retrieval-text characters
+- 865,405 citation-text characters
+- no embeddings
+- no vector-index records
+- no change to the accepted coordinate ledger
+
+The previous schema `1.0` passage artifacts were verified against their
+accepted hashes and archived locally under:
+
+`data/processed/archive/retrieval-passages-schema-1.0-pre-persisted-text-3bde189/`
+
+Generated artifacts remain local and ignored. The accepted schema `1.1`
+SHA-256 checksums are:
+
+- `retrieval-passages.jsonl`:
+  `5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96`
+- `retrieval-passages-summary.json`:
+  `aff873450e04744f71580fdf2792b56edceceb61259b3f20ea54bc735f3c1bb9`
+- `retrieval-passages-review.txt`:
+  `8cd2574c360765a8eb8fdac1cae7232db97ce1cf372a7a24b89a69c9c6f29bec`
+
 ## Deferred production stages
 
-Persisted retrieval text, citation text, embeddings, vector indexing,
-retrieval, reranking, evidence-sufficiency checks, generation, and citation
-verification remain downstream stages.
+Embeddings, vector indexing, retrieval, reranking,
+evidence-sufficiency checks, generation, and citation verification remain
+downstream stages.
