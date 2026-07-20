@@ -150,11 +150,11 @@ def test_semantic_source_key_and_label() -> None:
     assert logical_source_label(
         recital,
         hierarchy,
-    ) == "EU recital 7"
+    ) == "Recital 7"
     assert logical_source_label(
         frontmatter,
         hierarchy,
-    ) == "executive-summary"
+    ) == "Executive Summary"
 
 
 def test_combined_coordinates_requires_strict_order() -> None:

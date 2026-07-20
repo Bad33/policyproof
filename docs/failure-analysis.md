@@ -323,3 +323,70 @@ After the correction:
 Deterministic content is insufficient when artifact ordering is part of the
 reviewed contract. Production parity checks must compare ordered records, not
 only sets of unit IDs or coordinate ownership.
+## Retrieval context-label word-count mismatch
+
+### Failure
+
+While defining retrieval-text materialization, an audit compared each unit's
+human-readable label with the `context_word_count` used by the accepted packing
+policy.
+
+The audit found 184 mismatches:
+
+- 181 EU-recital units used labels such as `EU recital 7`, which contain three
+  whitespace-delimited words, but stored a two-word context budget.
+- Three RMF executive-summary units used the machine identifier
+  `rmf-executive-summary`, which counts as one whitespace-delimited token, but
+  stored a two-word context budget.
+
+Heading-body and heading-only units were consistent.
+
+### Root cause
+
+`logical_source_label()` served several prototype purposes:
+
+- identifying reference sections,
+- providing review labels,
+- and acting as a candidate retrieval-text prefix.
+
+For heading units, the semantic source key resolves to reviewed heading text.
+For recitals and frontmatter, however, semantic identity and display text were
+not separated consistently.
+
+The production builder explicitly assigned the intended two-word packing
+budgets but did not validate label length for non-reference units. The existing
+validation applied only to bibliography packing, so the mismatch passed the
+production audits.
+
+### Correction
+
+The semantic identifiers remain unchanged:
+
+- `eu-recital-NNN`
+- `rmf-executive-summary`
+
+Only the human-readable retrieval labels changed:
+
+- `EU recital N` became `Recital N`.
+- `rmf-executive-summary` became `Executive Summary`.
+
+A regression test now distinguishes semantic source keys from retrieval labels.
+
+### Validation
+
+After the correction:
+
+- all 579 units have label/count agreement,
+- all 118 project tests pass,
+- Ruff and `git diff --check` pass,
+- all 579 units and 12,008 ledger records remain unchanged,
+- all four regenerated production artifacts match their accepted hashes,
+- the maximum indexed-word count remains 580,
+- semantic-boundary risk count remains zero.
+
+### Lesson
+
+Packing metadata must be validated against the exact text that will eventually
+be indexed. Stable identity strings, display labels, retrieval prefixes, and
+citation text are related but distinct representations and should not be
+silently substituted for one another.

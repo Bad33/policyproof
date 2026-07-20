@@ -1137,3 +1137,103 @@ inspect them.
 **Date:**
 
 2026-07-20
+---
+
+## PP-019: Separate semantic source identity from retrieval context labels
+
+**Decision:**
+
+Keep machine-stable semantic source keys separate from the human-readable
+labels that will prefix retrieval text.
+
+For the existing non-heading unit kinds:
+
+- EU recital source keys remain `eu-recital-NNN`, while their retrieval labels
+  are `Recital N`.
+- The RMF executive-summary source key remains `rmf-executive-summary`, while
+  its retrieval label is `Executive Summary`.
+
+Heading-body and heading-only labels continue to use the reviewed reconstructed
+heading text.
+
+**Context:**
+
+Phase 1.4e requires retrieval text to be materialized from the accepted
+coordinate-only units. During the tokenizer audit, the retrieval-label helper
+was compared with each unit's accepted `context_word_count`.
+
+The audit found that all 181 EU-recital units and all three RMF
+executive-summary units had inconsistent label/count contracts:
+
+- `EU recital N` contains three whitespace-delimited words, while the accepted
+  packing basis reserves two.
+- `rmf-executive-summary` contains one whitespace-delimited token, while the
+  accepted packing basis reserves two.
+
+The accepted two-word budgets correspond to `Recital N` and
+`Executive Summary`.
+
+**Options considered:**
+
+- Change the accepted context-word counts to match the existing helper labels.
+- Use semantic source keys directly as retrieval labels.
+- Treat the mismatch as an undocumented prototype convention.
+- Preserve semantic source keys and correct only the human-readable labels.
+
+**Selected option:**
+
+Preserve all semantic source keys, unit IDs, coordinates, boundaries, word
+budgets, and artifact schemas. Correct only `logical_source_label()` so its
+human-readable output matches the accepted packing basis.
+
+This keeps identifiers stable while making retrieval-text materialization
+explicit and internally consistent.
+
+**Measured result:**
+
+- 579 of 579 units have consistent label/count bases.
+- Semantic source keys and unit IDs are unchanged.
+- All four regenerated coordinate-only artifacts retain their accepted
+  SHA-256 checksums.
+- Unit, logical-source, coordinate-ledger, and semantic-boundary counts are
+  unchanged.
+
+**Why:**
+
+Identifiers optimize for stability and uniqueness. Retrieval labels optimize
+for readable semantic context. Requiring one string to serve both purposes
+would either expose implementation-oriented IDs to retrieval or destabilize
+accepted identities when display wording changes.
+
+Matching the label to its packing basis also prevents later tokenizer and
+splitting calculations from using text that differs from the context assumed
+when the unit was accepted.
+
+**Trade-offs:**
+
+Retrieval-text materialization must explicitly choose the retrieval label
+rather than assuming that a semantic source key is display text.
+
+Changing a retrieval label in the future may alter token counts even when
+coordinates and identifiers remain unchanged, so label changes require
+token-budget regression tests.
+
+**How we verified it:**
+
+- A failing regression test first demonstrated the old labels.
+- The focused retrieval-policy suite passes with 21 tests.
+- The complete project suite passes with 118 tests.
+- Ruff and `git diff --check` pass.
+- Temporary production regeneration reproduced all accepted hashes:
+  - units:
+    `e9675edc15a8cc7651a17ad8c9134f4b9166a5fc039d679602c7db542cf2aa07`
+  - ledger:
+    `0b59132e7cdd6b68b667e07ad54efe762ba7b6a7572584f4c2fd94fcc8bf3a78`
+  - summary:
+    `7b4160740e682bf759f3f506c24d0e4fcd7e56bfa106e4ed09e30d671c0fdd15`
+  - report:
+    `f683f4dd2d5a3487704ad397ec4a93d005054068990e16f0df19f87cd31dddaa`
+
+**Date:**
+
+2026-07-20

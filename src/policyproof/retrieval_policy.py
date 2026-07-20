@@ -207,10 +207,10 @@ def logical_source_label(
                 "recital_number is invalid."
             )
 
-        return f"EU recital {recital_number}"
+        return f"Recital {recital_number}"
 
     if unit_kind == "frontmatter_body":
-        return semantic_source_key(unit)
+        return "Executive Summary"
 
     raise RetrievalUnitError(
         f"Unexpected unit kind: {unit_kind}"
