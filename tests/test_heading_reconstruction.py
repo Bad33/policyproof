@@ -326,11 +326,14 @@ def test_nist_heading_can_exceed_four_continuation_lines() -> None:
     assert heading["continuation_line_count"] == 5
 
 
-def test_wrapped_hyphen_does_not_retain_extra_space() -> None:
+def test_nist_pdf_wrap_hyphen_is_removed() -> None:
     document_id = "nist-ai-rmf-1.0"
     page = make_page(
         document_id,
-        ("GOVERN 1.2: Trustworthy AI is inte-\ngrated into organizational practices."),
+        (
+            "GOVERN 1.2: Trustworthy AI is inte-\n"
+            "grated into organizational practices."
+        ),
     )
     candidate = make_candidate(
         document_id,
@@ -345,9 +348,133 @@ def test_wrapped_hyphen_does_not_retain_extra_space() -> None:
     )
 
     assert heading["full_heading"] == (
-        "GOVERN 1.2: Trustworthy AI is inte-grated into organizational practices."
+        "GOVERN 1.2: Trustworthy AI is integrated "
+        "into organizational practices."
     )
-    assert "inte- grated" not in heading["full_heading"]
+    assert heading["source_lines"] == [
+        "GOVERN 1.2: Trustworthy AI is inte-",
+        "grated into organizational practices.",
+    ]
+
+
+@pytest.mark.parametrize(
+    ("wrapped_heading", "expected_heading"),
+    [
+        (
+            (
+                "MAP 1.1: Requirements use context-\n"
+                "specific laws and controls."
+            ),
+            (
+                "MAP 1.1: Requirements use context-specific "
+                "laws and controls."
+            ),
+        ),
+        (
+            (
+                "MEASURE 4.3: Field data identifies context-\n"
+                "relevant risks."
+            ),
+            (
+                "MEASURE 4.3: Field data identifies "
+                "context-relevant risks."
+            ),
+        ),
+    ],
+)
+def test_nist_reviewed_compound_hyphens_are_preserved(
+    wrapped_heading: str,
+    expected_heading: str,
+) -> None:
+    document_id = "nist-ai-rmf-1.0"
+    lines = wrapped_heading.splitlines()
+    page = make_page(
+        document_id,
+        wrapped_heading,
+    )
+    candidate = make_candidate(
+        document_id,
+        "rmf_function_heading",
+        lines[0],
+    )
+
+    heading = reconstruct_heading(
+        candidate,
+        page,
+        {1},
+    )
+
+    assert heading["full_heading"] == expected_heading
+    assert heading["source_lines"] == lines
+
+
+def test_nist_multiple_pdf_wrap_hyphens_are_removed() -> None:
+    document_id = "nist-ai-rmf-1.0"
+    page = make_page(
+        document_id,
+        (
+            "MANAGE 1.3: Responses are doc-\n"
+            "umented before transfer-\n"
+            "ring risk."
+        ),
+    )
+    candidate = make_candidate(
+        document_id,
+        "rmf_function_heading",
+        "MANAGE 1.3: Responses are doc-",
+    )
+
+    heading = reconstruct_heading(
+        candidate,
+        page,
+        {1},
+    )
+
+    assert heading["full_heading"] == (
+        "MANAGE 1.3: Responses are documented "
+        "before transferring risk."
+    )
+    assert heading["source_lines"] == [
+        "MANAGE 1.3: Responses are doc-",
+        "umented before transfer-",
+        "ring risk.",
+    ]
+
+
+def test_nist_exact_extraction_correction_is_applied() -> None:
+    document_id = "nist-ai-rmf-1.0"
+    page = make_page(
+        document_id,
+        (
+            "MEASURE 2.6: Risks are identified in "
+            "theMAP function."
+        ),
+    )
+    candidate = make_candidate(
+        document_id,
+        "rmf_function_heading",
+        (
+            "MEASURE 2.6: Risks are identified in "
+            "theMAP function."
+        ),
+    )
+
+    heading = reconstruct_heading(
+        candidate,
+        page,
+        {1},
+    )
+
+    assert heading["full_heading"] == (
+        "MEASURE 2.6: Risks are identified in "
+        "the MAP function."
+    )
+    assert heading["source_lines"] == [
+        (
+            "MEASURE 2.6: Risks are identified in "
+            "theMAP function."
+        )
+    ]
 
 
 def test_reconstructs_split_nist_appendix_title() -> None:

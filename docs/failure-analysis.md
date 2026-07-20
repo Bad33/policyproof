@@ -140,7 +140,8 @@ The accepted reconstruction policy:
 - Applies conservative multi-line title handling only to EU annexes.
 - Extends NIST function reconstruction until punctuation or a structural stop.
 - Uses a twelve-line safety limit rather than the rejected four-line limit.
-- Preserves line-ending hyphens without inserting additional whitespace.
+- Preserves exact raw source lines while applying reviewed NIST RMF display-text
+  normalization for visual wrap hyphens.
 - Detects split NIST appendix markers and joins them to one following title line.
 - Rejects numbered attribute-list items on the Appendix D page.
 
@@ -204,3 +205,71 @@ Annex XI now contains exactly two source section children:
   general-purpose AI models with systemic risk
 
 Both sections have depth 2 and the same Annex XI parent.
+## NIST heading display-text normalization failure
+
+### Failure
+
+The first accepted heading-reconstruction baseline retained extracted
+line-ending hyphens in reconstructed display text.
+
+This avoided inserting spaces into forms such as `or- ganizational`, but it
+produced headings containing visual PDF wrap artifacts such as:
+
+- `inte-grated`
+- `or-ganizational`
+- `decom-missioning`
+- `docu-mented`
+- `transfer-ring`
+
+A separate NIST AI RMF extraction defect produced `theMAP`.
+
+### Root cause
+
+The generic wrapped-line joiner treated character preservation as more important
+than reconstructed semantic text. That was a safe provenance policy, but the
+same reconstructed heading was also used as the indexed content for 53
+heading-only evidence units.
+
+Raw provenance and retrieval/display text had been treated as though they
+required the same normalization policy.
+
+### Correction
+
+The reconstruction pipeline now separates those responsibilities:
+
+- Raw page text and stored `source_lines` remain unchanged.
+- NIST function-heading display text removes reviewed visual wrap hyphens.
+- `context-specific` and `context-relevant` remain hyphenated.
+- The exact extraction glue `theMAP` becomes `the MAP`.
+- Other document types retain their existing reconstruction rules.
+- No dictionary or probabilistic text correction is used.
+
+### Validation
+
+A full temporary downstream regeneration confirmed:
+
+- 347 reconstructed headings
+- 40 headings with corrected display text
+- 51 removed wrap hyphens
+- 2 preserved legitimate compounds
+- 1 corrected `theMAP` occurrence
+- 0 changes to raw source-line provenance
+- 0 changes to hierarchy structure
+- 0 changes to direct-body or subtree coordinates
+- a byte-identical `heading-spans.jsonl`
+- 53 heading-only units with normalized word-count agreement
+- 71 passing project tests
+- passing Ruff checks
+
+### Downstream impact
+
+The corrected coordinate-only retrieval candidate still contains 579 units.
+All 10,021 retrieval coordinates remain owned exactly once.
+
+The MEASURE 2.6 heading-only unit increases to 69 normalized content words
+because `theMAP` becomes two words. This does not violate the provisional
+512-word standard ceiling.
+
+Citation verification must continue to use raw source coordinates and extracted
+source lines. Normalized heading text is an indexing and display representation,
+not a replacement for source provenance.

@@ -608,6 +608,10 @@ is validated for completeness and uniqueness.
 
 ## PP-014: Provenance-preserving heading reconstruction
 
+**Status:**
+
+Superseded in part by PP-017 for reviewed NIST AI RMF display-text normalization. The source-line provenance and document-specific boundary rules remain governing decisions.
+
 **Decision:**
 
 Reconstruct complete heading text from reviewed heading candidates while
@@ -642,8 +646,9 @@ Use document-specific reconstruction policies:
   heading candidate, an explicit table/action boundary, or a twelve-line safety
   limit.
 - Split NIST appendix markers consume one following title line.
-- Wrapped source lines are joined without inserting whitespace after a
-  line-ending hyphen.
+- Generic wrapped source lines are joined without inserting an additional
+  space after a line-ending hyphen. NIST AI RMF function headings then apply
+  the reviewed normalization policy defined in PP-017.
 - Every output stores the exact source lines and source line numbers used.
 
 **Measured result:**
@@ -669,13 +674,14 @@ Validation confirmed:
 
 **Trade-offs:**
 
-The reconstruction preserves extracted characters rather than attempting
-dictionary-based dehyphenation. Forms such as `inte-grated` can therefore remain
-even when the original visual word was likely `integrated`. Exact source lines
-remain available for later citation verification.
+The initial accepted baseline preserved extracted hyphen characters and could
+therefore retain forms such as `inte-grated`. A later corpus-wide audit showed
+that this reduced heading and heading-only evidence quality. PP-017 supersedes
+that part of the policy with a closed, manually reviewed normalization set while
+keeping exact raw source lines unchanged.
 
-The output represents complete heading labels, but it does not yet assign
-parent-child hierarchy or section boundaries.
+The output represents complete heading labels, but hierarchy and source-span
+ownership remain separate downstream stages.
 
 **Date:**
 
@@ -884,6 +890,117 @@ must not be presented as direct body text belonging to the synthetic label.
   GPT-4o depth-three headings, exact-empty spans, multi-page ranges, and all
   four final-heading EOF boundaries.
 - The generated artifact is byte-identical to the accepted dry run.
+
+**Date:**
+
+2026-07-19
+---
+
+## PP-017: Reviewed heading normalization with immutable raw provenance
+
+**Decision:**
+
+Normalize reviewed PDF line-wrap artifacts in NIST AI RMF function-heading
+display text while retaining the exact extracted source lines and coordinates
+as immutable provenance.
+
+**Context:**
+
+The PP-014 reconstruction policy correctly prevented `or- ganizational`-style
+spacing defects, but it intentionally preserved every extracted hyphen. A
+corpus-wide manual audit of 347 source headings found 53 NIST AI RMF
+line-ending-hyphen boundaries:
+
+- 51 were visual PDF wrap artifacts inside ordinary words.
+- `context-specific` and `context-relevant` were legitimate compounds.
+- One separate extraction defect joined `theMAP` without a space.
+
+The artifacts affected heading display text and heading-only retrieval evidence.
+They did not indicate a source-coordinate or heading-boundary failure.
+
+**Options considered:**
+
+- Preserve every extracted character.
+- Apply dictionary-based dehyphenation.
+- Apply generic language-model correction.
+- Apply a deterministic, document-scoped reviewed correction policy.
+- Modify raw extracted page text.
+
+**Selected option:**
+
+Apply a deterministic, document-scoped reviewed correction policy only to NIST
+function headings.
+
+- When a source line ends with a hyphen and the next source line begins with a
+  lowercase letter, join the two fragments without the wrap hyphen.
+- Preserve only the reviewed compounds `context-specific` and
+  `context-relevant`.
+- Apply the exact document correction `theMAP` to `the MAP`.
+- Keep `source_lines`, `source_line_numbers`, page identity, line identity,
+  marker text, and candidate identity unchanged.
+- Keep generic reconstruction behavior unchanged for other heading types and
+  documents.
+- Do not use a dictionary, probabilistic model, or broad text-rewriting rule.
+
+**Measured result:**
+
+Temporary full-corpus regeneration confirmed:
+
+- 347 reconstructed headings retained.
+- 40 headings received corrected display text.
+- 51 visual wrap hyphens were removed.
+- 2 legitimate compounds were preserved.
+- 1 `theMAP` extraction glue was corrected.
+- 0 raw source-line changes occurred.
+- 380 hierarchy nodes were retained.
+- 380 span records were retained.
+- Hierarchy parentage, depth, source order, and coordinate ownership were
+  unchanged.
+- `heading-spans.jsonl` remained byte-identical.
+- All 53 heading-only evidence units match normalized reconstructed-heading word
+  counts.
+- MEASURE 2.6 now contains 69 normalized heading words.
+
+Accepted local checksums:
+
+- `reconstructed-headings.jsonl`:
+  `911f8379ba1633ffa189102143514aeff7e7e98e163fe89c7af806fffb169356`
+- `heading-hierarchy.jsonl`:
+  `690f640e5cc44a4dc76785b5b2ec6e4878811f956a646bdd757c8432ae790303`
+- `heading-spans.jsonl`:
+  `e863d78800faceeeedbd08ea2b5a406bb4e8e81cecf9dfae9bf08d6600604c5d`
+
+**Why:**
+
+A closed reviewed correction set improves retrieval text without weakening
+provenance. The normalized display text is reproducible and testable, while the
+raw extracted lines remain available for audit, citation verification, and
+future extractor comparisons.
+
+Restricting the policy to the audited NIST function-heading format prevents a
+local PDF repair rule from silently rewriting unrelated documents.
+
+**Trade-offs:**
+
+New NIST function-heading extraction patterns may require another explicit
+review. The allowlist and exact correction map are corpus-specific by design.
+
+The normalized heading is suitable for indexing and display, but citations must
+continue to resolve to raw page-and-line provenance rather than treating the
+normalized string as the original PDF byte sequence.
+
+**How we verified it:**
+
+- Focused heading-reconstruction tests cover ordinary wrap dehyphenation,
+  preservation of both legitimate compounds, multiple corrections in one
+  heading, the exact `theMAP` repair, and immutable raw source lines.
+- Full temporary reconstruction, hierarchy, and span generation was compared
+  against the previously accepted artifacts.
+- The changed-heading set exactly matched the coordinate-derived reviewed set.
+- An independent corrected-corpus audit confirmed 10,021 retrieval coordinates
+  with zero missing, unexpected, or overlapping ownership.
+- The full project suite passes with 71 tests.
+- Ruff and `git diff --check` pass.
 
 **Date:**
 

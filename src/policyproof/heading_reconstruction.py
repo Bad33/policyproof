@@ -68,6 +68,20 @@ NIST_STOP_PATTERNS = (
 )
 
 
+NIST_PRESERVED_WRAP_HYPHENS = frozenset(
+    {
+        "context-relevant",
+        "context-specific",
+    }
+)
+
+NIST_HEADING_TEXT_CORRECTIONS = {
+    "nist-ai-rmf-1.0": (
+        ("theMAP", "the MAP"),
+    ),
+}
+
+
 class HeadingReconstructionError(RuntimeError):
     """Raised when complete headings cannot be reconstructed safely."""
 
@@ -93,6 +107,68 @@ def join_wrapped_lines(lines: list[str]) -> str:
             joined += line
         else:
             joined += f" {line}"
+
+    return joined
+
+
+def join_nist_function_lines(
+    lines: list[str],
+    *,
+    document_id: str,
+) -> str:
+    """Join NIST function headings with reviewed wrap-hyphen handling."""
+    joined = ""
+
+    for raw_line in lines:
+        line = normalize_line(raw_line)
+
+        if not line:
+            continue
+
+        if not joined:
+            joined = line
+            continue
+
+        if joined.endswith("-") and line[0].islower():
+            left_match = re.search(
+                r"([A-Za-z]+)-$",
+                joined,
+            )
+            right_match = re.match(
+                r"([A-Za-z]+)",
+                line,
+            )
+
+            if left_match is None or right_match is None:
+                raise HeadingReconstructionError(
+                    "Could not resolve a NIST line-ending "
+                    "hyphen deterministically."
+                )
+
+            compound = (
+                f"{left_match.group(1)}-"
+                f"{right_match.group(1)}"
+            ).casefold()
+
+            if compound in NIST_PRESERVED_WRAP_HYPHENS:
+                joined += line
+            else:
+                joined = joined[:-1] + line
+
+            continue
+
+        joined += f" {line}"
+
+    for source, replacement in (
+        NIST_HEADING_TEXT_CORRECTIONS.get(
+            document_id,
+            (),
+        )
+    ):
+        joined = joined.replace(
+            source,
+            replacement,
+        )
 
     return joined
 
@@ -420,6 +496,12 @@ def reconstruct_heading(
             [continuation_text for _, continuation_text in continuations]
         )
         full_heading = f"{source_marker} — {title_text}" if title_text else source_marker
+    elif document_id in NIST_DOCUMENT_IDS and candidate_type == "rmf_function_heading":
+        title_text = ""
+        full_heading = join_nist_function_lines(
+            source_lines,
+            document_id=document_id,
+        )
     elif document_id in NIST_DOCUMENT_IDS and candidate_type == "appendix" and continuations:
         title_text = join_wrapped_lines(
             [continuation_text for _, continuation_text in continuations]
