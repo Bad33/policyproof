@@ -1,0 +1,30 @@
+PolicyProof packaged tokenizer vocabulary attribution
+
+Asset:
+  bert-base-uncased-vocab.txt
+
+Canonical source:
+  google-bert/bert-base-uncased
+
+Pinned source revision:
+  86b5e0934494bd15c9632b12f734a8a67f723594
+
+Original source file:
+  vocab.txt
+
+SHA-256:
+  07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3
+
+Vocabulary entries:
+  30,522
+
+License:
+  Apache-2.0
+
+Packaged license text:
+  bert-base-uncased-LICENSE.txt
+
+PolicyProof distributes this file unchanged so tokenizer behavior is
+deterministic and available without a network download. The same vocabulary
+hash is used by the pinned dense-retrieval and reranking model revisions
+reviewed during Phase 1.4e.

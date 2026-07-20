@@ -1237,3 +1237,163 @@ token-budget regression tests.
 **Date:**
 
 2026-07-20
+---
+
+## PP-020: Pin an offline BERT WordPiece tokenizer contract
+
+**Decision:**
+
+Use `tokenizers==0.22.2` with an explicitly constructed BERT WordPiece pipeline
+for retrieval tokenization and token-budget accounting.
+
+The tokenizer contract is pinned by:
+
+- library name and exact version,
+- implementation strategy,
+- normalization behavior,
+- special-token identities,
+- model maximum length,
+- vocabulary size,
+- vocabulary SHA-256,
+- canonical vocabulary source,
+- and canonical source revision.
+
+The canonical vocabulary is packaged inside PolicyProof so tokenization never
+requires a network download at runtime.
+
+**Context:**
+
+Phase 1.4e requires token budgets to be based on the tokenizer used by the
+retrieval architecture rather than the provisional whitespace word count.
+
+The reviewed candidate dense retriever and reranker are:
+
+- `BAAI/bge-small-en-v1.5` at revision
+  `5c38ec7c405ec4b44b94cc5a9bb96e735b38267a`
+- `cross-encoder/ms-marco-MiniLM-L6-v2` at revision
+  `c5ee24cb16019beea0893ab7796b1df96625c6b8`
+
+Both declare `BertTokenizer`, a 512-position BERT contract, the same special
+tokens, the same normalization behavior, and the same 30,522-entry vocabulary.
+
+Their shared vocabulary is byte-identical to
+`google-bert/bert-base-uncased` at revision
+`86b5e0934494bd15c9632b12f734a8a67f723594`.
+
+The vocabulary SHA-256 is:
+
+`07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3`
+
+**Options considered:**
+
+- Continue using provisional whitespace-delimited word counts.
+- Use `tiktoken` with `cl100k_base`.
+- Add the full `transformers` runtime dependency.
+- Use `tokenizers` while downloading model assets on first use.
+- Use `tokenizers` with a packaged, hash-verified canonical vocabulary.
+
+**Selected option:**
+
+Add `tokenizers==0.22.2` as a pinned runtime dependency and construct the
+tokenizer from low-level components:
+
+- `Tokenizer`
+- `WordPiece.from_file`
+- `BertNormalizer`
+- `BertPreTokenizer`
+- `BertProcessing`
+- the WordPiece decoder
+
+The production contract uses:
+
+- lowercase normalization,
+- BERT clean-text behavior,
+- Chinese-character handling,
+- model-default accent stripping,
+- `[PAD]` at ID 0,
+- `[UNK]` at ID 100,
+- `[CLS]` at ID 101,
+- `[SEP]` at ID 102,
+- `[MASK]` at ID 103,
+- and a model maximum length of 512 tokens.
+
+The vocabulary, Apache-2.0 license, and source notice are packaged under
+`src/policyproof/assets/`.
+
+The selected tokenizer contract does not finalize the dense retriever or
+reranker model choice. It establishes the shared tokenizer behavior needed for
+Phase 1.4e token accounting.
+
+**Measured result:**
+
+The production tokenizer matched `transformers.BertTokenizer` exactly across
+12,979 reviewed cases:
+
+- 579 materialized candidate retrieval texts,
+- 12,008 extracted source lines,
+- 380 hierarchy headings,
+- and 12 targeted Unicode and control-character cases.
+
+For every case, the following were identical:
+
+- WordPiece token strings,
+- token IDs without special tokens,
+- and token IDs with BERT special tokens.
+
+The built PolicyProof wheel contains:
+
+- `bert-base-uncased-vocab.txt`
+- `bert-base-uncased-LICENSE.txt`
+- `bert-base-uncased-NOTICE.txt`
+
+The wheel metadata pins `tokenizers==0.22.2`.
+
+**Why:**
+
+Token-budget calculations must remain deterministic across machines, CI runs,
+and future model downloads.
+
+Packaging the exact vocabulary removes network availability, cache state, and
+upstream mutable references from the tokenization path.
+
+Using the lower-level `tokenizers` API preserves the reviewed BERT behavior
+without adding the full model-loading and framework surface of
+`transformers`.
+
+Hash, vocabulary-size, UTF-8, special-token-position, package-version, and
+packaged-resource checks make the tokenizer fail closed when its contract is
+not satisfied.
+
+**Trade-offs:**
+
+The repository and wheel now include approximately 231 KB of vocabulary data
+plus its license and attribution notice.
+
+`tokenizers` introduces additional transitive packaging dependencies even
+though PolicyProof does not use its network-facing utilities.
+
+Any future retrieval model with a different tokenizer, vocabulary,
+normalization policy, or sequence-length contract will require an explicit new
+decision and corpus-wide token audit.
+
+The 512-token model limit does not itself define the final passage budget.
+Query reservation, pair special tokens, splitting policy, and long-unit
+handling remain separate Phase 1.4e decisions.
+
+**How we verified it:**
+
+- The tokenizer foundation was created through a failing-first test.
+- Six focused tokenizer tests pass.
+- The complete project suite passes with 124 tests.
+- Deprecation warnings are treated as test failures.
+- Ruff and `git diff --check` pass.
+- The production tokenizer has exact parity across all 12,979 reviewed cases.
+- A built wheel contains all three packaged assets.
+- The packaged vocabulary and license retain their accepted SHA-256 values.
+- The packaged notice records the canonical source, pinned revision,
+  vocabulary hash, entry count, and Apache-2.0 license.
+- Wheel metadata declares `tokenizers==0.22.2`.
+
+**Date:**
+
+2026-07-20

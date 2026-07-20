@@ -390,3 +390,64 @@ Packing metadata must be validated against the exact text that will eventually
 be indexed. Stable identity strings, display labels, retrieval prefixes, and
 citation text are related but distinct representations and should not be
 silently substituted for one another.
+## Deprecated tokenizer wrapper file-loading path
+
+### Failure
+
+The first production tokenizer implementation used
+`BertWordPieceTokenizer` with the packaged vocabulary path.
+
+Its focused tests passed, but `tokenizers==0.22.2` emitted a
+`DeprecationWarning` stating that the `WordPiece` constructor would no longer
+create a model directly from files and that `WordPiece.from_file` should be
+used instead.
+
+### Root cause
+
+`BertWordPieceTokenizer` is a convenience wrapper whose constructor still
+creates its internal model through the deprecated
+`WordPiece(vocab_path, ...)` path.
+
+The wrapper reproduced the intended BERT behavior, but accepting its warning
+would leave PolicyProof dependent on an API path that is already scheduled for
+removal.
+
+Suppressing the warning would hide a known compatibility defect rather than
+correct it.
+
+### Correction
+
+Replace the convenience wrapper with an explicit low-level pipeline:
+
+- load the packaged vocabulary through `WordPiece.from_file`,
+- create a `Tokenizer`,
+- register the five BERT special tokens,
+- apply `BertNormalizer`,
+- apply `BertPreTokenizer`,
+- apply `BertProcessing` for `[CLS]` and `[SEP]`,
+- and configure the WordPiece decoder.
+
+The tokenizer contract now names this implementation explicitly as
+`Tokenizer+WordPiece.from_file`.
+
+### Validation
+
+After the correction:
+
+- focused tests pass with `DeprecationWarning` promoted to an error,
+- all 124 project tests pass,
+- Ruff and `git diff --check` pass,
+- all 12,979 reviewed corpus and Unicode cases exactly match
+  `transformers.BertTokenizer`,
+- token IDs with and without BERT special tokens are identical,
+- and the built wheel contains the vocabulary, license, and source notice.
+
+### Lesson
+
+A behaviorally correct wrapper is not sufficient when it relies on a
+deprecated construction path.
+
+Warnings from pinned dependencies should be evaluated as compatibility signals,
+not automatically suppressed. When the lower-level public API can reproduce
+the reviewed behavior exactly, it provides a clearer and more durable
+production contract.
