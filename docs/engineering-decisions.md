@@ -1858,3 +1858,129 @@ citation-text policy requires schema review and a full corpus regeneration.
 **Date:**
 
 2026-07-20
+---
+
+## PP-024: Bind retrieval evaluation to reviewed passage evidence
+
+**Decision:**
+
+Define a versioned, manually reviewed retrieval-evaluation dataset before
+implementing BM25, dense retrieval, hybrid retrieval, or reranking.
+
+Bind each dataset version to the exact corpus version, passage schema version,
+and accepted passage-artifact SHA-256.
+
+**Context:**
+
+PolicyProof requires objective comparison of retrieval approaches using the same
+questions and accepted evidence. Building a retriever first would create a risk
+that benchmark questions or relevance judgments were selected after observing
+which passages a particular implementation retrieved.
+
+The product boundary also requires explicit abstention for questions that seek
+legal advice, organization-specific compliance conclusions, current facts not
+contained in the controlled corpus, unsupported comparisons, or high-stakes
+recommendations.
+
+**Options considered:**
+
+- Implement BM25 first and create evaluation data afterward.
+- Store only answerable questions with one exact gold passage each.
+- Use logical source identifiers rather than accepted passage identifiers.
+- Define a versioned benchmark with graded passage judgments and abstentions.
+- Allow loosely structured evaluation records for easier manual editing.
+
+**Selected option:**
+
+Use retrieval-evaluation schema version `1.0` with:
+
+- fixed dataset identity `policyproof-retrieval-evaluation`
+- semantic dataset versioning
+- corpus ID and corpus version binding
+- passage schema version binding
+- whole passage-artifact SHA-256 binding
+- stable query IDs
+- exact document scope
+- explicit `answer` or `abstain` behavior
+- non-empty evaluation tags
+- graded passage relevance:
+  - grade `2` for direct evidence
+  - grade `1` for useful supporting context
+- a required rationale for every relevance judgment
+
+Answerable queries require at least one grade `2` judgment. Abstention queries
+must contain no relevance judgments.
+
+The validator rejects:
+
+- unsupported schema versions
+- unexpected dataset identities
+- unknown fields at dataset, query, or judgment level
+- empty query collections
+- duplicate query IDs
+- empty or duplicate evaluation tags
+- empty or duplicate document-scope entries
+- unknown document IDs
+- unknown or duplicate passage IDs
+- evidence outside the declared document scope
+- invalid relevance grades
+- empty judgment rationales
+- answerable queries without direct evidence
+- abstention queries containing gold evidence
+- corpus, passage-schema, or passage-artifact mismatches
+
+**Measured result:**
+
+The initial dataset, version `0.1.0`, contains:
+
+- 20 manually reviewed queries
+- 16 answerable queries
+- 4 required-abstention queries
+- 4 answerable queries for each corpus document
+- 35 passage-level relevance judgments
+- 31 direct-evidence judgments at grade `2`
+- 4 supporting-context judgments at grade `1`
+- 11 multi-passage answerable queries
+- 2 heading-only evidence cases
+
+Accepted evaluation dataset SHA-256:
+
+- `retrieval-evaluation-v0.1.0.json`:
+  `135a29586cf86c3489038514a821198381d15eafb89345de31b4999ce1091d86`
+
+The dataset is bound to accepted passage artifact SHA-256:
+
+- `retrieval-passages.jsonl`:
+  `5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96`
+
+**Trade-offs:**
+
+The initial benchmark is intentionally small and cannot represent every possible
+question or relevance interpretation. Manual passage review takes more effort
+than automatically generated labels, and future passage changes will require a
+new dataset version or a deliberate evidence migration.
+
+Graded relevance introduces more judgment complexity than binary relevance, but
+it preserves the distinction between passages that directly answer a question
+and passages that only provide useful context.
+
+**How we will verify it:**
+
+- Validate the committed dataset against the source manifest and all accepted
+  passage records.
+- Recalculate and compare the passage-artifact SHA-256 during tests.
+- Require focused tests for every fail-closed schema rule.
+- Keep the default test suite offline and independent of API keys.
+- Use this unchanged dataset to compare BM25, dense, hybrid, and reranked
+  retrieval results.
+
+At acceptance:
+
+- 29 focused retrieval-evaluation tests pass.
+- 173 total tests pass.
+- Ruff reports no violations.
+- The committed dataset validates against all 707 accepted passages.
+
+**Date:**
+
+2026-07-20

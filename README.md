@@ -9,7 +9,8 @@ and evaluate each pipeline component.
 
 ## Status
 
-Phase 1 ingestion and retrieval-data preparation is complete.
+Phase 1 ingestion and retrieval-data preparation is complete. The initial
+retrieval-evaluation contract and reviewed benchmark are also complete.
 
 Completed:
 
@@ -24,14 +25,22 @@ Completed:
 - Persisted `retrieval_text` and source-derived `citation_text`
 - Character-level provenance for the 14 reviewed intra-line passage boundaries
 - Deterministic, non-overwriting artifact generation with regression tests
-- 144 passing tests
+- Strict retrieval-evaluation schema version `1.0`
+- Reviewed benchmark version `0.1.0` with 20 queries and 35 graded judgments
+- 16 answerable questions balanced across all four documents
+- 4 explicit abstention cases for unsupported or out-of-scope requests
+- 173 passing tests
 
 Current passage artifacts use schema version `1.1`. They contain retrieval and
 citation text with complete source provenance, but no embeddings or vector-index
 records.
 
-Next: define a versioned retrieval-evaluation contract before implementing
-BM25, dense-vector, hybrid retrieval, and reranking.
+The retrieval benchmark uses schema version `1.0` and dataset version `0.1.0`.
+It is bound to the accepted passage artifact and contains manually reviewed
+answerable and abstention cases.
+
+Next: implement and measure a deterministic BM25 baseline against the fixed
+retrieval benchmark before adding dense-vector, hybrid retrieval, or reranking.
 
 ## Responsible-use notice
 
