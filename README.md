@@ -26,18 +26,20 @@ Completed:
 - Character-level provenance for the 14 reviewed intra-line passage boundaries
 - Deterministic, non-overwriting artifact generation with regression tests
 - Strict retrieval-evaluation schema version `1.0`
-- Reviewed benchmark version `0.1.0` with 20 queries and 35 graded judgments
+- Reviewed benchmark version `0.1.1` with 20 queries and 36 graded judgments
+- Published benchmark version `0.1.0` retained byte-for-byte for reproducibility
 - 16 answerable questions balanced across all four documents
 - 4 explicit abstention cases for unsupported or out-of-scope requests
-- 173 passing tests
+- 174 passing tests
 
 Current passage artifacts use schema version `1.1`. They contain retrieval and
 citation text with complete source provenance, but no embeddings or vector-index
 records.
 
-The retrieval benchmark uses schema version `1.0` and dataset version `0.1.0`.
-It is bound to the accepted passage artifact and contains manually reviewed
-answerable and abstention cases.
+The retrieval benchmark uses schema version `1.0`. Dataset version `0.1.1` is
+the current benchmark and contains manually reviewed answerable and abstention
+cases bound to the accepted passage artifact. Published version `0.1.0` remains
+available unchanged so earlier measurements remain reproducible.
 
 Next: implement and measure a deterministic BM25 baseline against the fixed
 retrieval benchmark before adding dense-vector, hybrid retrieval, or reranking.

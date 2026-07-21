@@ -309,11 +309,21 @@ def test_rejects_corpus_version_mismatch() -> None:
         validate(dataset)
 
 ROOT = Path(__file__).resolve().parents[1]
-REPOSITORY_DATASET_PATH = (
-    ROOT
-    / "data"
-    / "evaluation"
+REPOSITORY_EVALUATION_DIR = ROOT / "data" / "evaluation"
+REPOSITORY_DATASET_V0_1_0_PATH = (
+    REPOSITORY_EVALUATION_DIR
     / "retrieval-evaluation-v0.1.0.json"
+)
+REPOSITORY_DATASET_PATH = (
+    REPOSITORY_EVALUATION_DIR
+    / "retrieval-evaluation-v0.1.1.json"
+)
+REPOSITORY_DATASET_PATHS = (
+    REPOSITORY_DATASET_V0_1_0_PATH,
+    REPOSITORY_DATASET_PATH,
+)
+REPOSITORY_DATASET_V0_1_0_SHA256 = (
+    "135a29586cf86c3489038514a821198381d15eafb89345de31b4999ce1091d86"
 )
 REPOSITORY_MANIFEST_PATH = ROOT / "data" / "source_manifest.json"
 REPOSITORY_PASSAGES_PATH = (
@@ -344,12 +354,14 @@ def load_jsonl(path: Path) -> tuple[dict, ...]:
     )
 
 
-def test_repository_retrieval_evaluation_dataset_validates() -> None:
-    dataset = json.loads(
-        REPOSITORY_DATASET_PATH.read_text(
-            encoding="utf-8"
-        )
+def test_published_repository_dataset_is_byte_stable() -> None:
+    assert (
+        sha256_file(REPOSITORY_DATASET_V0_1_0_PATH)
+        == REPOSITORY_DATASET_V0_1_0_SHA256
     )
+
+
+def test_repository_retrieval_evaluation_datasets_validate() -> None:
     repository_manifest = json.loads(
         REPOSITORY_MANIFEST_PATH.read_text(
             encoding="utf-8"
@@ -362,25 +374,38 @@ def test_repository_retrieval_evaluation_dataset_validates() -> None:
         REPOSITORY_PASSAGES_PATH
     )
 
-    validate_retrieval_evaluation_dataset(
-        dataset,
-        manifest=repository_manifest,
-        passage_records=repository_passages,
-        passage_artifact_sha256=passage_hash,
-    )
+    for dataset_path in REPOSITORY_DATASET_PATHS:
+        dataset = json.loads(
+            dataset_path.read_text(
+                encoding="utf-8"
+            )
+        )
 
+        validate_retrieval_evaluation_dataset(
+            dataset,
+            manifest=repository_manifest,
+            passage_records=repository_passages,
+            passage_artifact_sha256=passage_hash,
+        )
+
+    latest_dataset = json.loads(
+        REPOSITORY_DATASET_PATH.read_text(
+            encoding="utf-8"
+        )
+    )
     answer_queries = [
         query
-        for query in dataset["queries"]
+        for query in latest_dataset["queries"]
         if query["expected_behavior"] == "answer"
     ]
     abstain_queries = [
         query
-        for query in dataset["queries"]
+        for query in latest_dataset["queries"]
         if query["expected_behavior"] == "abstain"
     ]
 
-    assert dataset["query_count"] == 20
+    assert latest_dataset["dataset_version"] == "0.1.1"
+    assert latest_dataset["query_count"] == 20
     assert len(answer_queries) == 16
     assert len(abstain_queries) == 4
 
@@ -412,7 +437,7 @@ def test_repository_retrieval_evaluation_dataset_validates() -> None:
 
     assert grade_counts == {
         1: 4,
-        2: 31,
+        2: 32,
     }
 
     judgments_by_query = {
@@ -424,6 +449,7 @@ def test_repository_retrieval_evaluation_dataset_validates() -> None:
     }
 
     assert len(judgments_by_query["rmf-002"]) == 4
+    assert len(judgments_by_query["genai-001"]) == 3
     assert len(judgments_by_query["eu-003"]) == 4
 
 def test_rejects_unknown_top_level_field() -> None:

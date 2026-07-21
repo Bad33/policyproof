@@ -1984,3 +1984,135 @@ At acceptance:
 **Date:**
 
 2026-07-20
+---
+
+## PP-025: Correct benchmark evidence through an immutable patch version
+
+**Decision:**
+
+Retain the published retrieval-evaluation dataset version `0.1.0` byte-for-byte
+and issue corrected dataset version `0.1.1` for subsequent retrieval
+measurements.
+
+Validate every retained benchmark version in the repository while using the
+latest version for current metric assertions.
+
+**Context:**
+
+The first corpus-wide BM25 diagnostic retrieved an unjudged passage at rank one
+for query `genai-001`.
+
+Manual review confirmed that passage
+`candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008`
+directly:
+
+- defines confabulation as confidently presented erroneous or false content
+- describes output that diverges from prompts or prior statements
+- explains that confabulation follows from generative models predicting from
+  training-data distributions
+
+The passage therefore satisfies the benchmark's grade `2` definition for direct
+evidence. It was omitted from version `0.1.0` even though two neighboring
+passages from the same reviewed logical source were already judged relevant.
+
+Other weak-query results reviewed during the same audit were either contextual,
+references, neighboring legal provisions, or genuine BM25 ranking failures.
+They remain unjudged.
+
+**Options considered:**
+
+- Edit the published `0.1.0` file in place.
+- Ignore the omitted passage to avoid changing measured results.
+- Add the passage only to BM25-specific evaluation logic.
+- Create patch version `0.1.1` and retain `0.1.0` unchanged.
+- Replace all passage judgments with logical-source-level relevance.
+
+**Selected option:**
+
+Create `retrieval-evaluation-v0.1.1.json` from version `0.1.0` with exactly two
+semantic changes:
+
+- update `dataset_version` from `0.1.0` to `0.1.1`
+- add the reviewed `genai-001` passage as relevance grade `2`
+
+Keep version `0.1.0` at its accepted SHA-256 and add a regression test that
+fails if its bytes change.
+
+Repository tests validate both retained dataset versions against:
+
+- the corpus manifest
+- all 707 accepted passage records
+- passage schema version `1.1`
+- the accepted passage-artifact SHA-256
+
+Current benchmark balance and metric assertions use version `0.1.1`.
+
+**Measured result:**
+
+Version `0.1.1` contains:
+
+- 20 queries
+- 16 answerable queries
+- 4 required-abstention queries
+- 36 passage-level relevance judgments
+- 32 direct-evidence judgments at grade `2`
+- 4 supporting-context judgments at grade `1`
+- 3 direct-evidence passages for `genai-001`
+
+Dataset SHA-256 values:
+
+- immutable `retrieval-evaluation-v0.1.0.json`:
+  `135a29586cf86c3489038514a821198381d15eafb89345de31b4999ce1091d86`
+- current `retrieval-evaluation-v0.1.1.json`:
+  `42e7e0e1a824b1c48973bb2163aca7664d53161632fcd699068931cd9fe80a7c`
+
+The correction improved every tested corpus-wide tokenizer because the newly
+judged passage ranked first for all three variants. On version `0.1.1`, the
+simple punctuation-splitting lexical tokenizer produced:
+
+- mean Recall@10: `0.7760`
+- MRR@10: `0.7433`
+- direct-evidence hit rate@10: `0.9375`
+- mean nDCG@10: `0.6555`
+
+The same tokenizer remained stronger than the punctuation-preserving lexical
+variant and the BERT WordPiece variant on Recall@10, direct-evidence hit rate,
+and nDCG@10.
+
+**Trade-offs:**
+
+Discovering an omitted judgment while examining retrieval output creates a risk
+of post-hoc benchmark tuning. That risk is controlled by:
+
+- retaining the original dataset unchanged
+- recording the exact evidence-based correction
+- applying it independently of tokenizer or retriever
+- comparing all variants against both dataset versions
+- refusing to add other retrieved passages unless manual review establishes
+  direct or supporting relevance
+
+Keeping multiple benchmark versions adds maintenance and test cost, but it
+preserves reproducibility and makes benchmark evolution auditable.
+
+**How we will verify it:**
+
+- Assert the exact SHA-256 of published version `0.1.0`.
+- Validate all retained retrieval-evaluation files.
+- Assert that current version `0.1.1` has 36 judgments with grade distribution
+  `{1: 4, 2: 32}`.
+- Assert that `genai-001` has three reviewed judgments.
+- Use only version `0.1.1` for the production BM25 baseline.
+- Continue separating retrieval ranking metrics from later evidence-sufficiency
+  and abstention evaluation.
+
+At acceptance:
+
+- 30 focused retrieval-evaluation tests pass.
+- 174 total tests pass.
+- Ruff reports no violations.
+- Published version `0.1.0` retains its accepted SHA-256.
+- Both retained datasets validate against all 707 accepted passages.
+
+**Date:**
+
+2026-07-20
