@@ -1071,3 +1071,110 @@ retriever, not only against a lexical baseline. Candidate completeness and
 direct-evidence hits are necessary but insufficient; final selection must also
 consider complete reviewed-passage recall, reciprocal rank, nDCG, semantic
 review, reproducibility, and resistance to benchmark-specific tuning.
+
+## Random case-level splitting leaks evidence-sufficiency structure
+
+### Failure
+
+Treating the 39 evidence-sufficiency cases as independent rows would permit
+closely related cases to appear in different evaluation splits.
+
+The accepted dataset contains:
+
+- complete reference evidence sets
+- incomplete strict subsets of those reference sets
+- repeated source questions
+- repeated exact passages
+- separately segmented passages from one logical source
+
+A random case-level split could therefore place a complete evidence case in one
+split and its partial-evidence counterpart in another.
+
+A query-only split is also insufficient.
+
+The repository audit found that:
+
+- `abstain-004`
+- `gpt4o-003`
+
+have different source query IDs but share the exact accepted passage:
+
+`candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001`
+
+They also share the same `logical_source_key`.
+
+### Root cause
+
+Evidence-sufficiency cases are related through more than one identifier.
+
+Leakage can arise through:
+
+- shared question wording and requested answer structure
+- strict subset and superset evidence relationships
+- exact passage reuse
+- multiple passages segmented from one logical source
+- transitive combinations of those relationships
+
+Neither row identity nor query identity captures the full dependency graph.
+
+The 20 source-query groups therefore form only 19 independent leakage
+components.
+
+### Correction
+
+Construct a transitive component graph before assigning any split.
+
+Connect cases that share:
+
+- source query ID
+- exact evidence passage ID
+- accepted passage `logical_source_key`
+
+Assign complete components, never individual cases, to:
+
+- development
+- validation
+- test
+
+Do not connect all cases from the same document. Document-level grouping is
+unnecessarily coarse and would prevent future validation and test data from
+representing every source document.
+
+### Validation
+
+The accepted implementation verifies that:
+
+- every case appears in exactly one component
+- every case is assigned to exactly one split
+- no unknown case is assigned
+- no case remains unassigned
+- no component crosses split boundaries
+- reconstruction is invariant to case and passage input ordering
+- source case and passage records are not mutated
+- duplicate case and passage IDs are rejected
+- unknown evidence passage IDs are rejected
+- the manifest binds to the exact evidence dataset SHA-256
+- the component algorithm version is explicit and supported
+
+The published manifest records:
+
+- 39 development cases
+- 0 validation cases
+- 0 test cases
+- 19 leakage components
+- SHA-256
+  `314d5ca55a1d6557e8f711eea3506ce13a85d30f40e706ea27f0afb8226ff4b2`
+
+All existing cases remain development-only because they were inspected during
+schema, annotation, validator, and research-protocol development.
+
+### Lesson
+
+Evaluation splits must reflect the dependency structure of the benchmark, not
+only its row count.
+
+A balanced random split can appear statistically reasonable while leaking the
+same question, source evidence, or answer decomposition across partitions.
+
+When leakage isolation conflicts with ideal class balance, leakage isolation
+takes priority.

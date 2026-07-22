@@ -399,3 +399,168 @@ evaluated on held-out cases.
 
 The dataset must not be changed merely to improve a future policy's measured
 performance.
+
+## Leakage-safe split methodology
+
+Evidence-sufficiency cases must be split by leakage component rather than by
+individual case.
+
+Accepted split artifact:
+
+`data/evaluation/evidence-sufficiency-split-manifest-v0.1.0.json`
+
+Artifact properties:
+
+- schema version: `1.0`
+- manifest version: `0.1.0`
+- size: `2103` bytes
+- component algorithm version: `1.0.0`
+- component count: `19`
+- development cases: `39`
+- validation cases: `0`
+- test cases: `0`
+- SHA-256:
+  `314d5ca55a1d6557e8f711eea3506ce13a85d30f40e706ea27f0afb8226ff4b2`
+
+The manifest binds exactly to evidence dataset version `0.1.0` and its accepted
+SHA-256:
+
+`9ecd30e4ff829561b50d56bf4f1d3d44c79dcb043ec15661175842597d733a6a`
+
+### Leakage-component construction
+
+A case is connected to another case when they share at least one of:
+
+- source query ID
+- exact evidence passage ID
+- accepted passage `logical_source_key`
+
+Connectivity is transitive.
+
+For example, if:
+
+- case A shares a query with case B
+- case B shares a logical source with case C
+
+then A, B, and C form one indivisible component.
+
+This protects against leakage from:
+
+- repeated question wording
+- complete and strict-subset evidence pairs
+- an identical passage reused by different questions
+- separately segmented passages from one logical source
+- transitive combinations of those relationships
+
+Document identity alone does not connect cases. Grouping every case from one
+document would be unnecessarily coarse and would prevent future validation and
+test splits from representing all source documents.
+
+### Determinism
+
+Component construction is deterministic from:
+
+- stable case IDs
+- stable query IDs
+- stable passage IDs
+- stable logical-source keys
+- component algorithm version `1.0.0`
+
+Reversing the order of case records or passage records produces the same
+component records and ordering.
+
+Each component records sorted:
+
+- case IDs
+- query IDs
+- passage IDs
+- logical-source keys
+
+### Split-assignment validation
+
+A split manifest must contain exactly:
+
+- `development`
+- `validation`
+- `test`
+
+The validator requires:
+
+- every known case is assigned
+- every case is assigned exactly once
+- no unknown case is assigned
+- no duplicate case assignment exists
+- no leakage component crosses splits
+- declared case counts match the assignments
+- declared component count matches reconstruction
+- evidence dataset ID, version, and SHA-256 match
+- component algorithm version is supported
+- unknown manifest fields are rejected
+
+Validation and test arrays may be empty when no legitimately held-out cases
+exist.
+
+### Existing-dataset classification
+
+The accepted 39-case dataset forms:
+
+- 20 source-query groups
+- 19 leakage components
+
+The reduction from 20 query groups to 19 components occurs because
+`abstain-004` and `gpt4o-003` share both:
+
+- the same accepted GPT-4o passage
+- the same logical source
+
+These two queries cannot be assigned to different splits.
+
+All 39 existing cases are assigned to `development`.
+
+This is intentional because dataset version `0.1.0` was inspected during:
+
+- schema design
+- reason-code design
+- case-construction rule development
+- validator development
+- similarity diagnostics
+- research-protocol development
+
+The current manifest therefore does not support held-out performance claims.
+
+### Requirements for future validation and test data
+
+Validation and test splits must be populated only with new independently
+annotated query groups.
+
+Future cases must first undergo:
+
+1. annotation under the versioned guide
+2. independent second annotation
+3. disagreement measurement
+4. written adjudication
+5. leakage-component reconstruction
+6. deterministic component-level split assignment
+7. manifest validation
+8. immutable artifact publication
+
+Cases must not be moved individually to improve class balance or policy
+performance.
+
+When perfect stratification conflicts with leakage isolation, leakage isolation
+takes priority.
+
+### Current boundary
+
+The split infrastructure does not:
+
+- choose a sufficiency policy
+- choose a model
+- choose a prompt
+- set a threshold
+- generate predictions
+- calculate policy performance
+- manufacture held-out cases
+- convert development cases into test cases
+
+It establishes the data-governance boundary required before those activities.

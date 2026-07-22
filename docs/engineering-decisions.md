@@ -2942,3 +2942,164 @@ No runtime sufficiency policy or threshold has been selected.
 **Date:**
 
 2026-07-22
+
+## PP-031: Split evidence-sufficiency data by leakage component
+
+**Decision:**
+
+Build deterministic leakage components before assigning evidence-sufficiency
+cases to development, validation, or test splits.
+
+Accepted implementation:
+
+- `src/policyproof/evidence_sufficiency_splits.py`
+- `tests/test_evidence_sufficiency_splits.py`
+
+Accepted split artifact:
+
+- `data/evaluation/evidence-sufficiency-split-manifest-v0.1.0.json`
+- manifest schema version: `1.0`
+- manifest version: `0.1.0`
+- size: `2103` bytes
+- component algorithm version: `1.0.0`
+- component count: `19`
+- development cases: `39`
+- validation cases: `0`
+- test cases: `0`
+- SHA-256:
+  `314d5ca55a1d6557e8f711eea3506ce13a85d30f40e706ea27f0afb8226ff4b2`
+
+All cases in evidence dataset version `0.1.0` remain development-only.
+
+**Context:**
+
+The accepted evidence-sufficiency dataset contains 39 cases derived from 20
+source queries.
+
+Those cases are not independent:
+
+- complete and incomplete evidence cases often share one source question
+- different cases may reuse an exact accepted passage
+- separately segmented passages may originate from one logical source
+- those relationships may connect transitively
+
+A random case-level split would leak question wording, answer structure, strict
+subset relationships, or source evidence across splits.
+
+The repository audit found one cross-query dependency:
+
+- `abstain-004`
+- `gpt4o-003`
+
+They share the accepted passage:
+
+`candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001`
+
+They also share the passage's `logical_source_key`.
+
+Therefore, the 20 source-query groups form only 19 independent leakage
+components.
+
+**Component contract:**
+
+Two cases belong to the same component when they share at least one:
+
+- source query ID
+- exact evidence passage ID
+- accepted passage `logical_source_key`
+
+Connectivity is transitive.
+
+Document identity alone does not connect cases. Treating an entire document as
+one component would be unnecessarily coarse and would prevent future
+validation and test splits from representing all corpus documents.
+
+Each component contains sorted:
+
+- case IDs
+- query IDs
+- passage IDs
+- logical-source keys
+
+Component construction is deterministic across input ordering and does not
+mutate supplied records.
+
+**Validation contract:**
+
+Split assignments must contain exactly:
+
+- `development`
+- `validation`
+- `test`
+
+The validator rejects:
+
+- unknown split names
+- missing required split names
+- duplicate case assignments
+- unknown case IDs
+- unassigned case IDs
+- a leakage component crossing multiple splits
+- duplicate case IDs in component inputs
+- duplicate passage IDs
+- unknown evidence passage IDs
+- malformed case or passage identifiers
+- unsupported component algorithm versions
+- evidence dataset binding mismatches
+- incorrect component or split case counts
+- unknown manifest fields
+
+Validation and test splits may be empty when legitimately held-out cases do not
+yet exist.
+
+**Why all current cases remain development-only:**
+
+Dataset version `0.1.0` was inspected while developing:
+
+- the evidence schema
+- reason codes
+- case-construction rules
+- validators
+- similarity diagnostics
+- the research protocol
+- the annotation guide
+
+Moving those cases into validation or test would relabel inspected development
+data as held-out evidence without creating independence.
+
+The initial manifest therefore records the actual status of the data instead of
+manufacturing a train/validation/test partition.
+
+**Consequences:**
+
+- results on dataset version `0.1.0` remain benchmark-informed
+- no held-out policy-performance claim is permitted
+- future validation and test cases require new independently annotated query
+  groups
+- split assignment must operate on reconstructed components
+- leakage isolation takes priority over perfect class or document
+  stratification
+- changing component logic requires a new algorithm version
+- changing assignments requires a new immutable manifest version
+
+The split infrastructure does not select a runtime policy, model, prompt,
+threshold, or generator.
+
+**How we verified it:**
+
+- failing-first tests established the component, assignment, and manifest
+  contracts before implementation
+- focused tests cover shared-query, shared-passage, logical-source, and
+  transitive connectivity
+- input-order invariance is tested
+- source records are verified not to mutate
+- split assignments are tested for complete and unique case coverage
+- leakage-component crossing is rejected
+- manifest bindings and counts are fail-closed
+- the published manifest is locked by exact SHA-256
+- repository reconstruction confirms 39 cases, 20 queries, and 19 components
+- `abstain-004` and `gpt4o-003` are confirmed to remain in one component
+
+**Date:**
+
+2026-07-22

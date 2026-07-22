@@ -423,3 +423,164 @@ The following remain unimplemented and unmeasured:
 - generated grounded answers
 - generated informative abstentions
 - held-out sufficiency evaluation
+
+## Leakage-component and split-manifest result
+
+PolicyProof evaluated the dependency structure of the accepted
+evidence-sufficiency dataset before creating any validation or test partition.
+
+Accepted split artifact:
+
+`data/evaluation/evidence-sufficiency-split-manifest-v0.1.0.json`
+
+Artifact properties:
+
+- schema version: `1.0`
+- manifest version: `0.1.0`
+- component algorithm version: `1.0.0`
+- size: `2103` bytes
+- SHA-256:
+  `314d5ca55a1d6557e8f711eea3506ce13a85d30f40e706ea27f0afb8226ff4b2`
+
+### Component reconstruction
+
+The accepted evidence dataset contains:
+
+- `39` cases
+- `20` source-query groups
+- `19` leakage components
+
+Component-size distribution:
+
+| Component size in cases | Number of components |
+| ---: | ---: |
+| `1` | `8` |
+| `2` | `2` |
+| `3` | `9` |
+
+Therefore:
+
+- `11` components contain more than one case
+- `1` component contains more than one source-query ID
+- every case belongs to exactly one component
+
+The multi-case components are expected because complete reference cases and
+their incomplete strict subsets share the same question, passages, or logical
+source.
+
+### Cross-query dependency
+
+One component joins two otherwise distinct source-query groups:
+
+- `abstain-004`
+- `gpt4o-003`
+
+The cases are:
+
+- `abstain-004-dense-top5`
+- `gpt4o-003-complete-reference`
+
+They share the exact accepted passage:
+
+`candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001`
+
+They also share the logical source:
+
+`candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035`
+
+A query-only grouping rule would have incorrectly treated these groups as
+independent.
+
+### Development-only assignment
+
+All accepted cases are assigned to:
+
+`development`
+
+Split counts are:
+
+| Split | Cases |
+| --- | ---: |
+| development | `39` |
+| validation | `0` |
+| test | `0` |
+
+This is not a failed attempt to create balanced splits.
+
+It is the correct classification of the current data because dataset version
+`0.1.0` was inspected while developing:
+
+- the evidence schema
+- evidence-case construction rules
+- reason codes
+- dataset validators
+- similarity diagnostics
+- the research protocol
+- the annotation guide
+- leakage-component rules
+
+Assigning any current case to validation or test would not make that case
+unseen.
+
+### Determinism result
+
+Component reconstruction was repeated with:
+
+- original case and passage order
+- reversed case and passage order
+
+Both executions produced identical component records and ordering.
+
+The implementation also preserved the supplied case and passage records without
+mutation.
+
+### Validation result
+
+The split contract rejects:
+
+- incomplete split-name sets
+- unknown split names
+- duplicate case assignments
+- unknown cases
+- unassigned cases
+- components spanning multiple splits
+- duplicate case or passage identifiers
+- unknown evidence passages
+- malformed required identifiers
+- unsupported algorithm versions
+- evidence dataset binding mismatches
+- incorrect component counts
+- incorrect split case counts
+- unknown manifest fields
+
+The published manifest is locked by an exact repository SHA-256 test.
+
+### Interpretation
+
+The result demonstrates that evidence-sufficiency cases cannot safely be split
+as independent rows.
+
+Question identity alone is also insufficient because exact evidence reuse can
+connect different query groups.
+
+The required split unit is the transitive leakage component over:
+
+- source query ID
+- evidence passage ID
+- logical source key
+
+The current result is data-governance infrastructure, not evidence-sufficiency
+policy performance.
+
+It reports no:
+
+- classifier accuracy
+- unsafe-answer rate
+- abstention precision
+- answer coverage
+- calibration
+- model comparison
+- held-out result
+
+Those measurements remain blocked until new independently annotated validation
+and test components exist.

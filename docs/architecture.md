@@ -428,6 +428,88 @@ or hidden evaluation metadata is used to construct retrieval candidates.
 No runtime classifier, threshold, prompt-based judge, language-model evaluator,
 grounded generator, or abstention response generator has been selected.
 
+## Leakage-safe evaluation splits
+
+PolicyProof now implements deterministic leakage-component construction and
+split-manifest validation for evidence-sufficiency evaluation.
+
+Implemented components:
+
+- `src/policyproof/evidence_sufficiency_splits.py`
+- `tests/test_evidence_sufficiency_splits.py`
+- `data/evaluation/evidence-sufficiency-split-manifest-v0.1.0.json`
+
+Cases are connected into one leakage component when they share:
+
+- a source query ID
+- an exact evidence passage ID
+- an accepted passage `logical_source_key`
+
+The component relation is transitive. If one case shares a query with a second
+case and the second shares evidence with a third case, all three remain in one
+component.
+
+The implementation deliberately does not connect all passages from the same
+document. Document-level grouping would be unnecessarily coarse and would
+prevent meaningful document representation across future splits.
+
+Component construction is:
+
+- deterministic across case and passage input order
+- non-mutating
+- fail-closed for duplicate case or passage IDs
+- fail-closed for unknown evidence passage IDs
+- fail-closed for missing or malformed query, case, passage, or logical-source
+  identifiers
+
+Split assignments must contain exactly:
+
+- `development`
+- `validation`
+- `test`
+
+Every accepted case must be assigned exactly once. A complete leakage component
+cannot span more than one split.
+
+The first published split manifest binds to evidence dataset version `0.1.0`:
+
+- manifest schema version: `1.0`
+- manifest version: `0.1.0`
+- size: `2103` bytes
+- component algorithm version: `1.0.0`
+- component count: `19`
+- development cases: `39`
+- validation cases: `0`
+- test cases: `0`
+- SHA-256:
+  `314d5ca55a1d6557e8f711eea3506ce13a85d30f40e706ea27f0afb8226ff4b2`
+
+The 39 development cases originate from 20 source queries but form only 19
+independent leakage components.
+
+One component crosses source-query IDs:
+
+- `abstain-004`
+- `gpt4o-003`
+
+Those queries share the accepted passage:
+
+`candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001`
+
+They also share its `logical_source_key`. They therefore must remain in the same
+split.
+
+All existing cases are intentionally assigned to development because dataset
+version `0.1.0` was inspected while the evidence schema, reason codes,
+construction rules, and validators were designed.
+
+The split manifest does not manufacture validation or test data. New
+independently annotated query groups are required before those splits can be
+populated.
+
+No runtime evidence-sufficiency policy has been selected or evaluated by this
+split infrastructure.
+
 ## Deferred production stages
 
 Runtime evidence-sufficiency policy, abstention execution, grounded answer
