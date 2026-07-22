@@ -956,3 +956,118 @@ When retrievers have complementary failure modes, a candidate union can retain
 their combined evidence coverage while avoiding a premature ranking rule that
 damages the stronger retriever. Final ordering should be evaluated separately
 with a model designed for query-passage relevance scoring.
+
+## The pinned cross-encoder underperforms the dense ranking
+
+### Failure
+
+The pinned `cross-encoder/ms-marco-MiniLM-L6-v2` model was evaluated over the
+complete accepted hybrid candidate union. Although it improves substantially
+over BM25 and retrieves direct evidence within the first ten results for every
+answerable query, it does not improve the accepted dense ranking.
+
+The reranker records:
+
+- mean Recall@10: `0.9270833333333334`
+- MRR@10: `0.825`
+- direct-evidence hit rate@10: `1.0`
+- mean nDCG@10: `0.7892557931490553`
+
+The accepted dense ranking records:
+
+- mean Recall@10: `0.96875`
+- MRR@10: `0.90625`
+- direct-evidence hit rate@10: `1.0`
+- mean nDCG@10: `0.8866302400292934`
+
+The reranker has partial Recall@10 for:
+
+- `rmf-002`: `0.5`
+- `rmf-004`: `0.6666666666666666`
+- `genai-003`: `0.6666666666666666`
+
+It also places the principal judged evidence relatively late for `genai-002`,
+`genai-003`, and `eu-002`.
+
+### Root cause
+
+The failure is not missing candidate evidence. The accepted top-20 BM25 plus
+top-20 dense union contains every reviewed passage for every answerable query.
+
+The failure is also not caused by truncation, automatic model substitution,
+runtime nondeterminism, score normalization, hidden scope filtering, or loss of
+source-rank provenance:
+
+- all `501` query-candidate pairs fit within `512` tokens
+- the maximum pair length is `467`
+- the exact model asset is hash verified
+- inference is CPU-only and byte reproducible
+- raw logits are ranked directly
+- every hybrid candidate is preserved
+
+The cross-encoder instead shows a relevance-granularity mismatch.
+
+Examples include:
+
+- ranking a short exact control above longer passages containing the requested
+  practices
+- ranking general conceptual discussion above document-specific evaluation
+  actions
+- preferring passages that mention Article 6 high-risk systems over the passage
+  that states the complete classification rule
+- ranking relevant but incomplete or duplicate controls above complementary
+  evidence needed for multi-part answers
+
+Sparse judgments also affect the measured result. Some unjudged passages are
+clearly relevant, especially detailed GenAI Profile controls ranked above
+judged AI RMF passages. This explains some metric penalties but does not explain
+away the genuine ordering failures found in manual review.
+
+### Correction
+
+Do not:
+
+- replace the accepted dense ranking with this reranker
+- tune the model or query text on the current 20-query benchmark
+- add query-specific boosts
+- filter by benchmark `document_scope`
+- alter accepted passage boundaries
+- change judgments merely to improve the reranker score
+- combine dense similarity and raw cross-encoder logits without a separately
+  justified and evaluated contract
+
+Publish the exact reranker output as a baseline and retain dense retrieval as
+the selected ranking.
+
+Evaluate future reranker candidates on additional held-out queries before making
+a new production-selection decision.
+
+### Validation
+
+The published reranker artifact is:
+
+- `data/results/reranker-baseline-v0.1.0.json`
+- size: `222296` bytes
+- SHA-256:
+  `3c7e49f121422d3200822cdb328b349de28a2de3fcbd510f11ce43dc56611d8e`
+
+Two real-model executions regenerated the artifact byte-for-byte.
+
+Manual review covered all 16 answerable queries and confirmed:
+
+- the candidate union is complete
+- source-rank provenance is preserved
+- no reviewed evidence is removed before reranking
+- some high-ranked unjudged passages are genuinely relevant
+- genuine ordering weaknesses remain for document-specific and multi-part
+  policy questions
+
+### Lesson
+
+A later and more specialized model stage is not necessarily a better ranking.
+
+Cross-encoder evaluation must be compared against the strongest accepted
+retriever, not only against a lexical baseline. Candidate completeness and
+direct-evidence hits are necessary but insufficient; final selection must also
+consider complete reviewed-passage recall, reciprocal rank, nDCG, semantic
+review, reproducibility, and resistance to benchmark-specific tuning.

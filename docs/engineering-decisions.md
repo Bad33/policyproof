@@ -2599,3 +2599,189 @@ Persisted embeddings remain a separate future decision.
 **Date:**
 
 2026-07-22
+
+## PP-029: Accept the pinned cross-encoder as a baseline, not the selected ranking
+
+**Decision:**
+
+Evaluate and publish a deterministic cross-encoder baseline over the accepted
+hybrid candidate union, but retain the accepted dense retriever as the selected
+final retrieval ranking for the current corpus and benchmark.
+
+**Context:**
+
+PP-028 established a top-20 BM25 plus top-20 dense candidate union with complete
+coverage of all reviewed grade-`1` and grade-`2` passages. The union averages
+`31.3125` candidates per answerable query and deliberately assigns no fused score
+or final rank.
+
+The next question was whether a model designed for query-passage relevance
+scoring could order that bounded candidate set better than the accepted dense
+retriever.
+
+The evaluated model is:
+
+- model: `cross-encoder/ms-marco-MiniLM-L6-v2`
+- revision: `c5ee24cb16019beea0893ab7796b1df96625c6b8`
+- file: `onnx/model.onnx`
+- size: `91011230` bytes
+- SHA-256:
+  `5d3e70fd0c9ff14b9b5169a51e957b7a9c74897afd0a35ce4bd318150c1d4d4a`
+- license: `apache-2.0`
+
+The implementation uses direct ONNX Runtime CPU inference with no PyTorch,
+Transformers, Sentence Transformers, automatic model download, committed model
+binary, query instruction, passage instruction, score normalization, or
+benchmark-specific boosting.
+
+Pairs are encoded as:
+
+`[CLS] query [SEP] passage [SEP]`
+
+All `501` accepted query-candidate pairs fit the `512`-token model limit. The
+maximum observed pair length is `467` tokens, so the accepted run performs no
+truncation. The production contract rejects overlength pairs rather than
+silently modifying them.
+
+**Options considered:**
+
+- Replace dense retrieval with the cross-encoder ranking if its metrics improve.
+- Tune the model, query wording, candidate depth, or ranking rule on the current
+  20-query benchmark.
+- Combine dense scores and cross-encoder logits.
+- Publish the cross-encoder result as a measured baseline while retaining dense
+  retrieval as the selected ranking.
+
+**Selected option:**
+
+Publish the exact cross-encoder result as a reproducible baseline, but do not
+replace the accepted dense ranking.
+
+Do not tune the reranker against the current benchmark. Treat the current result
+as benchmark evaluation evidence and preserve its limitations for future
+out-of-sample comparison.
+
+**Measured result:**
+
+The accepted reranker baseline records:
+
+- mean candidate count: `31.3125`
+- mean Recall@1: `0.4375`
+- mean Recall@3: `0.65625`
+- mean Recall@5: `0.828125`
+- mean Recall@10: `0.9270833333333334`
+- MRR@10: `0.825`
+- direct-evidence hit rate@10: `1.0`
+- mean nDCG@10: `0.7892557931490553`
+
+Compared with BM25, the reranker improves every accepted ranking metric:
+
+- mean Recall@10: `+0.1510416667`
+- MRR@10: `+0.0816964286`
+- direct-evidence hit rate@10: `+0.0625`
+- mean nDCG@10: `+0.1337401575`
+
+Compared with the accepted dense baseline, the reranker is weaker:
+
+- mean Recall@1: `-0.0208333333`
+- mean Recall@3: `-0.2239583333`
+- mean Recall@5: `-0.0520833333`
+- mean Recall@10: `-0.0416666667`
+- MRR@10: `-0.08125`
+- direct-evidence hit rate@10: equal at `1.0`
+- mean nDCG@10: `-0.0973744469`
+
+The reranker has partial Recall@10 for:
+
+- `rmf-002`: `0.5`
+- `rmf-004`: `0.6666666666666666`
+- `genai-003`: `0.6666666666666666`
+
+The accepted dense ranking has mean Recall@10 of `0.96875`, MRR@10 of `0.90625`,
+and mean nDCG@10 of `0.8866302400292934`. It therefore remains the stronger
+ranking on the fixed benchmark.
+
+Accepted result artifact:
+
+- `data/results/reranker-baseline-v0.1.0.json`
+- size: `222296` bytes
+- SHA-256:
+  `3c7e49f121422d3200822cdb328b349de28a2de3fcbd510f11ce43dc56611d8e`
+
+**Manual review:**
+
+Manual inspection covered all 16 answerable queries, with deeper review of nine
+queries whose reviewed evidence was not fully concentrated in the first three
+positions.
+
+The review found a mixture of:
+
+- genuine cross-encoder ordering weaknesses
+- incomplete judgments for relevant GenAI Profile passages
+- duplicate or near-duplicate controls across the AI RMF and GenAI Profile
+- broad questions whose evidence spans several accepted passage segments
+- exact control text that is relevant but not itself sufficient to answer the
+  complete question
+
+Examples:
+
+- `rmf-004` ranks two unjudged GenAI Profile passages at positions two and three;
+  both contain the exact GOVERN 6.1 control plus detailed third-party practices.
+- `genai-004` ranks the exact but short AI RMF MANAGE 3.2 control first, ahead of
+  the two judged GenAI Profile passages that contain the requested practices.
+- `genai-002` ranks general AI RMF bias discussion above the GenAI-specific
+  evaluation actions.
+- `genai-003` and `eu-002` show genuine failures to prioritize the most complete
+  judged answer passages.
+
+These observations do not justify altering judgments or tuning the model during
+this phase. They are retained as benchmark and model limitations.
+
+**Why:**
+
+A cross-encoder is not automatically superior to a strong dense retriever. This
+model was trained for passage ranking, but its learned relevance preferences do
+not consistently match the multi-passage completeness and policy-specific
+granularity measured by the PolicyProof benchmark.
+
+Publishing the result preserves useful negative evidence. Retaining dense
+retrieval avoids replacing a stronger accepted ranking merely because the new
+stage is architecturally more sophisticated.
+
+**Trade-offs:**
+
+The current production selection does not use the hybrid candidate union or
+cross-encoder scores for final ordering. The reranker code and artifact remain
+valuable for reproducibility, later model comparisons, and evaluation on a
+larger held-out benchmark.
+
+The 20-query benchmark is small, and candidate depth 20 was selected after
+benchmark diagnostics. Neither the dense result nor the reranker comparison
+should be presented as a general claim across policy corpora.
+
+The current judgments are intentionally sparse rather than exhaustive. Metrics
+can penalize unjudged but relevant passages, although the manually identified
+genuine ordering failures remain sufficient to reject this reranker as the
+selected ranking.
+
+**How we verified it:**
+
+- Failing-first tests cover the model contract, exact asset verification, pair
+  encoding, overlength rejection, session validation, deterministic inference,
+  candidate-only scoring, source-rank preservation, evaluation, serialization,
+  CLI orchestration, atomic publication, and immutable result bindings.
+- The real model asset was verified by exact size and SHA-256 before inference.
+- Two complete executions produced byte-identical `222296`-byte artifacts with
+  identical SHA-256 values.
+- All 501 candidates were preserved exactly across reranking.
+- Every score is finite and ordered by raw logit descending, accepted passage
+  order, then passage ID.
+- Aggregate metrics were independently recalculated from per-query records.
+- The result contains no benchmark `document_scope`, evaluation tags, relevance
+  judgments, or model binary.
+- Manual semantic review covered all answerable queries.
+- The published artifact is locked by dedicated repository-result tests.
+
+**Date:**
+
+2026-07-22

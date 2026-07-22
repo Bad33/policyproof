@@ -10,8 +10,8 @@ and evaluate each pipeline component.
 ## Status
 
 Phase 1 ingestion and retrieval-data preparation is complete. The retrieval-
-evaluation foundation, deterministic BM25 and dense rankings, and hybrid candidate-
-generation baseline are also complete.
+evaluation foundation, deterministic BM25 and dense rankings, hybrid candidate
+generation, and pinned cross-encoder baseline are also complete.
 
 Completed:
 
@@ -37,10 +37,13 @@ Completed:
 - Hash-verified external model asset with no automatic runtime download
 - Versioned dense result artifact with byte-identical regeneration tests
 - Explicit rejection of equal-weight reciprocal-rank fusion as a final ranking
-- Deterministic top-20 BM25+dense candidate union for later reranking
+- Deterministic top-20 BM25+dense candidate union for bounded reranking
 - Versioned hybrid candidate-coverage artifact with immutable regression tests
+- Pinned MiniLM cross-encoder through deterministic direct CPU ONNX inference
+- Versioned reranker result with byte-identical regeneration and manual review
+- Dense retrieval retained as the selected ranking after reranker comparison
 - Offline regression coverage for corpus, benchmark, metrics, and result bindings
-- 351 passing tests
+- 429 passing tests
 
 Current passage artifacts use schema version `1.1`. They contain retrieval and
 citation text with complete source provenance. Dense embeddings are calculated
@@ -72,8 +75,17 @@ with mean candidate count `31.3125`. Candidate depth 20 was selected after
 diagnostics on the fixed benchmark, so this coverage result is benchmark-informed
 and is not an out-of-sample generalization claim.
 
-Next: evaluate the pinned cross-encoder reranker over the accepted hybrid
-candidate union. Generation, API, and UI remain later phases.
+The accepted reranker result is
+`data/results/reranker-baseline-v0.1.0.json`. It uses the pinned
+`cross-encoder/ms-marco-MiniLM-L6-v2` ONNX model to score only the accepted
+hybrid candidate union. It records mean Recall@10 of `0.9271`, MRR@10 of
+`0.8250`, direct-evidence hit rate@10 of `1.0000`, and mean nDCG@10 of
+`0.7893`. The result is byte reproducible and improves over BM25, but it trails
+the accepted dense baseline. Dense retrieval therefore remains the selected
+ranking; the cross-encoder is retained as a reproducible comparison baseline.
+
+Next: close the retrieval phase with final audits and staged-change review.
+Generation, API, and UI remain later phases.
 
 ## Responsible-use notice
 
