@@ -2116,3 +2116,131 @@ At acceptance:
 **Date:**
 
 2026-07-20
+
+---
+
+## PP-026: Establish a deterministic corpus-wide BM25 baseline
+
+**Decision:**
+
+Implement the first production retrieval baseline as inspectable plain-Python
+BM25 over all 707 accepted passages, evaluate it only against answerable queries
+in benchmark `v0.1.1`, and publish a versioned non-overwriting result artifact.
+
+**Context:**
+
+PolicyProof needs a reproducible lexical baseline before dense retrieval,
+hybrid retrieval, reranking, generation, API, or UI work can be evaluated.
+Benchmark `document_scope` cannot be used as a production candidate filter
+because it is gold metadata unavailable for ordinary user queries.
+
+The earlier tokenizer diagnostic selected simple punctuation-splitting lexical
+terms, but its query-term deduplication and ranking behavior had not yet been
+promoted into an explicit tested production contract.
+
+**Options considered:**
+
+- Add `rank_bm25` or another retrieval dependency.
+- Reuse the BERT WordPiece token-budget tokenizer for BM25.
+- Restrict candidates with benchmark document scope.
+- Tune BM25 parameters on the 20-query benchmark.
+- Implement plain-Python corpus-wide BM25 with a fixed lexical contract.
+
+**Selected option:**
+
+Use plain Python with:
+
+- Unicode NFKC normalization
+- lowercase text
+- terms matching `[a-z0-9]+`
+- punctuation, apostrophes, and hyphens as term boundaries
+- query terms deduplicated in first-seen order
+- ordinary passage term frequency
+- `k1 = 1.2`
+- `b = 0.75`
+- IDF `log(1 + (N - df + 0.5) / (df + 0.5))`
+- descending score followed by accepted passage order and passage ID
+- all 707 passages as production candidates
+
+Query-term frequency is intentionally ignored. Repeating a term in a natural-
+language question should not silently increase its importance, and preserving
+the exploratory behavior avoids an unreviewed contract change.
+
+Evaluate Recall@1, Recall@3, Recall@5, Recall@10, MRR@10,
+direct-evidence hit rate@10, and graded nDCG@10 across only the 16 answerable
+queries. Keep the four abstention cases for a later evidence-sufficiency phase.
+
+**Measured result:**
+
+The accepted corpus-wide result contains:
+
+- 707 candidate passages
+- 16 answerable queries
+- 4 excluded abstention queries
+- mean Recall@1: `0.3125000000`
+- mean Recall@3: `0.6041666667`
+- mean Recall@5: `0.6822916667`
+- mean Recall@10: `0.7760416667`
+- MRR@10: `0.7433035714`
+- direct-evidence hit rate@10: `0.9375000000`
+- mean nDCG@10: `0.6555156356`
+
+The production implementation reproduces all four previously recorded rounded
+exploratory metrics.
+
+Accepted result artifact:
+
+- `data/results/bm25-baseline-v0.1.0.json`
+- SHA-256:
+  `5609b146b0901fc84851789d3b6c2799ec6aad0545e33b9c80afaa29c9d80003`
+
+The result binds benchmark `v0.1.1`, its SHA-256, passage schema `1.1`, the
+accepted passage SHA-256, the corpus identity and version, tokenizer behavior,
+actual BM25 parameters, candidate scope, and deterministic tie-breaking.
+
+A weak-query audit found six answerable queries below perfect Recall@10.
+`eu-002` is the only complete top-10 miss and remains weak even under a
+diagnostic EU-only ranking, identifying a within-document lexical limitation.
+No new benchmark correction was established.
+
+**Trade-offs:**
+
+The simple lexical tokenizer is transparent and dependency-free but cannot
+reliably connect paraphrases, legal references, and semantically related terms.
+Multi-passage questions can have strong first-hit performance while retaining
+incomplete Recall@10.
+
+Ignoring query-term frequency simplifies the contract but prevents deliberate
+repeated-term weighting. Fixed parameters provide a fair baseline rather than
+benchmark-optimized performance.
+
+Persisting top-10 scores and accepted-order positions enlarges the result
+artifact, but makes ranking and tie-breaking auditable.
+
+**How we will verify it:**
+
+- Unit-test normalization, punctuation splitting, BM25 scoring, query-term
+  deduplication, tie-breaking, and fail-closed inputs.
+- Unit-test Recall, reciprocal rank, direct-evidence hit rate, and graded nDCG.
+- Validate the benchmark before evaluation.
+- Assert exact repository input hashes and aggregate metrics.
+- Refuse result overwrite and publish through an atomic writer.
+- Assert the exact accepted result SHA-256.
+- Regenerate the result byte-for-byte in repository tests.
+- Keep document-scoped retrieval diagnostic-only.
+- Preserve all published benchmark versions unchanged.
+
+At acceptance:
+
+- 30 focused BM25 tests cover scoring, metrics, evaluation, serialization,
+  orchestration, CLI behavior, and repository result reproducibility.
+- The complete offline project suite passes with 204 tests.
+- The accepted result regenerates byte-for-byte with SHA-256
+  `5609b146b0901fc84851789d3b6c2799ec6aad0545e33b9c80afaa29c9d80003`.
+
+Ruff reports no violations, final diff checks pass, and staged manual review
+found no blocking issues.
+
+**Date:**
+
+2026-07-21

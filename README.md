@@ -9,8 +9,8 @@ and evaluate each pipeline component.
 
 ## Status
 
-Phase 1 ingestion and retrieval-data preparation is complete. The initial
-retrieval-evaluation contract and reviewed benchmark are also complete.
+Phase 1 ingestion and retrieval-data preparation is complete. The retrieval-
+evaluation foundation and deterministic BM25 lexical baseline are also complete.
 
 Completed:
 
@@ -30,7 +30,10 @@ Completed:
 - Published benchmark version `0.1.0` retained byte-for-byte for reproducibility
 - 16 answerable questions balanced across all four documents
 - 4 explicit abstention cases for unsupported or out-of-scope requests
-- 174 passing tests
+- Plain-Python corpus-wide BM25 implementation with deterministic tie-breaking
+- Versioned BM25 result artifact with byte-identical regeneration tests
+- Offline regression coverage for corpus, benchmark, metrics, and result bindings
+- 204 passing tests
 
 Current passage artifacts use schema version `1.1`. They contain retrieval and
 citation text with complete source provenance, but no embeddings or vector-index
@@ -41,8 +44,14 @@ the current benchmark and contains manually reviewed answerable and abstention
 cases bound to the accepted passage artifact. Published version `0.1.0` remains
 available unchanged so earlier measurements remain reproducible.
 
-Next: implement and measure a deterministic BM25 baseline against the fixed
-retrieval benchmark before adding dense-vector, hybrid retrieval, or reranking.
+The accepted BM25 result is `data/results/bm25-baseline-v0.1.0.json`. It searches
+all 707 passages without using benchmark document scope and records mean
+Recall@10 of `0.7760`, MRR@10 of `0.7433`, direct-evidence hit rate@10 of
+`0.9375`, and mean nDCG@10 of `0.6555`.
+
+Next: build a dense-retrieval baseline against the same fixed corpus and
+benchmark. Hybrid retrieval, reranking, generation, API, and UI remain later
+phases.
 
 ## Responsible-use notice
 

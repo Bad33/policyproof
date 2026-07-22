@@ -733,3 +733,65 @@ being counted is also governed.
 Retrieval context and citation evidence should be persisted separately when one
 contains normalized labels that are useful for indexing but are not extracted
 body evidence.
+
+## BM25 misses Article 6 classification evidence
+
+### Failure
+
+For query `eu-002` — “When is an AI system classified as high-risk under
+Article 6 of the EU AI Act?” — the corpus-wide BM25 baseline retrieves no
+grade-`2` evidence in the first 10 results.
+
+The two reviewed passages rank:
+
+- passage 1: corpus rank 62, diagnostic EU-only rank 47
+- passage 2: corpus rank 25, diagnostic EU-only rank 24
+
+### Root cause
+
+The query contains frequent legal and corpus terms such as `AI`, `system`,
+`high-risk`, and `Article`. Other EU provisions contain denser combinations of
+those terms, including Articles 25, 71, and 80.
+
+The exact Article 6 evidence is therefore outranked even when candidates are
+restricted diagnostically to the EU AI Act. The problem is not primarily
+cross-document competition or an omitted benchmark judgment. It is a
+within-document lexical-ranking limitation.
+
+BM25 does not infer that “classified as high-risk under Article 6” specifically
+targets the Article 6 classification rule rather than other provisions that
+repeatedly discuss high-risk systems.
+
+### Correction
+
+Do not alter the benchmark, filter production candidates with gold
+`document_scope`, tune BM25 parameters on this query, or add query-specific
+rules.
+
+Retain the failure as an accepted lexical-baseline limitation. Later dense,
+hybrid, and reranked systems must be compared against the same fixed benchmark
+and corpus-wide candidate set.
+
+### Validation
+
+The weak-query audit found:
+
+- corpus Recall@10: `0.0`
+- corpus reciprocal rank@10: `0.0`
+- corpus direct-evidence hit@10: false
+- corpus nDCG@10: `0.0`
+- best gold corpus rank: 25
+- best gold diagnostic EU-only rank: 24
+
+Five additional weak queries retain at least one direct-evidence hit in the
+first 10 and represent partial-recall or graded-ordering weaknesses rather than
+complete retrieval failure.
+
+### Lesson
+
+Document filtering cannot repair every lexical failure. A lexical retriever can
+rank neighboring or downstream legal provisions above the governing provision
+even when all candidates come from the correct document.
+
+Baseline failures should remain visible rather than being hidden through gold
+metadata, benchmark-specific tuning, or post-hoc relevance expansion.

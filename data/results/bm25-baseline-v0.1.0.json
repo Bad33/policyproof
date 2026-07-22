@@ -1,0 +1,1457 @@
+{
+  "schema_version": "1.0",
+  "result_id": "policyproof-bm25-baseline",
+  "result_version": "0.1.0",
+  "bindings": {
+    "benchmark": {
+      "dataset_id": "policyproof-retrieval-evaluation",
+      "schema_version": "1.0",
+      "dataset_version": "0.1.1",
+      "sha256": "42e7e0e1a824b1c48973bb2163aca7664d53161632fcd699068931cd9fe80a7c"
+    },
+    "corpus": {
+      "corpus_id": "policyproof-initial-corpus",
+      "corpus_version": "0.1.0"
+    },
+    "passages": {
+      "schema_version": "1.1",
+      "sha256": "5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96",
+      "count": 707
+    }
+  },
+  "retriever": {
+    "implementation": "plain_python_bm25",
+    "candidate_scope": "all_passages",
+    "parameters": {
+      "k1": 1.2,
+      "b": 0.75
+    },
+    "tokenizer": {
+      "normalization": "NFKC",
+      "lowercase": true,
+      "term_pattern": "[a-z0-9]+",
+      "punctuation_behavior": "term_boundary",
+      "query_term_frequency": "ignored",
+      "query_term_order": "first_seen"
+    },
+    "tie_break_order": [
+      "score_descending",
+      "accepted_passage_order",
+      "passage_id"
+    ]
+  },
+  "evaluation": {
+    "answer_query_count": 16,
+    "abstention_query_count": 4,
+    "abstention_queries_in_ranking_metrics": false,
+    "cutoffs": [
+      1,
+      3,
+      5,
+      10
+    ],
+    "aggregate_metrics": {
+      "mean_recall_at_1": 0.3125,
+      "mean_recall_at_3": 0.6041666666666666,
+      "mean_recall_at_5": 0.6822916666666666,
+      "mean_recall_at_10": 0.7760416666666666,
+      "mrr_at_10": 0.7433035714285714,
+      "direct_evidence_hit_rate_at_10": 0.9375,
+      "mean_ndcg_at_10": 0.6555156356384406
+    },
+    "query_results": [
+      {
+        "query_id": "rmf-001",
+        "question": "Which characteristics does the NIST AI RMF associate with trustworthy AI?",
+        "ranked_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-008",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-007",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0025:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0033:line-0008:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0014:line-0010:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-001"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004",
+            "score": 16.590224250271735,
+            "accepted_order": 3
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-008",
+            "score": 15.179781058231193,
+            "accepted_order": 223
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-007",
+            "score": 13.763903210201597,
+            "accepted_order": 222
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0025:line-0003:passage-002",
+            "score": 13.546490148129992,
+            "accepted_order": 31
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+            "score": 13.331496599329673,
+            "accepted_order": 122
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+            "score": 11.931095589317277,
+            "accepted_order": 121
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0033:line-0008:passage-002",
+            "score": 11.866601524636797,
+            "accepted_order": 72
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-002",
+            "score": 11.81763813905794,
+            "accepted_order": 113
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0014:line-0010:passage-001",
+            "score": 11.516397797457294,
+            "accepted_order": 14
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-001",
+            "score": 11.361165646227462,
+            "accepted_order": 16
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.5,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.5,
+          "recall_at_10": 1.0,
+          "reciprocal_rank_at_10": 1.0,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.5142469300368734
+        }
+      },
+      {
+        "query_id": "rmf-002",
+        "question": "How does organizational risk tolerance affect AI risk-management priorities?",
+        "ranked_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0002:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0042:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0007:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0019:line-0033:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0018:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0036:line-0003:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0013:line-0023:passage-001"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0002:passage-001",
+            "score": 19.57992423234606,
+            "accepted_order": 10
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+            "score": 16.098847317421832,
+            "accepted_order": 107
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+            "score": 15.26617105527022,
+            "accepted_order": 120
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0042:passage-001",
+            "score": 14.165839791825743,
+            "accepted_order": 37
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-001",
+            "score": 13.725837484098204,
+            "accepted_order": 32
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0007:passage-001",
+            "score": 12.044842807906203,
+            "accepted_order": 39
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0019:line-0033:passage-001",
+            "score": 11.820511170795545,
+            "accepted_order": 148
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0018:passage-001",
+            "score": 10.91508798802986,
+            "accepted_order": 64
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0036:line-0003:passage-002",
+            "score": 10.64074317344124,
+            "accepted_order": 181
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0013:line-0023:passage-001",
+            "score": 10.190279999841257,
+            "accepted_order": 13
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.25,
+          "recall_at_5": 0.25,
+          "recall_at_10": 0.25,
+          "reciprocal_rank_at_10": 1.0,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.4396592698888862
+        }
+      },
+      {
+        "query_id": "rmf-003",
+        "question": "What does GOVERN 1.1 require concerning legal and regulatory requirements involving AI?",
+        "ranked_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0034:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0017:line-0019:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0090:line-0003:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0120:line-0014:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-139:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0049:line-0031:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0009:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-005"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0034:passage-001",
+            "score": 22.484727146945144,
+            "accepted_order": 34
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0017:line-0019:passage-001",
+            "score": 17.78539771728134,
+            "accepted_order": 144
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0090:line-0003:passage-002",
+            "score": 12.401942248112672,
+            "accepted_order": 541
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-002",
+            "score": 11.268882870472385,
+            "accepted_order": 33
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+            "score": 10.031107605167264,
+            "accepted_order": 107
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0120:line-0014:passage-002",
+            "score": 9.964276430694605,
+            "accepted_order": 614
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-139:passage-002",
+            "score": 9.870511613330503,
+            "accepted_order": 389
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0049:line-0031:passage-001",
+            "score": 9.776732699478845,
+            "accepted_order": 204
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0009:passage-001",
+            "score": 9.66002118283459,
+            "accepted_order": 40
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-005",
+            "score": 9.644308883171549,
+            "accepted_order": 452
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0,
+          "reciprocal_rank_at_10": 1.0,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 1.0
+        }
+      },
+      {
+        "query_id": "rmf-004",
+        "question": "How should organizations address AI risks associated with third-party entities?",
+        "ranked_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0034:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0023:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0023:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0040:line-0002:passage-004",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0030:line-0003:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0010:line-0008:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-003",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-001"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0034:passage-001",
+            "score": 25.6582161345535,
+            "accepted_order": 51
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0023:passage-002",
+            "score": 23.166360819104533,
+            "accepted_order": 159
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0023:passage-001",
+            "score": 22.59164926739731,
+            "accepted_order": 158
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0040:line-0002:passage-004",
+            "score": 20.126479375258818,
+            "accepted_order": 111
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003",
+            "score": 18.329662701121844,
+            "accepted_order": 114
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-002",
+            "score": 16.435059236048613,
+            "accepted_order": 161
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0030:line-0003:passage-002",
+            "score": 16.001300245768654,
+            "accepted_order": 170
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0010:line-0008:passage-001",
+            "score": 15.561413312466938,
+            "accepted_order": 8
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-003",
+            "score": 15.0501542319919,
+            "accepted_order": 207
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-001",
+            "score": 14.988179905940086,
+            "accepted_order": 160
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.3333333333333333,
+          "recall_at_3": 0.3333333333333333,
+          "recall_at_5": 0.6666666666666666,
+          "recall_at_10": 0.6666666666666666,
+          "reciprocal_rank_at_10": 1.0,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.6361599521541359
+        }
+      },
+      {
+        "query_id": "genai-001",
+        "question": "What is confabulation, and why is it risky in generative AI systems?",
+        "ranked_passage_ids": [
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0035:line-0014:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0021:line-0024:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-004",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-006",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-011",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-016",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0057:line-0016:passage-003"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+            "score": 13.412335664110833,
+            "accepted_order": 130
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0035:line-0014:passage-001",
+            "score": 10.77259439051369,
+            "accepted_order": 179
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0021:line-0024:passage-001",
+            "score": 10.73728131652489,
+            "accepted_order": 25
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-004",
+            "score": 9.109861263519218,
+            "accepted_order": 219
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+            "score": 8.86600468481096,
+            "accepted_order": 134
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-006",
+            "score": 8.58739953551752,
+            "accepted_order": 128
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-011",
+            "score": 7.587728072388438,
+            "accepted_order": 226
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+            "score": 7.237180170340292,
+            "accepted_order": 675
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-016",
+            "score": 7.157932145398363,
+            "accepted_order": 138
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0057:line-0016:passage-003",
+            "score": 6.847465292622987,
+            "accepted_order": 463
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.3333333333333333,
+          "recall_at_3": 0.3333333333333333,
+          "recall_at_5": 0.3333333333333333,
+          "recall_at_10": 0.3333333333333333,
+          "reciprocal_rank_at_10": 1.0,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.4692787260227565
+        }
+      },
+      {
+        "query_id": "genai-002",
+        "question": "What fairness and bias evaluations does the NIST Generative AI Profile recommend?",
+        "ranked_passage_ids": [
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-007",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0028:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0028:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0011:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0035:line-0021:passage-001"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-007",
+            "score": 17.305221445927828,
+            "accepted_order": 222
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+            "score": 15.301293927680703,
+            "accepted_order": 121
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+            "score": 13.994249508840007,
+            "accepted_order": 122
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0028:passage-002",
+            "score": 12.75413732400904,
+            "accepted_order": 28
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+            "score": 12.160106554047898,
+            "accepted_order": 120
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0028:passage-001",
+            "score": 10.847655258586334,
+            "accepted_order": 27
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-001",
+            "score": 10.479374617383876,
+            "accepted_order": 187
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+            "score": 10.267786911509551,
+            "accepted_order": 659
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0011:passage-001",
+            "score": 10.22746875308636,
+            "accepted_order": 26
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0035:line-0021:passage-001",
+            "score": 10.09576673424066,
+            "accepted_order": 86
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.0,
+          "recall_at_10": 0.5,
+          "reciprocal_rank_at_10": 0.14285714285714285,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.20438239758848614
+        }
+      },
+      {
+        "query_id": "genai-003",
+        "question": "What content-provenance measures are discussed for generative AI outputs?",
+        "ranked_passage_ids": [
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0021:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0037:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-009",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-008",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0032:line-0021:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0057:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-010"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+            "score": 12.856416290169737,
+            "accepted_order": 130
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0021:passage-001",
+            "score": 12.661684470945062,
+            "accepted_order": 195
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0037:line-0003:passage-001",
+            "score": 12.304040157544197,
+            "accepted_order": 182
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-009",
+            "score": 11.97522511292178,
+            "accepted_order": 213
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-008",
+            "score": 11.909855190705784,
+            "accepted_order": 212
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0032:line-0021:passage-001",
+            "score": 11.888334048438372,
+            "accepted_order": 174
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-002",
+            "score": 11.141407464786523,
+            "accepted_order": 206
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002",
+            "score": 11.089504344816401,
+            "accepted_order": 201
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0057:passage-001",
+            "score": 10.444164012953355,
+            "accepted_order": 682
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-010",
+            "score": 10.384072696384738,
+            "accepted_order": 214
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.6666666666666666,
+          "recall_at_10": 0.6666666666666666,
+          "reciprocal_rank_at_10": 0.25,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.4547902722234161
+        }
+      },
+      {
+        "query_id": "genai-004",
+        "question": "What practices are listed under MANAGE 3.2 for monitoring pre-trained models used in development?",
+        "ranked_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0059:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0130:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-019",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0059:passage-001",
+            "score": 27.958584194009546,
+            "accepted_order": 104
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001",
+            "score": 24.02667814152735,
+            "accepted_order": 200
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002",
+            "score": 23.936940563007227,
+            "accepted_order": 201
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-002",
+            "score": 16.98108738066024,
+            "accepted_order": 656
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+            "score": 13.707415332375193,
+            "accepted_order": 134
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-001",
+            "score": 13.377130539762254,
+            "accepted_order": 112
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0130:line-0003:passage-002",
+            "score": 13.364276750202908,
+            "accepted_order": 633
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+            "score": 12.724436268895467,
+            "accepted_order": 130
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-019",
+            "score": 12.000236709143575,
+            "accepted_order": 141
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+            "score": 11.94684090486749,
+            "accepted_order": 121
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0,
+          "reciprocal_rank_at_10": 0.5,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.6934264036172708
+        }
+      },
+      {
+        "query_id": "eu-001",
+        "question": "What manipulative techniques are prohibited by Article 5(1)(a), and when does the prohibition apply?",
+        "ranked_passage_ids": [
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-029:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-029:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0108:line-0024:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-067:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0106:line-0034:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-028:passage-001"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-029:passage-001",
+            "score": 18.705666121982453,
+            "accepted_order": 265
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-001",
+            "score": 16.027766954614147,
+            "accepted_order": 448
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-002",
+            "score": 14.50885381810705,
+            "accepted_order": 449
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-029:passage-002",
+            "score": 13.697011898307288,
+            "accepted_order": 266
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0108:line-0024:passage-001",
+            "score": 13.17439495206378,
+            "accepted_order": 582
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+            "score": 13.079180450035842,
+            "accepted_order": 437
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-067:passage-001",
+            "score": 12.8997795990748,
+            "accepted_order": 311
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-002",
+            "score": 12.749960462400324,
+            "accepted_order": 436
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0106:line-0034:passage-002",
+            "score": 11.79016684303281,
+            "accepted_order": 578
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-028:passage-001",
+            "score": 11.714774022279451,
+            "accepted_order": 264
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0,
+          "reciprocal_rank_at_10": 0.5,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.6309297535714574
+        }
+      },
+      {
+        "query_id": "eu-002",
+        "question": "When is an AI system classified as high-risk under Article 6 of the EU AI Act?",
+        "ranked_passage_ids": [
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0107:line-0044:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0100:line-0026:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0136:line-0003:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0056:line-0011:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0062:line-0005:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-077:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-054:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0102:line-0041:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0102:line-0041:passage-002"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0107:line-0044:passage-001",
+            "score": 17.824352572570962,
+            "accepted_order": 580
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0100:line-0026:passage-001",
+            "score": 15.508829221949963,
+            "accepted_order": 563
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-001",
+            "score": 15.062335693727986,
+            "accepted_order": 485
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0136:line-0003:passage-003",
+            "score": 14.881944807442782,
+            "accepted_order": 644
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0056:line-0011:passage-002",
+            "score": 14.435048428109045,
+            "accepted_order": 460
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0062:line-0005:passage-001",
+            "score": 14.40137648040072,
+            "accepted_order": 472
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-077:passage-001",
+            "score": 14.331779509719297,
+            "accepted_order": 322
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-054:passage-001",
+            "score": 14.228604548971518,
+            "accepted_order": 293
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0102:line-0041:passage-003",
+            "score": 14.216698530583644,
+            "accepted_order": 570
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0102:line-0041:passage-002",
+            "score": 14.098673582080048,
+            "accepted_order": 569
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.0,
+          "recall_at_10": 0.0,
+          "reciprocal_rank_at_10": 0.0,
+          "direct_evidence_hit_at_10": false,
+          "ndcg_at_10": 0.0
+        }
+      },
+      {
+        "query_id": "eu-003",
+        "question": "What obligations does Article 26 impose on deployers of high-risk AI systems?",
+        "ranked_passage_ids": [
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-004",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0018:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-026:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0136:line-0003:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0059:line-0018:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0092:line-0014:passage-001"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-001",
+            "score": 16.258378069164202,
+            "accepted_order": 487
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-002",
+            "score": 16.211391495150973,
+            "accepted_order": 488
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-004",
+            "score": 15.766667809670722,
+            "accepted_order": 490
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0018:passage-002",
+            "score": 15.579092034692065,
+            "accepted_order": 602
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-003",
+            "score": 15.281702167194108,
+            "accepted_order": 489
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+            "score": 13.511253589210126,
+            "accepted_order": 437
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-026:passage-001",
+            "score": 13.03945350102825,
+            "accepted_order": 261
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0136:line-0003:passage-003",
+            "score": 12.301175699398708,
+            "accepted_order": 644
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0059:line-0018:passage-001",
+            "score": 11.83461890958811,
+            "accepted_order": 466
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0092:line-0014:passage-001",
+            "score": 11.361928370518193,
+            "accepted_order": 545
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.25,
+          "recall_at_3": 0.75,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0,
+          "reciprocal_rank_at_10": 1.0,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.9828920819566878
+        }
+      },
+      {
+        "query_id": "eu-004",
+        "question": "What transparency obligations does Article 50 impose for certain AI systems and generated content?",
+        "ranked_passage_ids": [
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-136:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0018:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-026:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-135:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-120:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-134:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-002",
+            "score": 23.08010645358741,
+            "accepted_order": 524
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-003",
+            "score": 20.209052485302717,
+            "accepted_order": 525
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-001",
+            "score": 16.28647260103979,
+            "accepted_order": 523
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-136:passage-001",
+            "score": 14.90420386698463,
+            "accepted_order": 385
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0018:passage-002",
+            "score": 14.697778765138729,
+            "accepted_order": 602
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-026:passage-001",
+            "score": 14.205344632138226,
+            "accepted_order": 261
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-135:passage-001",
+            "score": 14.132791591272964,
+            "accepted_order": 384
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-120:passage-001",
+            "score": 13.089560641846697,
+            "accepted_order": 368
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-134:passage-001",
+            "score": 12.801186010409587,
+            "accepted_order": 383
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+            "score": 12.393127463607868,
+            "accepted_order": 437
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.3333333333333333,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0,
+          "reciprocal_rank_at_10": 1.0,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 1.0
+        }
+      },
+      {
+        "query_id": "gpt4o-001",
+        "question": "What risks does unauthorized voice generation create, and how does GPT-4o mitigate them?",
+        "ranked_passage_ids": [
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001:passage-001"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001",
+            "score": 30.65626347762578,
+            "accepted_order": 664
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-002",
+            "score": 23.782269698413547,
+            "accepted_order": 665
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+            "score": 20.490851044071125,
+            "accepted_order": 663
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001",
+            "score": 17.01616024287116,
+            "accepted_order": 705
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001",
+            "score": 16.388861590074153,
+            "accepted_order": 666
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-002",
+            "score": 16.021078025379634,
+            "accepted_order": 672
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+            "score": 14.831926886167912,
+            "accepted_order": 676
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+            "score": 14.559068613748885,
+            "accepted_order": 655
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-001",
+            "score": 14.41764110778572,
+            "accepted_order": 662
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001:passage-001",
+            "score": 14.164137542787104,
+            "accepted_order": 668
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.5,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0,
+          "reciprocal_rank_at_10": 1.0,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 1.0
+        }
+      },
+      {
+        "query_id": "gpt4o-002",
+        "question": "What risks and safeguards does the GPT-4o System Card describe for speaker identification?",
+        "ranked_passage_ids": [
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0031:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-009",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0025:line-0007:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+            "score": 24.71968171056866,
+            "accepted_order": 663
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001",
+            "score": 24.202304141026353,
+            "accepted_order": 666
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0031:passage-001",
+            "score": 22.565683952517755,
+            "accepted_order": 670
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001:passage-001",
+            "score": 18.137631315913403,
+            "accepted_order": 668
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001",
+            "score": 16.699014343275245,
+            "accepted_order": 664
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-009",
+            "score": 16.015048942538172,
+            "accepted_order": 224
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+            "score": 15.269012278961597,
+            "accepted_order": 654
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0025:line-0007:passage-001",
+            "score": 14.913043738564953,
+            "accepted_order": 692
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+            "score": 14.221525172514683,
+            "accepted_order": 657
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001",
+            "score": 14.127378896519067,
+            "accepted_order": 705
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0,
+          "reciprocal_rank_at_10": 0.5,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.6309297535714574
+        }
+      },
+      {
+        "query_id": "gpt4o-003",
+        "question": "Which risk categories were evaluated under the Preparedness Framework for GPT-4o?",
+        "ranked_passage_ids": [
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0013:line-0010:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0029:line-0001:passage-001"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+            "score": 31.7038329470964,
+            "accepted_order": 673
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+            "score": 24.371504943182956,
+            "accepted_order": 676
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+            "score": 23.744684116157458,
+            "accepted_order": 657
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+            "score": 23.42002988407212,
+            "accepted_order": 675
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0013:line-0010:passage-001",
+            "score": 22.234888341536223,
+            "accepted_order": 674
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+            "score": 21.10085597926884,
+            "accepted_order": 677
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+            "score": 20.91236682909298,
+            "accepted_order": 654
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+            "score": 16.31865187293947,
+            "accepted_order": 655
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+            "score": 16.045252109616094,
+            "accepted_order": 663
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0029:line-0001:passage-001",
+            "score": 14.70179747086485,
+            "accepted_order": 693
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0,
+          "reciprocal_rank_at_10": 1.0,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 1.0
+        }
+      },
+      {
+        "query_id": "gpt4o-004",
+        "question": "How was external red teaming organized and used to evaluate GPT-4o?",
+        "ranked_passage_ids": [
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0022:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-006",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0013:passage-001"
+        ],
+        "ranked_results": [
+          {
+            "rank": 1,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-001",
+            "score": 25.33972249475886,
+            "accepted_order": 658
+          },
+          {
+            "rank": 2,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+            "score": 22.25837506695278,
+            "accepted_order": 657
+          },
+          {
+            "rank": 3,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0022:line-0001:passage-001",
+            "score": 21.05355421595175,
+            "accepted_order": 688
+          },
+          {
+            "rank": 4,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-001",
+            "score": 19.46989615766487,
+            "accepted_order": 671
+          },
+          {
+            "rank": 5,
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-006",
+            "score": 19.151009293131512,
+            "accepted_order": 210
+          },
+          {
+            "rank": 6,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+            "score": 18.921445901532824,
+            "accepted_order": 659
+          },
+          {
+            "rank": 7,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-001",
+            "score": 15.92945691540645,
+            "accepted_order": 660
+          },
+          {
+            "rank": 8,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+            "score": 15.683673159047295,
+            "accepted_order": 673
+          },
+          {
+            "rank": 9,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+            "score": 14.55553934924686,
+            "accepted_order": 663
+          },
+          {
+            "rank": 10,
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0013:passage-001",
+            "score": 14.44776895493742,
+            "accepted_order": 669
+          }
+        ],
+        "metrics": {
+          "recall_at_1": 0.5,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.5,
+          "recall_at_10": 1.0,
+          "reciprocal_rank_at_10": 1.0,
+          "direct_evidence_hit_at_10": true,
+          "ndcg_at_10": 0.8315546295836226
+        }
+      }
+    ]
+  }
+}
