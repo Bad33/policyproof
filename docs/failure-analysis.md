@@ -795,3 +795,87 @@ even when all candidates come from the correct document.
 
 Baseline failures should remain visible rather than being hidden through gold
 metadata, benchmark-specific tuning, or post-hoc relevance expansion.
+
+## Dense retrieval retains two partial-recall cases
+
+### Failure
+
+The accepted dense baseline achieves mean Recall@10 of `0.96875`, but two of
+the 16 answerable queries retrieve only three of four reviewed passages in the
+first ten.
+
+For `rmf-002` — “How does organizational risk tolerance affect AI
+risk-management priorities?” — the dense top ten contains:
+
+- all three grade-`2` passages
+- no grade-`1` GOVERN 1.3 supporting passage
+
+For `eu-003` — “What obligations does Article 26 impose on deployers of
+high-risk AI systems?” — the dense top ten contains:
+
+- the instructions, oversight, and input-data segment
+- the monitoring, incident-reporting, and log-retention segment
+- the police-file documentation and reporting segment
+- no specialized post-remote-biometric-identification segment
+
+Both queries therefore have Recall@10 of `0.75`.
+
+### Root cause
+
+The `rmf-002` miss is a supporting-context ranking issue rather than a missing
+direct answer. The three grade-`2` passages that define risk tolerance and
+connect assessed risk to prioritization all rank in the first ten. The missed
+grade-`1` GOVERN passage expresses a narrower management requirement and is
+outscored by other semantically related RMF and GenAI passages.
+
+The `eu-003` question asks broadly about Article 26 obligations, while the
+article spans four accepted passage segments. The missed segment concerns a
+specialized conditional use case: post-remote biometric identification. Dense
+similarity ranks the three generally applicable deployer-obligation segments
+above that narrower segment and also ranks nearby recitals and provisions in
+the top ten.
+
+These are not truncation, passage-boundary, model-interface, or cross-document
+candidate-filter failures. All input passages satisfy the accepted token
+contract, and both queries retrieve direct evidence at rank one.
+
+### Correction
+
+Do not:
+
+- alter benchmark judgments
+- use benchmark `document_scope` as a production filter
+- add query-specific boosting
+- increase the top-ten evaluation cutoff
+- merge accepted passage segments
+- tune the model or query instruction on these two examples
+
+Retain both cases as visible dense-baseline limitations. Evaluate whether
+deterministic hybrid retrieval or later reranking improves complete
+multi-passage coverage against the same fixed benchmark.
+
+### Validation
+
+The accepted dense baseline records:
+
+- `rmf-002` Recall@10: `0.75`
+- `rmf-002` reciprocal rank@10: `1.0`
+- `rmf-002` direct-evidence hit@10: true
+- `eu-003` Recall@10: `0.75`
+- `eu-003` reciprocal rank@10: `1.0`
+- `eu-003` direct-evidence hit@10: true
+- 14 other answerable queries with Recall@10 of `1.0`
+- direct-evidence hit rate@10 of `1.0`
+
+Manual review found no omitted benchmark evidence. A second full dense
+execution regenerated the accepted result byte-for-byte.
+
+### Lesson
+
+Strong first-hit accuracy does not guarantee complete evidence coverage for
+multi-passage questions.
+
+Semantic retrieval can prioritize the central or generally applicable parts of
+a policy provision while ranking narrower supporting or conditional passages
+below the cutoff. Hybrid retrieval and reranking should therefore be evaluated
+for both first-hit quality and complete reviewed-passage recall.

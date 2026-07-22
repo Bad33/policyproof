@@ -2244,3 +2244,208 @@ found no blocking issues.
 **Date:**
 
 2026-07-21
+---
+
+## PP-027: Establish a pinned corpus-wide dense retrieval baseline
+
+**Decision:**
+
+Implement the first production dense baseline with the pinned
+`BAAI/bge-small-en-v1.5` ONNX model over all 707 accepted passages.
+
+Use direct CPU inference through `onnxruntime==1.27.0` and
+`numpy==2.5.1`, rather than adding PyTorch, Transformers, or
+Sentence-Transformers.
+
+Require an explicit local ONNX model path. Validate the model file by exact
+size and SHA-256 before session creation, apply the model's retrieval
+instruction only to queries, use CLS pooling, L2-normalize all embeddings, and
+rank with normalized dot product.
+
+Evaluate only answerable queries from benchmark `v0.1.1`, while recording all
+four abstention cases outside ranking metrics. Publish a versioned,
+non-overwriting result artifact.
+
+**Context:**
+
+The accepted BM25 baseline established a reproducible lexical reference, but it
+cannot reliably connect paraphrases, related legal concepts, and semantically
+equivalent wording.
+
+The reviewed dense-model candidate from PP-020 is:
+
+- model: `BAAI/bge-small-en-v1.5`
+- revision:
+  `5c38ec7c405ec4b44b94cc5a9bb96e735b38267a`
+- ONNX file: `onnx/model.onnx`
+- size: `133093490` bytes
+- SHA-256:
+  `828e1496d7fabb79cfa4dcd84fa38625c0d3d21da474a00f08db0f559940cf35`
+- embedding dimension: `384`
+- maximum sequence length: `512`
+- license: MIT
+
+A binary-only dependency audit found:
+
+- direct ONNX Runtime: 5 packages
+- PyTorch plus Transformers: 34 packages
+- Sentence-Transformers: 40 packages
+
+The direct ONNX route can consume the already pinned PolicyProof tokenizer
+without introducing model-loading frameworks, runtime network access, or
+additional tokenization behavior.
+
+**Options considered:**
+
+- Use Sentence-Transformers and its full dependency stack.
+- Use PyTorch, Transformers, and Safetensors directly.
+- Use ONNX Runtime with automatic model downloading.
+- Commit the approximately 133 MB model binary to the repository.
+- Use direct ONNX Runtime with an explicit local, hash-verified model asset.
+- Restrict candidates using benchmark `document_scope`.
+- Tune the embedding model or query instruction on the 20-query benchmark.
+
+**Selected option:**
+
+Use direct ONNX Runtime with:
+
+- `onnxruntime==1.27.0`
+- `numpy==2.5.1`
+- `CPUExecutionProvider` only
+- the exact three-input ONNX interface:
+  - `input_ids`
+  - `attention_mask`
+  - `token_type_ids`
+- output `last_hidden_state`
+- CLS pooling from token position zero
+- 384-dimensional float32 embeddings
+- L2 normalization
+- normalized dot-product similarity
+- query instruction:
+  `Represent this sentence for searching relevant passages: `
+- no passage instruction
+- no truncation
+- bounded passage batches, with accepted baseline batch size `32`
+- full-corpus candidate scope
+- deterministic tie-breaking by:
+  1. score descending
+  2. accepted passage order
+  3. passage ID
+
+The model binary is not committed. Production execution requires an explicit
+local path to the exact pinned asset. Default tests remain offline and use
+controlled fake sessions or the committed result artifact.
+
+**Measured result:**
+
+The accepted dense baseline searched all 707 passages and evaluated:
+
+- 16 answerable queries
+- 4 abstention queries excluded from ranking metrics
+
+Aggregate metrics:
+
+- mean Recall@1: `0.4583333333333333`
+- mean Recall@3: `0.8802083333333334`
+- mean Recall@5: `0.8802083333333334`
+- mean Recall@10: `0.96875`
+- MRR@10: `0.90625`
+- direct-evidence hit rate@10: `1.0`
+- mean nDCG@10: `0.8866302400292934`
+
+Compared with the accepted BM25 baseline, dense retrieval improved:
+
+- mean Recall@10 by `0.1927083333333334`
+- MRR@10 by `0.1629464285714286`
+- direct-evidence hit rate@10 by `0.0625`
+- mean nDCG@10 by `0.2311146043908528`
+
+Fourteen of sixteen answerable queries achieved complete Recall@10. The two
+partial-recall queries were:
+
+- `rmf-002`: Recall@10 `0.75`
+  - all three grade-2 passages were retrieved
+  - one grade-1 GOVERN 1.3 supporting passage was outside the top ten
+- `eu-003`: Recall@10 `0.75`
+  - three of four grade-2 Article 26 passage segments were retrieved
+  - the specialized post-remote-biometric-identification segment was outside
+    the top ten
+
+All sixteen answerable queries retrieved direct evidence within the top ten.
+No benchmark correction was established by the miss audit.
+
+Accepted result artifact:
+
+- `data/results/dense-baseline-v0.1.0.json`
+- size: `68170` bytes
+- SHA-256:
+  `fd6477ba09c8d9a4a3d36eeeaa2455882a90fd26fb0a9f82f3363c16189f6c5d`
+
+A second complete execution using the same model, corpus, benchmark, and batch
+size regenerated the artifact byte-for-byte with the same SHA-256.
+
+**Why:**
+
+Direct ONNX inference keeps the production dependency and implementation
+surface small while preserving the exact reviewed model behavior.
+
+Hash and size validation make the external model asset fail closed. Requiring
+an explicit path prevents ordinary library imports, tests, or CLI discovery
+from silently downloading a model.
+
+Using the accepted persisted `retrieval_text` avoids downstream
+rematerialization differences. Applying the instruction only to queries follows
+the model's retrieval contract, while CLS pooling and L2 normalization reproduce
+the reviewed model configuration.
+
+Full-corpus ranking preserves realistic production behavior and prevents gold
+benchmark metadata from influencing candidates.
+
+**Trade-offs:**
+
+The 133 MB model remains an external local prerequisite and must be obtained
+separately before a real dense-baseline execution.
+
+CPU inference is slower than BM25. The accepted run took approximately 57
+seconds on the reviewed Apple Silicon development machine.
+
+Exact runtime pins improve reproducibility but require deliberate dependency
+updates for new Python, NumPy, or ONNX Runtime releases.
+
+The current implementation rebuilds passage embeddings for each complete
+baseline run. Persisted embedding or vector-index artifacts remain a later
+decision and must bind to the exact passage, tokenizer, and model contracts.
+
+The initial benchmark is small. Strong results establish a baseline but do not
+justify model tuning or broad claims about unseen queries.
+
+**How we verified it:**
+
+- A binary-only dependency audit confirmed Python 3.12 Apple Silicon wheels.
+- The exact ONNX asset size and SHA-256 were measured.
+- The ONNX graph exposes the expected three inputs and one
+  384-dimensional hidden-state output.
+- Repeated CPU inference was byte-identical.
+- Embeddings remained stable across batching, padding, and input order.
+- All 707 passages fit the accepted 445-token budget.
+- All instructed benchmark queries fit the 64-token reservation.
+- Failing-first tests cover:
+  - model and runtime contracts
+  - asset integrity
+  - session interfaces
+  - input preparation
+  - CLS pooling and normalization
+  - bounded passage batching
+  - similarity ranking and tie-breaking
+  - benchmark evaluation
+  - result serialization
+  - orchestration
+  - immutable repository-result bindings
+- The result regenerated byte-for-byte.
+- The two partial-recall cases were manually audited.
+- The complete offline project suite passes with 291 tests.
+- Ruff, dependency checks, and `git diff --check` pass.
+
+**Date:**
+
+2026-07-22

@@ -7,8 +7,8 @@ corpus contains 707 passages from four documents.
 
 Benchmark `document_scope` is manually reviewed evaluation metadata. It is not
 available to an ordinary production query and is therefore never used to filter
-production BM25 candidates. Document-scoped rankings may be calculated only as
-explicitly labeled diagnostics.
+production retrieval candidates. Document-scoped rankings may be calculated
+only as explicitly labeled diagnostics.
 
 Passage-ranking metrics use the 16 queries whose `expected_behavior` is
 `answer`. The four required-abstention queries are excluded because passage
@@ -32,6 +32,39 @@ The deterministic BM25 baseline:
 
 Parameters are an explicit baseline contract. They were not tuned on the
 20-query benchmark.
+
+## Dense embedding contract
+
+The deterministic dense baseline uses:
+
+- model `BAAI/bge-small-en-v1.5`
+- revision
+  `5c38ec7c405ec4b44b94cc5a9bb96e735b38267a`
+- model file `onnx/model.onnx`
+- model SHA-256
+  `828e1496d7fabb79cfa4dcd84fa38625c0d3d21da474a00f08db0f559940cf35`
+- `onnxruntime==1.27.0`
+- `numpy==2.5.1`
+- `CPUExecutionProvider` only
+- the packaged PolicyProof BERT WordPiece tokenizer
+- query instruction
+  `Represent this sentence for searching relevant passages: `
+- no passage instruction
+- no truncation
+- CLS pooling
+- L2-normalized 384-dimensional embeddings
+- normalized dot-product similarity
+- accepted passage batch size `32`
+- descending score order
+- equal-score resolution by accepted passage order and then passage ID
+
+The model asset is supplied through an explicit local path and validated by
+exact byte size and SHA-256 before session creation. PolicyProof does not
+download the model automatically or commit the model binary.
+
+The model, instruction, pooling, normalization, runtime versions, provider,
+batch size, and ranking behavior are fixed baseline contracts. They were not
+tuned on the 20-query benchmark.
 
 ## Ranking metrics
 
@@ -71,14 +104,16 @@ Result artifacts bind:
 - benchmark identity, schema version, dataset version, and SHA-256
 - corpus identity and version
 - passage schema version, count, and SHA-256
-- BM25 parameters
-- lexical-tokenizer behavior
+- retriever-specific tokenizer or model identity
+- retriever-specific parameters, runtime, pooling, normalization, and similarity
 - candidate scope and deterministic tie-breaking
 - aggregate and per-query metrics
 - top-10 passage IDs, scores, ranks, and accepted-order positions
 
 Result publication is atomic and non-overwriting. Repository regression tests
-require byte-identical regeneration.
+lock exact accepted hashes. Baseline acceptance also requires a separate
+byte-identical regeneration audit. Dense repository tests remain offline and do
+not require the external model binary.
 
 Retrieved but unjudged passages are not automatically benchmark errors. Any
 benchmark correction requires independent manual evidence review, a new
