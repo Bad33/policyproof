@@ -66,6 +66,39 @@ The model, instruction, pooling, normalization, runtime versions, provider,
 batch size, and ranking behavior are fixed baseline contracts. They were not
 tuned on the 20-query benchmark.
 
+## Hybrid candidate-generation contract
+
+The hybrid stage does not combine BM25 and dense scores into a final ranking.
+It independently retrieves the top 20 passages from each full-corpus retriever,
+deduplicates the two sets by passage ID, and records:
+
+- accepted passage order
+- BM25 source rank when present
+- dense source rank when present
+
+Candidate records are serialized in accepted passage order followed by passage
+ID. That order is deterministic storage order, not relevance order. The stage
+does not emit a fused score, reciprocal-rank-fusion score, or final rank.
+
+Input depth 20 was selected after fixed-benchmark diagnostics compared depths
+`5`, `10`, `20`, `30`, `50`, and `100`. Depth 20 was the smallest tested depth
+whose union contained every reviewed passage for all answerable queries.
+Therefore, hybrid candidate-coverage measurements are benchmark-informed and
+must not be presented as out-of-sample performance.
+
+Candidate coverage uses the 16 answerable queries. Abstention queries remain
+outside candidate metrics.
+
+**Candidate recall** is the number of reviewed grade-`1` or grade-`2` passages
+present anywhere in the candidate union divided by the total reviewed passages
+for that query.
+
+**Direct-evidence hit rate** is the fraction of answerable queries whose union
+contains at least one grade-`2` passage.
+
+**Mean candidate count** is the arithmetic mean of deduplicated union size
+across answerable queries.
+
 ## Ranking metrics
 
 Let the gold set contain every passage with relevance grade `1` or `2`.
@@ -108,12 +141,16 @@ Result artifacts bind:
 - retriever-specific parameters, runtime, pooling, normalization, and similarity
 - candidate scope and deterministic tie-breaking
 - aggregate and per-query metrics
-- top-10 passage IDs, scores, ranks, and accepted-order positions
+
+Ranking artifacts additionally record top-10 passage IDs, scores, ranks, and
+accepted-order positions. The hybrid candidate artifact instead records the
+deduplicated candidate IDs, accepted order, source-retriever ranks, and coverage
+measurements. It deliberately contains no fused score or final relevance rank.
 
 Result publication is atomic and non-overwriting. Repository regression tests
 lock exact accepted hashes. Baseline acceptance also requires a separate
-byte-identical regeneration audit. Dense repository tests remain offline and do
-not require the external model binary.
+byte-identical regeneration audit. Dense and hybrid repository-result tests
+remain offline and do not require the external model binary.
 
 Retrieved but unjudged passages are not automatically benchmark errors. Any
 benchmark correction requires independent manual evidence review, a new

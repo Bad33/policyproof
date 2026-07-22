@@ -10,7 +10,8 @@ and evaluate each pipeline component.
 ## Status
 
 Phase 1 ingestion and retrieval-data preparation is complete. The retrieval-
-evaluation foundation and deterministic BM25 and dense baselines are also complete.
+evaluation foundation, deterministic BM25 and dense rankings, and hybrid candidate-
+generation baseline are also complete.
 
 Completed:
 
@@ -35,8 +36,11 @@ Completed:
 - Pinned BGE-small dense retriever through direct CPU ONNX inference
 - Hash-verified external model asset with no automatic runtime download
 - Versioned dense result artifact with byte-identical regeneration tests
+- Explicit rejection of equal-weight reciprocal-rank fusion as a final ranking
+- Deterministic top-20 BM25+dense candidate union for later reranking
+- Versioned hybrid candidate-coverage artifact with immutable regression tests
 - Offline regression coverage for corpus, benchmark, metrics, and result bindings
-- 291 passing tests
+- 351 passing tests
 
 Current passage artifacts use schema version `1.1`. They contain retrieval and
 citation text with complete source provenance. Dense embeddings are calculated
@@ -59,8 +63,17 @@ rate@10 of `1.0000`, and mean nDCG@10 of `0.8866`. The model asset is supplied
 locally and verified by exact size and SHA-256; it is not committed or downloaded
 automatically at runtime.
 
-Next: compare BM25 and dense retrieval through a deterministic hybrid baseline.
-Reranking, generation, API, and UI remain later phases.
+The accepted hybrid candidate result is
+`data/results/hybrid-candidate-baseline-v0.1.0.json`. It takes the top 20
+full-corpus results from BM25 and dense retrieval, forms a deduplicated union,
+and preserves both source ranks without assigning a fused score or final rank.
+The union contains all reviewed evidence for all 16 answerable benchmark queries,
+with mean candidate count `31.3125`. Candidate depth 20 was selected after
+diagnostics on the fixed benchmark, so this coverage result is benchmark-informed
+and is not an out-of-sample generalization claim.
+
+Next: evaluate the pinned cross-encoder reranker over the accepted hybrid
+candidate union. Generation, API, and UI remain later phases.
 
 ## Responsible-use notice
 

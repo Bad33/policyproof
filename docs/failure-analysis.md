@@ -879,3 +879,80 @@ Semantic retrieval can prioritize the central or generally applicable parts of
 a policy provision while ranking narrower supporting or conditional passages
 below the cutoff. Hybrid retrieval and reranking should therefore be evaluated
 for both first-hit quality and complete reviewed-passage recall.
+
+## Equal-weight RRF degrades the dense ranking
+
+### Failure
+
+Equal-weight reciprocal-rank fusion was evaluated as a possible deterministic
+hybrid final ranking. With constant `60` and complete 707-passage rankings from
+both retrievers, mean Recall@10 fell from the accepted dense value of `0.96875`
+to `0.8802083333`. MRR@10 fell to `0.8125`, and mean nDCG@10 fell to
+`0.7441517962`.
+
+The fused ranking repaired `eu-003`, where BM25 ranks the missing Article 26
+segment fifth, but degraded several queries whose relevant passages had strong
+dense ranks and weak lexical ranks.
+
+Examples include:
+
+- `rmf-002`: relevant dense ranks `2` and `6` were moved to RRF ranks `16` and
+  `35`
+- `rmf-004`: a relevant dense rank `7` passage moved to RRF rank `11`
+- `genai-001`: a relevant dense rank `2` passage moved to RRF rank `21`
+- `eu-002`: a relevant dense rank `1` passage moved to RRF rank `15`
+
+### Root cause
+
+Equal-weight RRF assumes both retrievers provide similarly useful rank evidence
+for each candidate. That assumption does not hold uniformly in this corpus.
+
+When dense retrieval correctly resolves paraphrases or legal references but
+BM25 assigns a weak rank, the lexical rank contribution can pull the relevant
+passage below the final cutoff. Conversely, passages with moderate ranks from
+both retrievers can outrank passages that are highly relevant under only one
+retriever.
+
+Increasing source-ranking depth does not fix this behavior. Full-corpus fusion
+performed worse than fusion restricted to published top-ten lists, confirming
+that the issue is the final-rank rule rather than missing candidate availability.
+
+### Correction
+
+Do not productionize equal-weight RRF as PolicyProof's final hybrid ranking.
+
+Use BM25 and dense retrieval as complementary candidate generators:
+
+- retrieve the top 20 from each full-corpus ranking
+- deduplicate by passage ID
+- preserve both source ranks
+- assign no fused score
+- defer final relevance ordering to the pinned cross-encoder phase
+
+The top-20 union contains all reviewed passages for every answerable benchmark
+query and averages `31.3125` candidates.
+
+### Validation
+
+The accepted candidate artifact records:
+
+- mean candidate recall: `1.0`
+- direct-evidence hit rate: `1.0`
+- mean candidate count: `31.3125`
+- zero missed reviewed passages
+- no fused scores or final ranks
+- SHA-256
+  `94b98eda3795280ef31aa0dfaa49a44d912c23d77e50a75f33a4f2f26e1fe0d4`
+
+Depth 20 was chosen after fixed-benchmark diagnostics. The coverage result is
+therefore benchmark-informed and must be validated on additional queries before
+making general retrieval claims.
+
+### Lesson
+
+Hybrid retrieval does not require score or rank fusion.
+
+When retrievers have complementary failure modes, a candidate union can retain
+their combined evidence coverage while avoiding a premature ranking rule that
+damages the stronger retriever. Final ordering should be evaluated separately
+with a model designed for query-passage relevance scoring.

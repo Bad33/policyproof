@@ -2449,3 +2449,153 @@ justify model tuning or broad claims about unseen queries.
 **Date:**
 
 2026-07-22
+
+---
+
+## PP-028: Use hybrid retrieval for candidate generation, not final ranking
+
+**Decision:**
+
+Use BM25 and dense retrieval to generate a deterministic candidate union for
+later cross-encoder reranking.
+
+Retrieve the top 20 passages from each full-corpus retriever, deduplicate by
+passage ID, preserve BM25 and dense source ranks, and serialize candidates in
+accepted passage order followed by passage ID.
+
+Do not assign a fused score or final relevance rank at this stage.
+
+**Context:**
+
+The accepted dense baseline substantially outperformed BM25 but retained two
+partial Recall@10 cases:
+
+- `rmf-002`: one grade-`1` supporting passage outside dense top ten
+- `eu-003`: one grade-`2` specialized Article 26 passage outside dense top ten
+
+BM25 contains complementary evidence for both cases. However, equal-weight
+reciprocal-rank fusion with constant `60` degraded the overall final ranking.
+
+Full-corpus RRF measured:
+
+- mean Recall@10: `0.880208333333`
+- MRR@10: `0.8125`
+- direct-evidence hit rate@10: `1.0`
+- mean nDCG@10: `0.744151796205`
+
+The accepted dense baseline remains stronger as a final ranking:
+
+- mean Recall@10: `0.96875`
+- MRR@10: `0.90625`
+- direct-evidence hit rate@10: `1.0`
+- mean nDCG@10: `0.8866302400292934`
+
+**Options considered:**
+
+- Use equal-weight RRF over the published top-ten lists.
+- Use equal-weight RRF over complete corpus rankings.
+- Tune RRF constants or retriever weights on the 20-query benchmark.
+- Normalize and combine incompatible BM25 and cosine-similarity scores.
+- Keep dense retrieval as the only candidate generator.
+- Form a deduplicated BM25+dense union and defer ordering to a cross-encoder.
+
+**Selected option:**
+
+Use a candidate-only union with:
+
+- BM25 input depth `20`
+- dense input depth `20`
+- full-corpus source rankings
+- deduplication by passage ID
+- source-rank provenance on every candidate
+- no fused score
+- no final rank
+- deterministic serialization by accepted passage order and passage ID
+- dense passage batch size `32`
+- answerable-query coverage metrics only
+- abstention queries recorded but excluded from candidate metrics
+
+Candidate-depth diagnostics measured:
+
+- depth `5`: mean recall `0.9166666667`, mean union size `7.5625`
+- depth `10`: mean recall `0.984375`, mean union size `15.4375`
+- depth `20`: mean recall `1.0`, mean union size `31.3125`
+- depth `30`: mean recall `1.0`, mean union size `46.3125`
+- depth `50`: mean recall `1.0`, mean union size `77.625`
+- depth `100`: mean recall `1.0`, mean union size `155.0`
+
+Depth 20 is the smallest tested depth with complete reviewed-passage coverage.
+This depth was selected after inspecting the fixed benchmark. The accepted
+coverage measurement is therefore benchmark-informed and must not be described
+as untuned or out-of-sample performance.
+
+**Measured result:**
+
+The accepted hybrid candidate baseline evaluates:
+
+- 707 accepted passages
+- 16 answerable queries
+- 4 abstention queries excluded from candidate metrics
+- top 20 BM25 candidates per query
+- top 20 dense candidates per query
+
+Aggregate candidate coverage:
+
+- mean candidate recall: `1.0`
+- direct-evidence hit rate: `1.0`
+- mean candidate count: `31.3125`
+
+Every reviewed grade-`1` and grade-`2` passage is present in the candidate union
+for every answerable query.
+
+Accepted result artifact:
+
+- `data/results/hybrid-candidate-baseline-v0.1.0.json`
+- size: `195077` bytes
+- SHA-256:
+  `94b98eda3795280ef31aa0dfaa49a44d912c23d77e50a75f33a4f2f26e1fe0d4`
+
+The artifact contains no benchmark `document_scope`, evaluation tags, relevance
+judgments, fused scores, or final ranks.
+
+**Why:**
+
+Candidate union preserves complementary lexical and semantic evidence without
+forcing incomparable retriever signals into a premature ranking rule.
+
+The approach also creates a bounded reranker workload. At accepted depth 20,
+the union averages approximately 31 candidates rather than requiring the
+cross-encoder to score all 707 passages.
+
+Preserving source ranks makes candidate origin auditable while keeping the
+cross-encoder evaluation independent of a hidden fused-score transformation.
+
+**Trade-offs:**
+
+Candidate depth 20 is benchmark-informed. Additional evaluation queries are
+needed before treating that depth as generally sufficient.
+
+The union is larger than the dense top ten, increasing cross-encoder inference
+cost. It is intentionally not suitable for direct answer generation because
+accepted passage order is not relevance order.
+
+The current runner rebuilds dense embeddings for each complete execution.
+Persisted embeddings remain a separate future decision.
+
+**How we verified it:**
+
+- Failing-first tests cover union construction, validation, deduplication,
+  source-rank provenance, candidate coverage, serialization, orchestration,
+  atomic publication, and immutable repository bindings.
+- Equal-weight RRF was evaluated at both top-ten and full-corpus source depths.
+- Candidate union was measured at depths `5`, `10`, `20`, `30`, `50`, and
+  `100`.
+- The accepted real-model run uses the exact pinned dense model and runtime
+  contracts.
+- The committed artifact is locked by exact size and SHA-256.
+- The complete offline project suite passes with 351 tests.
+- Ruff, dependency checks, and `git diff --check` pass.
+
+**Date:**
+
+2026-07-22

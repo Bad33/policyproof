@@ -123,3 +123,80 @@ ranks first.
 
 The residual misses did not establish omitted relevance judgments or another
 benchmark correction. Benchmark `v0.1.1` remains unchanged.
+
+## Hybrid candidate-generation baseline
+
+The third retrieval experiment tested whether BM25 and dense retrieval should
+be combined into a final rank or used only to generate candidates for a later
+cross-encoder.
+
+### Rejected equal-weight RRF ranking
+
+Equal-weight reciprocal-rank fusion with constant `60` was evaluated without
+query-specific rules.
+
+Using complete 707-passage source rankings, the fused top ten produced:
+
+| Metric | Full-corpus RRF | Accepted dense |
+| --- | ---: | ---: |
+| Mean Recall@10 | `0.8802083333` | `0.9687500000` |
+| MRR@10 | `0.8125000000` | `0.9062500000` |
+| Direct-evidence hit rate@10 | `1.0000000000` | `1.0000000000` |
+| Mean nDCG@10 | `0.7441517962` | `0.8866302400` |
+
+RRF repaired the dense `eu-003` partial-recall case but displaced strong dense
+evidence for `rmf-002`, `rmf-004`, `genai-001`, and `eu-002`. Equal-weight RRF
+was therefore rejected as PolicyProof's final hybrid ranking.
+
+### Accepted candidate union
+
+The accepted hybrid stage retrieves the top 20 passages independently from
+BM25 and dense retrieval and forms a deduplicated union. It preserves source
+ranks but does not assign a fused score or final rank.
+
+Candidate-depth diagnostics produced:
+
+| Input depth per retriever | Mean union recall | Mean union size |
+| --- | ---: | ---: |
+| `5` | `0.9166666667` | `7.5625` |
+| `10` | `0.9843750000` | `15.4375` |
+| `20` | `1.0000000000` | `31.3125` |
+| `30` | `1.0000000000` | `46.3125` |
+| `50` | `1.0000000000` | `77.6250` |
+| `100` | `1.0000000000` | `155.0000` |
+
+Depth 20 was the smallest tested depth with complete reviewed-passage coverage.
+Because this depth was chosen after inspecting the fixed benchmark, the accepted
+candidate result is benchmark-informed rather than an out-of-sample estimate.
+
+Accepted aggregate coverage:
+
+| Metric | Result |
+| --- | ---: |
+| Mean candidate recall | `1.0000000000` |
+| Direct-evidence hit rate | `1.0000000000` |
+| Mean candidate count | `31.3125000000` |
+
+The union recovers:
+
+- the grade-`1` GOVERN 1.3 support passage missed by dense retrieval for
+  `rmf-002`
+- the specialized Article 26 passage missed by dense top ten for `eu-003`
+- every other reviewed passage across the 16 answerable queries
+
+Accepted result artifact:
+
+`data/results/hybrid-candidate-baseline-v0.1.0.json`
+
+Size:
+
+`195077` bytes
+
+SHA-256:
+
+`94b98eda3795280ef31aa0dfaa49a44d912c23d77e50a75f33a4f2f26e1fe0d4`
+
+The accepted real-model run completed in approximately 65 seconds on the
+reviewed Apple Silicon development machine. The artifact contains no benchmark
+document scope, evaluation tags, relevance judgments, fused scores, or final
+ranks.

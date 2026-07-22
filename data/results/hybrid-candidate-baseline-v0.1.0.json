@@ -1,0 +1,3951 @@
+{
+  "schema_version": "1.0",
+  "result_id": "policyproof-hybrid-candidate-baseline",
+  "result_version": "0.1.0",
+  "bindings": {
+    "benchmark": {
+      "dataset_id": "policyproof-retrieval-evaluation",
+      "schema_version": "1.0",
+      "dataset_version": "0.1.1",
+      "sha256": "42e7e0e1a824b1c48973bb2163aca7664d53161632fcd699068931cd9fe80a7c"
+    },
+    "corpus": {
+      "corpus_id": "policyproof-initial-corpus",
+      "corpus_version": "0.1.0"
+    },
+    "passages": {
+      "schema_version": "1.1",
+      "sha256": "5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96",
+      "count": 707
+    },
+    "dense_model": {
+      "model_id": "BAAI/bge-small-en-v1.5",
+      "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+      "filename": "onnx/model.onnx",
+      "size_bytes": 133093490,
+      "sha256": "828e1496d7fabb79cfa4dcd84fa38625c0d3d21da474a00f08db0f559940cf35",
+      "license_id": "mit"
+    },
+    "dense_tokenizer": {
+      "source_model": "google-bert/bert-base-uncased",
+      "source_revision": "86b5e0934494bd15c9632b12f734a8a67f723594",
+      "vocab_sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+      "vocab_size": 30522
+    }
+  },
+  "candidate_generation": {
+    "strategy": "deduplicated_union",
+    "final_ranking": false,
+    "input_depth_per_retriever": 20,
+    "output_order": [
+      "accepted_passage_order",
+      "passage_id"
+    ],
+    "source_retrievers": {
+      "bm25": {
+        "implementation": "plain_python_bm25",
+        "candidate_scope": "all_passages",
+        "tokenizer": {
+          "normalization": "NFKC",
+          "lowercase": true,
+          "term_pattern": "[a-z0-9]+",
+          "query_term_frequency": "ignored",
+          "passage_term_frequency": "retained"
+        },
+        "parameters": {
+          "k1": 1.2,
+          "b": 0.75,
+          "idf": "log(1 + (N - df + 0.5) / (df + 0.5))"
+        },
+        "tie_break_order": [
+          "score_descending",
+          "accepted_passage_order",
+          "passage_id"
+        ]
+      },
+      "dense": {
+        "implementation": "onnx_bge_small_en_v1_5",
+        "candidate_scope": "all_passages",
+        "batch_size": 32,
+        "runtime": {
+          "library": "onnxruntime",
+          "version": "1.27.0",
+          "array_library": "numpy",
+          "array_version": "2.5.1",
+          "execution_provider": "CPUExecutionProvider"
+        },
+        "embedding": {
+          "dimension": 384,
+          "pooling": "cls",
+          "normalization": "l2",
+          "similarity": "normalized_dot_product",
+          "query_instruction": "Represent this sentence for searching relevant passages: ",
+          "passage_instruction": null,
+          "maximum_sequence_length": 512,
+          "truncation": false
+        },
+        "tie_break_order": [
+          "score_descending",
+          "accepted_passage_order",
+          "passage_id"
+        ]
+      }
+    }
+  },
+  "evaluation": {
+    "answer_query_count": 16,
+    "abstention_query_count": 4,
+    "abstention_queries_in_candidate_metrics": false,
+    "aggregate_metrics": {
+      "mean_candidate_recall": 1.0,
+      "direct_evidence_hit_rate": 1.0,
+      "mean_candidate_count": 31.3125
+    },
+    "query_results": [
+      {
+        "query_id": "rmf-001",
+        "question": "Which characteristics does the NIST AI RMF associate with trustworthy AI?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-003",
+          "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0014:line-0010:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-003",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0018:line-0028:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0024:line-0002:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0025:line-0003:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0025:line-0003:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0036:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0033:line-0008:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0047:line-0002:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0047:line-0002:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-017",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-019",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0016:line-0023:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0034:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-007",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-008",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-027:passage-001"
+        ],
+        "candidate_count": 28,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-003",
+            "accepted_order": 2,
+            "bm25_rank": null,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004",
+            "accepted_order": 3,
+            "bm25_rank": 1,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0014:line-0010:passage-001",
+            "accepted_order": 14,
+            "bm25_rank": 9,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-001",
+            "accepted_order": 16,
+            "bm25_rank": 10,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-002",
+            "accepted_order": 17,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-003",
+            "accepted_order": 18,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0018:line-0028:passage-002",
+            "accepted_order": 20,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0024:line-0002:passage-001",
+            "accepted_order": 29,
+            "bm25_rank": 11,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0025:line-0003:passage-001",
+            "accepted_order": 30,
+            "bm25_rank": 18,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0025:line-0003:passage-002",
+            "accepted_order": 31,
+            "bm25_rank": 4,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0036:passage-001",
+            "accepted_order": 35,
+            "bm25_rank": 20,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0033:line-0008:passage-002",
+            "accepted_order": 72,
+            "bm25_rank": 7,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+            "accepted_order": 107,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-002",
+            "accepted_order": 113,
+            "bm25_rank": 8,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003",
+            "accepted_order": 114,
+            "bm25_rank": 14,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0047:line-0002:passage-001",
+            "accepted_order": 118,
+            "bm25_rank": 13,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0047:line-0002:passage-002",
+            "accepted_order": 119,
+            "bm25_rank": 17,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+            "accepted_order": 120,
+            "bm25_rank": 16,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+            "accepted_order": 121,
+            "bm25_rank": 6,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+            "accepted_order": 122,
+            "bm25_rank": 5,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-017",
+            "accepted_order": 139,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-019",
+            "accepted_order": 141,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0016:line-0023:passage-001",
+            "accepted_order": 142,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0003:passage-001",
+            "accepted_order": 145,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0034:passage-001",
+            "accepted_order": 178,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-007",
+            "accepted_order": 222,
+            "bm25_rank": 3,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-008",
+            "accepted_order": 223,
+            "bm25_rank": 2,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-027:passage-001",
+            "accepted_order": 262,
+            "bm25_rank": null,
+            "dense_rank": 18
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-001",
+            "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "rmf-002",
+        "question": "How does organizational risk tolerance affect AI risk-management priorities?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0009:line-0003:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0009:line-0008:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0010:line-0008:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0010:line-0008:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0002:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0013:line-0023:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-003",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0039:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0042:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0007:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0031:line-0025:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0018:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0034:line-0018:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0035:line-0003:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0018:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0045:line-0002:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0020:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0019:line-0033:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0020:line-0022:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0036:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0046:line-0021:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-009"
+        ],
+        "candidate_count": 34,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-002",
+            "accepted_order": 1,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004",
+            "accepted_order": 3,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0009:line-0003:passage-001",
+            "accepted_order": 4,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0009:line-0008:passage-002",
+            "accepted_order": 6,
+            "bm25_rank": null,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0010:line-0008:passage-001",
+            "accepted_order": 8,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0010:line-0008:passage-002",
+            "accepted_order": 9,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0002:passage-001",
+            "accepted_order": 10,
+            "bm25_rank": 1,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-001",
+            "accepted_order": 11,
+            "bm25_rank": null,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-002",
+            "accepted_order": 12,
+            "bm25_rank": null,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0013:line-0023:passage-001",
+            "accepted_order": 13,
+            "bm25_rank": 10,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-002",
+            "accepted_order": 17,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-003",
+            "accepted_order": 18,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-001",
+            "accepted_order": 32,
+            "bm25_rank": 5,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-002",
+            "accepted_order": 33,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0039:passage-001",
+            "accepted_order": 36,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0042:passage-001",
+            "accepted_order": 37,
+            "bm25_rank": 4,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0007:passage-001",
+            "accepted_order": 39,
+            "bm25_rank": 6,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0031:line-0025:passage-001",
+            "accepted_order": 58,
+            "bm25_rank": null,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0018:passage-001",
+            "accepted_order": 64,
+            "bm25_rank": 8,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0034:line-0018:passage-001",
+            "accepted_order": 75,
+            "bm25_rank": 11,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0035:line-0003:passage-001",
+            "accepted_order": 81,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0018:passage-001",
+            "accepted_order": 96,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+            "accepted_order": 107,
+            "bm25_rank": 2,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-001",
+            "accepted_order": 112,
+            "bm25_rank": null,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-002",
+            "accepted_order": 113,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0045:line-0002:passage-001",
+            "accepted_order": 115,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+            "accepted_order": 120,
+            "bm25_rank": 3,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0020:passage-002",
+            "accepted_order": 147,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0019:line-0033:passage-001",
+            "accepted_order": 148,
+            "bm25_rank": 7,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0020:line-0022:passage-001",
+            "accepted_order": 150,
+            "bm25_rank": 16,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0036:line-0003:passage-002",
+            "accepted_order": 181,
+            "bm25_rank": 9,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0003:passage-001",
+            "accepted_order": 194,
+            "bm25_rank": 17,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0046:line-0021:passage-001",
+            "accepted_order": 199,
+            "bm25_rank": 14,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-009",
+            "accepted_order": 213,
+            "bm25_rank": 19,
+            "dense_rank": null
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0002:passage-001",
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-002",
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0039:passage-001",
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-001"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0039:passage-001"
+          ],
+          "dense_only_gold_passage_ids": [
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-002",
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-001"
+          ]
+        }
+      },
+      {
+        "query_id": "rmf-003",
+        "question": "What does GOVERN 1.1 require concerning legal and regulatory requirements involving AI?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0034:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0009:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0057:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0010:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0031:line-0027:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0034:line-0031:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0017:line-0019:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0021:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0009:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0049:line-0031:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-001:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-008:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-024:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-059:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-064:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-066:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-067:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-138:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-139:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-139:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-157:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-164:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-165:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0044:line-0037:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-005",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0078:line-0003:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0088:line-0005:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0088:line-0005:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0090:line-0003:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0120:line-0014:passage-002"
+        ],
+        "candidate_count": 35,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-002",
+            "accepted_order": 33,
+            "bm25_rank": 4,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0034:passage-001",
+            "accepted_order": 34,
+            "bm25_rank": 1,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0009:passage-001",
+            "accepted_order": 40,
+            "bm25_rank": 9,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0057:passage-001",
+            "accepted_order": 46,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0010:passage-001",
+            "accepted_order": 48,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0031:line-0027:passage-001",
+            "accepted_order": 59,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0034:line-0031:passage-001",
+            "accepted_order": 77,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+            "accepted_order": 107,
+            "bm25_rank": 5,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+            "accepted_order": 120,
+            "bm25_rank": 14,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0017:line-0019:passage-001",
+            "accepted_order": 144,
+            "bm25_rank": 2,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0021:line-0003:passage-001",
+            "accepted_order": 151,
+            "bm25_rank": 11,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0009:passage-001",
+            "accepted_order": 157,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-001",
+            "accepted_order": 160,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0049:line-0031:passage-001",
+            "accepted_order": 204,
+            "bm25_rank": 8,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-001:passage-001",
+            "accepted_order": 231,
+            "bm25_rank": null,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-008:passage-001",
+            "accepted_order": 238,
+            "bm25_rank": null,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-024:passage-002",
+            "accepted_order": 259,
+            "bm25_rank": null,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-059:passage-001",
+            "accepted_order": 299,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-064:passage-001",
+            "accepted_order": 306,
+            "bm25_rank": null,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-066:passage-001",
+            "accepted_order": 310,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-067:passage-002",
+            "accepted_order": 312,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-138:passage-001",
+            "accepted_order": 387,
+            "bm25_rank": null,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-139:passage-001",
+            "accepted_order": 388,
+            "bm25_rank": 16,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-139:passage-002",
+            "accepted_order": 389,
+            "bm25_rank": 7,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-157:passage-001",
+            "accepted_order": 409,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-164:passage-001",
+            "accepted_order": 417,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-165:passage-001",
+            "accepted_order": 418,
+            "bm25_rank": null,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0044:line-0037:passage-001",
+            "accepted_order": 434,
+            "bm25_rank": null,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-002",
+            "accepted_order": 436,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-005",
+            "accepted_order": 452,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0078:line-0003:passage-002",
+            "accepted_order": 514,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0088:line-0005:passage-002",
+            "accepted_order": 537,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0088:line-0005:passage-003",
+            "accepted_order": 538,
+            "bm25_rank": null,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0090:line-0003:passage-002",
+            "accepted_order": 541,
+            "bm25_rank": 3,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0120:line-0014:passage-002",
+            "accepted_order": 614,
+            "bm25_rank": 6,
+            "dense_rank": null
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0034:passage-001"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "rmf-004",
+        "question": "How should organizations address AI risks associated with third-party entities?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0009:line-0003:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0010:line-0008:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0013:line-0023:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-003",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0034:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0018:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0038:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0056:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0040:line-0002:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0040:line-0002:passage-004",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0023:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0023:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0030:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0030:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0046:line-0021:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-125:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-165:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0012:passage-001"
+        ],
+        "candidate_count": 30,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-001",
+            "accepted_order": 0,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-002",
+            "accepted_order": 1,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004",
+            "accepted_order": 3,
+            "bm25_rank": 17,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0009:line-0003:passage-001",
+            "accepted_order": 4,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0010:line-0008:passage-001",
+            "accepted_order": 8,
+            "bm25_rank": 8,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-001",
+            "accepted_order": 11,
+            "bm25_rank": null,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0013:line-0023:passage-001",
+            "accepted_order": 13,
+            "bm25_rank": 15,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-003",
+            "accepted_order": 18,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-002",
+            "accepted_order": 33,
+            "bm25_rank": 16,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0034:passage-001",
+            "accepted_order": 51,
+            "bm25_rank": 1,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0018:passage-001",
+            "accepted_order": 64,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0038:passage-001",
+            "accepted_order": 68,
+            "bm25_rank": null,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0056:passage-001",
+            "accepted_order": 103,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0040:line-0002:passage-001",
+            "accepted_order": 108,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0040:line-0002:passage-004",
+            "accepted_order": 111,
+            "bm25_rank": 4,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003",
+            "accepted_order": 114,
+            "bm25_rank": 5,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0023:passage-001",
+            "accepted_order": 158,
+            "bm25_rank": 3,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0023:passage-002",
+            "accepted_order": 159,
+            "bm25_rank": 2,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-001",
+            "accepted_order": 160,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-002",
+            "accepted_order": 161,
+            "bm25_rank": 6,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0030:line-0003:passage-001",
+            "accepted_order": 169,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0030:line-0003:passage-002",
+            "accepted_order": 170,
+            "bm25_rank": 7,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0046:line-0021:passage-001",
+            "accepted_order": 199,
+            "bm25_rank": 14,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002",
+            "accepted_order": 201,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-001",
+            "accepted_order": 205,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-002",
+            "accepted_order": 206,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-003",
+            "accepted_order": 207,
+            "bm25_rank": 9,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-125:passage-001",
+            "accepted_order": 373,
+            "bm25_rank": 11,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-165:passage-001",
+            "accepted_order": 418,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0012:passage-001",
+            "accepted_order": 679,
+            "bm25_rank": 20,
+            "dense_rank": null
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0034:passage-001",
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0038:passage-001",
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0040:line-0002:passage-004"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": [
+            "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0038:passage-001"
+          ]
+        }
+      },
+      {
+        "query_id": "genai-001",
+        "question": "What is confabulation, and why is it risky in generative AI systems?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0021:line-0024:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0041:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0045:line-0002:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-005",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-006",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-009",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-010",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-014",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-016",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-017",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0034:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0035:line-0014:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0048:line-0023:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-004",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-005",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-011",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-034:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-075:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-005",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0057:line-0016:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0111:line-0003:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0005:passage-001"
+        ],
+        "candidate_count": 34,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-001",
+            "accepted_order": 0,
+            "bm25_rank": null,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0021:line-0024:passage-001",
+            "accepted_order": 25,
+            "bm25_rank": 3,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0041:passage-001",
+            "accepted_order": 52,
+            "bm25_rank": null,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-001",
+            "accepted_order": 112,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003",
+            "accepted_order": 114,
+            "bm25_rank": null,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0045:line-0002:passage-001",
+            "accepted_order": 115,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+            "accepted_order": 120,
+            "bm25_rank": 11,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+            "accepted_order": 121,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+            "accepted_order": 122,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-001",
+            "accepted_order": 123,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-005",
+            "accepted_order": 127,
+            "bm25_rank": null,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-006",
+            "accepted_order": 128,
+            "bm25_rank": 6,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+            "accepted_order": 130,
+            "bm25_rank": 1,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-009",
+            "accepted_order": 131,
+            "bm25_rank": null,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-010",
+            "accepted_order": 132,
+            "bm25_rank": null,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+            "accepted_order": 134,
+            "bm25_rank": 5,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-014",
+            "accepted_order": 136,
+            "bm25_rank": 20,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-016",
+            "accepted_order": 138,
+            "bm25_rank": 9,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-017",
+            "accepted_order": 139,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0034:passage-001",
+            "accepted_order": 178,
+            "bm25_rank": 16,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0035:line-0014:passage-001",
+            "accepted_order": 179,
+            "bm25_rank": 2,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0048:line-0023:passage-001",
+            "accepted_order": 202,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-004",
+            "accepted_order": 219,
+            "bm25_rank": 4,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-005",
+            "accepted_order": 220,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-011",
+            "accepted_order": 226,
+            "bm25_rank": 7,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-034:passage-001",
+            "accepted_order": 272,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-075:passage-001",
+            "accepted_order": 320,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-005",
+            "accepted_order": 452,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0057:line-0016:passage-003",
+            "accepted_order": 463,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-003",
+            "accepted_order": 489,
+            "bm25_rank": 14,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0111:line-0003:passage-001",
+            "accepted_order": 590,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-001",
+            "accepted_order": 662,
+            "bm25_rank": null,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+            "accepted_order": 675,
+            "bm25_rank": 8,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0005:passage-001",
+            "accepted_order": 683,
+            "bm25_rank": null,
+            "dense_rank": 19
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-005",
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-009"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": [
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-005",
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-009"
+          ]
+        }
+      },
+      {
+        "query_id": "genai-002",
+        "question": "What fairness and bias evaluations does the NIST Generative AI Profile recommend?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0014:line-0010:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0011:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0028:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0028:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0024:line-0002:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0035:line-0021:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-002",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-013",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0027:line-0034:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0034:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0039:line-0022:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0042:line-0027:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0043:line-0023:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0021:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-004",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-007",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-008",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-015",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-090:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002"
+        ],
+        "candidate_count": 34,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary:passage-004",
+            "accepted_order": 3,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0014:line-0010:passage-001",
+            "accepted_order": 14,
+            "bm25_rank": null,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-002",
+            "accepted_order": 17,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0011:passage-001",
+            "accepted_order": 26,
+            "bm25_rank": 9,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0028:passage-001",
+            "accepted_order": 27,
+            "bm25_rank": 6,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0028:passage-002",
+            "accepted_order": 28,
+            "bm25_rank": 4,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0024:line-0002:passage-001",
+            "accepted_order": 29,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0035:line-0021:passage-001",
+            "accepted_order": 86,
+            "bm25_rank": 10,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026:passage-001",
+            "accepted_order": 107,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-002",
+            "accepted_order": 113,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003",
+            "accepted_order": 114,
+            "bm25_rank": 14,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+            "accepted_order": 120,
+            "bm25_rank": 5,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+            "accepted_order": 121,
+            "bm25_rank": 2,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+            "accepted_order": 122,
+            "bm25_rank": 3,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+            "accepted_order": 134,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-013",
+            "accepted_order": 135,
+            "bm25_rank": null,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0027:line-0034:passage-001",
+            "accepted_order": 164,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0003:passage-001",
+            "accepted_order": 177,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0034:passage-001",
+            "accepted_order": 178,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0039:line-0022:passage-001",
+            "accepted_order": 186,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-001",
+            "accepted_order": 187,
+            "bm25_rank": 7,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-002",
+            "accepted_order": 188,
+            "bm25_rank": 18,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0042:line-0027:passage-001",
+            "accepted_order": 192,
+            "bm25_rank": null,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0043:line-0023:passage-001",
+            "accepted_order": 193,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0021:passage-002",
+            "accepted_order": 196,
+            "bm25_rank": null,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001",
+            "accepted_order": 200,
+            "bm25_rank": null,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-001",
+            "accepted_order": 216,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-004",
+            "accepted_order": 219,
+            "bm25_rank": 16,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-007",
+            "accepted_order": 222,
+            "bm25_rank": 1,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-008",
+            "accepted_order": 223,
+            "bm25_rank": 11,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-015",
+            "accepted_order": 230,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-090:passage-001",
+            "accepted_order": 335,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-002",
+            "accepted_order": 656,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+            "accepted_order": 659,
+            "bm25_rank": 8,
+            "dense_rank": null
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-001",
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-002"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "genai-003",
+        "question": "What content-provenance measures are discussed for generative AI outputs?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0036:line-0016:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0031:line-0010:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0032:line-0021:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0032:line-0021:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0035:line-0014:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0036:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0037:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0037:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0038:line-0007:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0039:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0039:line-0022:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0042:line-0027:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0043:line-0023:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0021:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0021:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0048:line-0023:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-008",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-009",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-010",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-099:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-105:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-133:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0141:line-0006:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0057:passage-001"
+        ],
+        "candidate_count": 32,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0036:line-0016:passage-001",
+            "accepted_order": 93,
+            "bm25_rank": null,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-003",
+            "accepted_order": 122,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+            "accepted_order": 130,
+            "bm25_rank": 1,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+            "accepted_order": 134,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0031:line-0010:passage-001",
+            "accepted_order": 171,
+            "bm25_rank": 16,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0032:line-0021:passage-001",
+            "accepted_order": 174,
+            "bm25_rank": 6,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0032:line-0021:passage-002",
+            "accepted_order": 175,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0003:passage-001",
+            "accepted_order": 177,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0035:line-0014:passage-001",
+            "accepted_order": 179,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0036:line-0003:passage-002",
+            "accepted_order": 181,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0037:line-0003:passage-001",
+            "accepted_order": 182,
+            "bm25_rank": 3,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0037:line-0003:passage-002",
+            "accepted_order": 183,
+            "bm25_rank": 11,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0038:line-0007:passage-001",
+            "accepted_order": 184,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0039:line-0003:passage-001",
+            "accepted_order": 185,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0039:line-0022:passage-001",
+            "accepted_order": 186,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0042:line-0027:passage-001",
+            "accepted_order": 192,
+            "bm25_rank": null,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0043:line-0023:passage-001",
+            "accepted_order": 193,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0021:passage-001",
+            "accepted_order": 195,
+            "bm25_rank": 2,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0021:passage-002",
+            "accepted_order": 196,
+            "bm25_rank": null,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001",
+            "accepted_order": 200,
+            "bm25_rank": 14,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002",
+            "accepted_order": 201,
+            "bm25_rank": 8,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0048:line-0023:passage-001",
+            "accepted_order": 202,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-001",
+            "accepted_order": 205,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-002",
+            "accepted_order": 206,
+            "bm25_rank": 7,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-008",
+            "accepted_order": 212,
+            "bm25_rank": 5,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-009",
+            "accepted_order": 213,
+            "bm25_rank": 4,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-010",
+            "accepted_order": 214,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-099:passage-001",
+            "accepted_order": 346,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-105:passage-001",
+            "accepted_order": 352,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-133:passage-001",
+            "accepted_order": 382,
+            "bm25_rank": null,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0141:line-0006:passage-001",
+            "accepted_order": 650,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0057:passage-001",
+            "accepted_order": 682,
+            "bm25_rank": 9,
+            "dense_rank": null
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-008",
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-009",
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0037:line-0003:passage-002"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "genai-004",
+        "question": "What practices are listed under MANAGE 3.2 for monitoring pre-trained models used in development?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0014:line-0010:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0032:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0035:line-0023:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0035:line-0034:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0036:line-0027:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0045:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0056:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0059:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0013:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-019",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0016:line-0023:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0022:line-0032:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0034:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0041:line-0011:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0042:line-0018:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0021:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0046:line-0021:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0049:line-0012:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-004",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-006",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-027:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0101:line-0010:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0130:line-0003:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0141:line-0006:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-002"
+        ],
+        "candidate_count": 34,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0014:line-0010:passage-001",
+            "accepted_order": 14,
+            "bm25_rank": 16,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0028:line-0032:passage-001",
+            "accepted_order": 43,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0035:line-0023:passage-001",
+            "accepted_order": 87,
+            "bm25_rank": null,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0035:line-0034:passage-001",
+            "accepted_order": 89,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0036:line-0027:passage-001",
+            "accepted_order": 94,
+            "bm25_rank": null,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0045:passage-001",
+            "accepted_order": 101,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0056:passage-001",
+            "accepted_order": 103,
+            "bm25_rank": null,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0037:line-0059:passage-001",
+            "accepted_order": 104,
+            "bm25_rank": 1,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0013:passage-001",
+            "accepted_order": 105,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-001",
+            "accepted_order": 112,
+            "bm25_rank": 6,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-002",
+            "accepted_order": 121,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+            "accepted_order": 130,
+            "bm25_rank": 8,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-012",
+            "accepted_order": 134,
+            "bm25_rank": 5,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-019",
+            "accepted_order": 141,
+            "bm25_rank": 9,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0016:line-0023:passage-002",
+            "accepted_order": 143,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0022:line-0032:passage-001",
+            "accepted_order": 154,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0034:passage-001",
+            "accepted_order": 178,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0041:line-0011:passage-001",
+            "accepted_order": 189,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0042:line-0018:passage-001",
+            "accepted_order": 191,
+            "bm25_rank": null,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0044:line-0021:passage-001",
+            "accepted_order": 195,
+            "bm25_rank": 15,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0046:line-0021:passage-001",
+            "accepted_order": 199,
+            "bm25_rank": 19,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001",
+            "accepted_order": 200,
+            "bm25_rank": 2,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002",
+            "accepted_order": 201,
+            "bm25_rank": 3,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0049:line-0012:passage-001",
+            "accepted_order": 203,
+            "bm25_rank": null,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-002",
+            "accepted_order": 206,
+            "bm25_rank": 11,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-004",
+            "accepted_order": 208,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-006",
+            "accepted_order": 210,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-027:passage-002",
+            "accepted_order": 263,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0101:line-0010:passage-001",
+            "accepted_order": 565,
+            "bm25_rank": 14,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0130:line-0003:passage-002",
+            "accepted_order": 633,
+            "bm25_rank": 7,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0141:line-0006:passage-001",
+            "accepted_order": 650,
+            "bm25_rank": null,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-002",
+            "accepted_order": 656,
+            "bm25_rank": 4,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+            "accepted_order": 663,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-002",
+            "accepted_order": 672,
+            "bm25_rank": 18,
+            "dense_rank": null
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001",
+            "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "eu-001",
+        "question": "What manipulative techniques are prohibited by Article 5(1)(a), and when does the prohibition apply?",
+        "candidate_passage_ids": [
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-028:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-029:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-029:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-030:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-033:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-042:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-063:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-067:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-170:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-176:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-179:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-004",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-005",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-006",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0057:line-0016:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0080:line-0007:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0106:line-0034:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0106:line-0034:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0107:line-0044:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0108:line-0024:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0114:line-0003:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0114:line-0023:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0011:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0018:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0116:line-0038:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0118:line-0032:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0119:line-0026:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0120:line-0003:passage-001"
+        ],
+        "candidate_count": 33,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-028:passage-001",
+            "accepted_order": 264,
+            "bm25_rank": 10,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-029:passage-001",
+            "accepted_order": 265,
+            "bm25_rank": 1,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-029:passage-002",
+            "accepted_order": 266,
+            "bm25_rank": 4,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-030:passage-001",
+            "accepted_order": 267,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-033:passage-001",
+            "accepted_order": 270,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-042:passage-001",
+            "accepted_order": 280,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-063:passage-001",
+            "accepted_order": 305,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-067:passage-001",
+            "accepted_order": 311,
+            "bm25_rank": 7,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-170:passage-001",
+            "accepted_order": 423,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-176:passage-001",
+            "accepted_order": 429,
+            "bm25_rank": 11,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-179:passage-001",
+            "accepted_order": 432,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-002",
+            "accepted_order": 436,
+            "bm25_rank": 8,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+            "accepted_order": 437,
+            "bm25_rank": 6,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-001",
+            "accepted_order": 448,
+            "bm25_rank": 2,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-002",
+            "accepted_order": 449,
+            "bm25_rank": 3,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-003",
+            "accepted_order": 450,
+            "bm25_rank": null,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-004",
+            "accepted_order": 451,
+            "bm25_rank": null,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-005",
+            "accepted_order": 452,
+            "bm25_rank": 16,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-006",
+            "accepted_order": 453,
+            "bm25_rank": null,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0057:line-0016:passage-001",
+            "accepted_order": 461,
+            "bm25_rank": 14,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0080:line-0007:passage-001",
+            "accepted_order": 518,
+            "bm25_rank": null,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0106:line-0034:passage-002",
+            "accepted_order": 578,
+            "bm25_rank": 9,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0106:line-0034:passage-003",
+            "accepted_order": 579,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0107:line-0044:passage-002",
+            "accepted_order": 581,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0108:line-0024:passage-001",
+            "accepted_order": 582,
+            "bm25_rank": 5,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0114:line-0003:passage-001",
+            "accepted_order": 597,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0114:line-0023:passage-001",
+            "accepted_order": 598,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0011:passage-001",
+            "accepted_order": 600,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0018:passage-001",
+            "accepted_order": 601,
+            "bm25_rank": 19,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0116:line-0038:passage-002",
+            "accepted_order": 605,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0118:line-0032:passage-001",
+            "accepted_order": 608,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0119:line-0026:passage-001",
+            "accepted_order": 611,
+            "bm25_rank": null,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0120:line-0003:passage-001",
+            "accepted_order": 612,
+            "bm25_rank": null,
+            "dense_rank": 10
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-001"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "eu-002",
+        "question": "When is an AI system classified as high-risk under Article 6 of the EU AI Act?",
+        "candidate_passage_ids": [
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-046:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-049:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-051:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-052:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-054:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-061:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-063:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-077:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-084:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-093:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-166:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0056:line-0011:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0062:line-0005:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0064:line-0020:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0066:line-0021:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0069:line-0025:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0081:line-0031:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0083:line-0018:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0100:line-0026:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0101:line-0010:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0102:line-0041:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0102:line-0041:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0104:line-0022:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0107:line-0044:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0107:line-0044:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0108:line-0044:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0114:line-0023:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0127:line-0003:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0136:line-0003:passage-003"
+        ],
+        "candidate_count": 34,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-046:passage-001",
+            "accepted_order": 284,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-049:passage-001",
+            "accepted_order": 287,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-051:passage-001",
+            "accepted_order": 289,
+            "bm25_rank": null,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-052:passage-001",
+            "accepted_order": 290,
+            "bm25_rank": null,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-054:passage-001",
+            "accepted_order": 293,
+            "bm25_rank": 8,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-061:passage-001",
+            "accepted_order": 303,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-063:passage-001",
+            "accepted_order": 305,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-077:passage-001",
+            "accepted_order": 322,
+            "bm25_rank": 7,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-084:passage-001",
+            "accepted_order": 329,
+            "bm25_rank": 13,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-093:passage-001",
+            "accepted_order": 338,
+            "bm25_rank": null,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-166:passage-001",
+            "accepted_order": 419,
+            "bm25_rank": null,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-002",
+            "accepted_order": 436,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-001",
+            "accepted_order": 454,
+            "bm25_rank": null,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-002",
+            "accepted_order": 455,
+            "bm25_rank": null,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0056:line-0011:passage-002",
+            "accepted_order": 460,
+            "bm25_rank": 5,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0062:line-0005:passage-001",
+            "accepted_order": 472,
+            "bm25_rank": 6,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0064:line-0020:passage-001",
+            "accepted_order": 477,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0066:line-0021:passage-001",
+            "accepted_order": 483,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-001",
+            "accepted_order": 485,
+            "bm25_rank": 3,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-002",
+            "accepted_order": 488,
+            "bm25_rank": 14,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0069:line-0025:passage-001",
+            "accepted_order": 491,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0081:line-0031:passage-001",
+            "accepted_order": 522,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0083:line-0018:passage-001",
+            "accepted_order": 526,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0100:line-0026:passage-001",
+            "accepted_order": 563,
+            "bm25_rank": 2,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0101:line-0010:passage-001",
+            "accepted_order": 565,
+            "bm25_rank": 16,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0102:line-0041:passage-002",
+            "accepted_order": 569,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0102:line-0041:passage-003",
+            "accepted_order": 570,
+            "bm25_rank": 9,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0104:line-0022:passage-001",
+            "accepted_order": 572,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0107:line-0044:passage-001",
+            "accepted_order": 580,
+            "bm25_rank": 1,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0107:line-0044:passage-002",
+            "accepted_order": 581,
+            "bm25_rank": 11,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0108:line-0044:passage-001",
+            "accepted_order": 583,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0114:line-0023:passage-002",
+            "accepted_order": 599,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0127:line-0003:passage-001",
+            "accepted_order": 628,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0136:line-0003:passage-003",
+            "accepted_order": 644,
+            "bm25_rank": 4,
+            "dense_rank": 14
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-001",
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-002"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": [
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-001",
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-002"
+          ]
+        }
+      },
+      {
+        "query_id": "eu-003",
+        "question": "What obligations does Article 26 impose on deployers of high-risk AI systems?",
+        "candidate_passage_ids": [
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-026:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-066:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-072:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-084:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-091:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-093:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-176:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0059:line-0018:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0059:line-0018:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0060:line-0018:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0062:line-0005:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0064:line-0020:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0066:line-0021:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0066:line-0021:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-004",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0069:line-0025:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0069:line-0025:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0092:line-0014:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0102:line-0041:passage-004",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0107:line-0044:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0018:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0136:line-0003:passage-003"
+        ],
+        "candidate_count": 29,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-026:passage-001",
+            "accepted_order": 261,
+            "bm25_rank": 7,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-066:passage-001",
+            "accepted_order": 310,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-072:passage-001",
+            "accepted_order": 317,
+            "bm25_rank": 13,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-084:passage-001",
+            "accepted_order": 329,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-091:passage-001",
+            "accepted_order": 336,
+            "bm25_rank": 15,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-093:passage-001",
+            "accepted_order": 338,
+            "bm25_rank": 14,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-176:passage-001",
+            "accepted_order": 429,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+            "accepted_order": 437,
+            "bm25_rank": 6,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0059:line-0018:passage-001",
+            "accepted_order": 466,
+            "bm25_rank": 9,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0059:line-0018:passage-002",
+            "accepted_order": 467,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0060:line-0018:passage-001",
+            "accepted_order": 468,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0062:line-0005:passage-001",
+            "accepted_order": 472,
+            "bm25_rank": null,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0064:line-0020:passage-001",
+            "accepted_order": 477,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0066:line-0021:passage-001",
+            "accepted_order": 483,
+            "bm25_rank": null,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0066:line-0021:passage-002",
+            "accepted_order": 484,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-001",
+            "accepted_order": 485,
+            "bm25_rank": 12,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-002",
+            "accepted_order": 486,
+            "bm25_rank": null,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-001",
+            "accepted_order": 487,
+            "bm25_rank": 1,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-002",
+            "accepted_order": 488,
+            "bm25_rank": 2,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-003",
+            "accepted_order": 489,
+            "bm25_rank": 5,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-004",
+            "accepted_order": 490,
+            "bm25_rank": 3,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0069:line-0025:passage-001",
+            "accepted_order": 491,
+            "bm25_rank": 18,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0069:line-0025:passage-002",
+            "accepted_order": 492,
+            "bm25_rank": 11,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-002",
+            "accepted_order": 524,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0092:line-0014:passage-001",
+            "accepted_order": 545,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0102:line-0041:passage-004",
+            "accepted_order": 571,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0107:line-0044:passage-002",
+            "accepted_order": 581,
+            "bm25_rank": 16,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0018:passage-002",
+            "accepted_order": 602,
+            "bm25_rank": 4,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0136:line-0003:passage-003",
+            "accepted_order": 644,
+            "bm25_rank": 8,
+            "dense_rank": null
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-001",
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-002",
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-003",
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-004"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "eu-004",
+        "question": "What transparency obligations does Article 50 impose for certain AI systems and generated content?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0020:line-0026:passage-001",
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0020:line-0026:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-010",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0038:line-0007:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0042:line-0027:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-008",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-026:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-050:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-072:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-101:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-104:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-107:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-120:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-132:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-133:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-134:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-135:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-136:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-137:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0044:line-0037:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0059:line-0018:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-003",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0084:line-0023:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0084:line-0023:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0114:line-0003:passage-001",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0018:passage-002",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0143:line-0003:passage-001"
+        ],
+        "candidate_count": 31,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0020:line-0026:passage-001",
+            "accepted_order": 23,
+            "bm25_rank": null,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0020:line-0026:passage-002",
+            "accepted_order": 24,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-010",
+            "accepted_order": 132,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0003:passage-001",
+            "accepted_order": 145,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0038:line-0007:passage-001",
+            "accepted_order": 184,
+            "bm25_rank": 11,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0042:line-0027:passage-001",
+            "accepted_order": 192,
+            "bm25_rank": 16,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-008",
+            "accepted_order": 212,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-026:passage-001",
+            "accepted_order": 261,
+            "bm25_rank": 6,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-050:passage-001",
+            "accepted_order": 288,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-072:passage-001",
+            "accepted_order": 317,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-101:passage-001",
+            "accepted_order": 348,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-104:passage-001",
+            "accepted_order": 351,
+            "bm25_rank": 14,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-107:passage-001",
+            "accepted_order": 354,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-120:passage-001",
+            "accepted_order": 368,
+            "bm25_rank": 8,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-132:passage-001",
+            "accepted_order": 381,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-133:passage-001",
+            "accepted_order": 382,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-134:passage-001",
+            "accepted_order": 383,
+            "bm25_rank": 9,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-135:passage-001",
+            "accepted_order": 384,
+            "bm25_rank": 7,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-136:passage-001",
+            "accepted_order": 385,
+            "bm25_rank": 4,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-137:passage-001",
+            "accepted_order": 386,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0044:line-0037:passage-001",
+            "accepted_order": 434,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+            "accepted_order": 437,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0059:line-0018:passage-001",
+            "accepted_order": 466,
+            "bm25_rank": null,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-001",
+            "accepted_order": 523,
+            "bm25_rank": 3,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-002",
+            "accepted_order": 524,
+            "bm25_rank": 1,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-003",
+            "accepted_order": 525,
+            "bm25_rank": 2,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0084:line-0023:passage-001",
+            "accepted_order": 529,
+            "bm25_rank": null,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0084:line-0023:passage-002",
+            "accepted_order": 530,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0114:line-0003:passage-001",
+            "accepted_order": 597,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0115:line-0018:passage-002",
+            "accepted_order": 602,
+            "bm25_rank": 5,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0143:line-0003:passage-001",
+            "accepted_order": 652,
+            "bm25_rank": null,
+            "dense_rank": 20
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-001",
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-002",
+            "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-003"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "gpt4o-001",
+        "question": "What risks does unauthorized voice generation create, and how does GPT-4o mitigate them?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-010",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-011",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-016",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-007",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0008:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0013:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0031:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0029:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001"
+        ],
+        "candidate_count": 26,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-010",
+            "accepted_order": 132,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-011",
+            "accepted_order": 133,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-016",
+            "accepted_order": 138,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-007",
+            "accepted_order": 222,
+            "bm25_rank": null,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+            "accepted_order": 654,
+            "bm25_rank": 13,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+            "accepted_order": 655,
+            "bm25_rank": 8,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+            "accepted_order": 657,
+            "bm25_rank": 12,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-001",
+            "accepted_order": 660,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-002",
+            "accepted_order": 661,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-001",
+            "accepted_order": 662,
+            "bm25_rank": 9,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+            "accepted_order": 663,
+            "bm25_rank": 3,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001",
+            "accepted_order": 664,
+            "bm25_rank": 1,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-002",
+            "accepted_order": 665,
+            "bm25_rank": 2,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001",
+            "accepted_order": 666,
+            "bm25_rank": 5,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0008:line-0001:passage-001",
+            "accepted_order": 667,
+            "bm25_rank": 16,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001:passage-001",
+            "accepted_order": 668,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0013:passage-001",
+            "accepted_order": 669,
+            "bm25_rank": 14,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0031:passage-001",
+            "accepted_order": 670,
+            "bm25_rank": 11,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-001",
+            "accepted_order": 671,
+            "bm25_rank": null,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-002",
+            "accepted_order": 672,
+            "bm25_rank": 6,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+            "accepted_order": 675,
+            "bm25_rank": 15,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+            "accepted_order": 676,
+            "bm25_rank": 7,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+            "accepted_order": 677,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004:passage-002",
+            "accepted_order": 690,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0029:line-0001:passage-001",
+            "accepted_order": 693,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001",
+            "accepted_order": 705,
+            "bm25_rank": 4,
+            "dense_rank": 12
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001",
+            "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-002"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "gpt4o-002",
+        "question": "What risks and safeguards does the GPT-4o System Card describe for speaker identification?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-011",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-009",
+          "candidate-v2:eu-ai-act-2024-1689:eu-recital-034:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0008:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0013:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0031:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0013:line-0010:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0057:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0025:line-0007:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0029:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001"
+        ],
+        "candidate_count": 27,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-011",
+            "accepted_order": 133,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0058:line-0003:passage-009",
+            "accepted_order": 224,
+            "bm25_rank": 6,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:eu-recital-034:passage-001",
+            "accepted_order": 272,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+            "accepted_order": 654,
+            "bm25_rank": 7,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+            "accepted_order": 655,
+            "bm25_rank": 12,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+            "accepted_order": 657,
+            "bm25_rank": 9,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+            "accepted_order": 659,
+            "bm25_rank": 11,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-001",
+            "accepted_order": 662,
+            "bm25_rank": null,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+            "accepted_order": 663,
+            "bm25_rank": 1,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001",
+            "accepted_order": 664,
+            "bm25_rank": 5,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-002",
+            "accepted_order": 665,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001",
+            "accepted_order": 666,
+            "bm25_rank": 2,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0008:line-0001:passage-001",
+            "accepted_order": 667,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001:passage-001",
+            "accepted_order": 668,
+            "bm25_rank": 4,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0013:passage-001",
+            "accepted_order": 669,
+            "bm25_rank": null,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0031:passage-001",
+            "accepted_order": 670,
+            "bm25_rank": 3,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-001",
+            "accepted_order": 671,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-002",
+            "accepted_order": 672,
+            "bm25_rank": 13,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+            "accepted_order": 673,
+            "bm25_rank": 19,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0013:line-0010:passage-001",
+            "accepted_order": 674,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+            "accepted_order": 675,
+            "bm25_rank": 16,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+            "accepted_order": 676,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+            "accepted_order": 677,
+            "bm25_rank": 15,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0057:passage-001",
+            "accepted_order": 682,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0025:line-0007:passage-001",
+            "accepted_order": 692,
+            "bm25_rank": 8,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0029:line-0001:passage-001",
+            "accepted_order": 693,
+            "bm25_rank": 14,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001",
+            "accepted_order": 705,
+            "bm25_rank": 10,
+            "dense_rank": 9
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "gpt4o-003",
+        "question": "Which risk categories were evaluated under the Preparedness Framework for GPT-4o?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0036:line-0027:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-003",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-004",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0020:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0020:passage-002",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0022:line-0032:passage-001",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-004",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0031:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0013:line-0010:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0012:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0016:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0033:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0022:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0025:line-0007:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0029:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001"
+        ],
+        "candidate_count": 33,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0036:line-0027:passage-001",
+            "accepted_order": 94,
+            "bm25_rank": null,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0005:line-0003:passage-001",
+            "accepted_order": 120,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-001",
+            "accepted_order": 123,
+            "bm25_rank": null,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-003",
+            "accepted_order": 125,
+            "bm25_rank": null,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-004",
+            "accepted_order": 126,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0020:passage-001",
+            "accepted_order": 146,
+            "bm25_rank": null,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0020:passage-002",
+            "accepted_order": 147,
+            "bm25_rank": null,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0022:line-0032:passage-001",
+            "accepted_order": 154,
+            "bm25_rank": null,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-004",
+            "accepted_order": 208,
+            "bm25_rank": null,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+            "accepted_order": 654,
+            "bm25_rank": 7,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+            "accepted_order": 655,
+            "bm25_rank": 8,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+            "accepted_order": 657,
+            "bm25_rank": 3,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+            "accepted_order": 659,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-001",
+            "accepted_order": 660,
+            "bm25_rank": 11,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+            "accepted_order": 663,
+            "bm25_rank": 9,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001",
+            "accepted_order": 666,
+            "bm25_rank": 17,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001:passage-001",
+            "accepted_order": 668,
+            "bm25_rank": 18,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0031:passage-001",
+            "accepted_order": 670,
+            "bm25_rank": null,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+            "accepted_order": 673,
+            "bm25_rank": 1,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0013:line-0010:passage-001",
+            "accepted_order": 674,
+            "bm25_rank": 5,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+            "accepted_order": 675,
+            "bm25_rank": 4,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+            "accepted_order": 676,
+            "bm25_rank": 2,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+            "accepted_order": 677,
+            "bm25_rank": 6,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0012:passage-001",
+            "accepted_order": 679,
+            "bm25_rank": null,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0016:passage-001",
+            "accepted_order": 680,
+            "bm25_rank": null,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0001:passage-001",
+            "accepted_order": 681,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0033:passage-001",
+            "accepted_order": 685,
+            "bm25_rank": 16,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0022:line-0001:passage-001",
+            "accepted_order": 688,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004:passage-001",
+            "accepted_order": 689,
+            "bm25_rank": 19,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004:passage-002",
+            "accepted_order": 690,
+            "bm25_rank": 12,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0025:line-0007:passage-001",
+            "accepted_order": 692,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0029:line-0001:passage-001",
+            "accepted_order": 693,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001",
+            "accepted_order": 705,
+            "bm25_rank": 14,
+            "dense_rank": null
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      },
+      {
+        "query_id": "gpt4o-004",
+        "question": "How was external red teaming organized and used to evaluate GPT-4o?",
+        "candidate_passage_ids": [
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-005",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-006",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-007",
+          "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-010",
+          "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0141:line-0034:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0013:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0013:line-0010:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0012:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0016:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0022:line-0001:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004:passage-001",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004:passage-002",
+          "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001"
+        ],
+        "candidate_count": 27,
+        "candidates": [
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-005",
+            "accepted_order": 209,
+            "bm25_rank": 16,
+            "dense_rank": 19
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-006",
+            "accepted_order": 210,
+            "bm25_rank": 5,
+            "dense_rank": 7
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-007",
+            "accepted_order": 211,
+            "bm25_rank": 12,
+            "dense_rank": 4
+          },
+          {
+            "passage_id": "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-010",
+            "accepted_order": 214,
+            "bm25_rank": null,
+            "dense_rank": 18
+          },
+          {
+            "passage_id": "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0141:line-0034:passage-001",
+            "accepted_order": 651,
+            "bm25_rank": 14,
+            "dense_rank": 20
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001",
+            "accepted_order": 654,
+            "bm25_rank": null,
+            "dense_rank": 14
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022:passage-001",
+            "accepted_order": 655,
+            "bm25_rank": null,
+            "dense_rank": 13
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035:passage-001",
+            "accepted_order": 657,
+            "bm25_rank": 2,
+            "dense_rank": 9
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-001",
+            "accepted_order": 658,
+            "bm25_rank": 1,
+            "dense_rank": 1
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002",
+            "accepted_order": 659,
+            "bm25_rank": 6,
+            "dense_rank": 3
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-001",
+            "accepted_order": 660,
+            "bm25_rank": 7,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0005:line-0016:passage-002",
+            "accepted_order": 663,
+            "bm25_rank": 9,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0013:passage-001",
+            "accepted_order": 669,
+            "bm25_rank": 10,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004:passage-001",
+            "accepted_order": 671,
+            "bm25_rank": 4,
+            "dense_rank": 16
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+            "accepted_order": 673,
+            "bm25_rank": 8,
+            "dense_rank": 12
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0013:line-0010:passage-001",
+            "accepted_order": 674,
+            "bm25_rank": 17,
+            "dense_rank": 11
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+            "accepted_order": 675,
+            "bm25_rank": null,
+            "dense_rank": 8
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001:passage-001",
+            "accepted_order": 676,
+            "bm25_rank": 13,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+            "accepted_order": 677,
+            "bm25_rank": 18,
+            "dense_rank": 15
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-002",
+            "accepted_order": 678,
+            "bm25_rank": 19,
+            "dense_rank": 10
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0012:passage-001",
+            "accepted_order": 679,
+            "bm25_rank": null,
+            "dense_rank": 5
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0016:passage-001",
+            "accepted_order": 680,
+            "bm25_rank": null,
+            "dense_rank": 6
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0001:passage-001",
+            "accepted_order": 681,
+            "bm25_rank": null,
+            "dense_rank": 17
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0022:line-0001:passage-001",
+            "accepted_order": 688,
+            "bm25_rank": 3,
+            "dense_rank": 2
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004:passage-001",
+            "accepted_order": 689,
+            "bm25_rank": 15,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004:passage-002",
+            "accepted_order": 690,
+            "bm25_rank": 20,
+            "dense_rank": null
+          },
+          {
+            "passage_id": "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030:passage-001",
+            "accepted_order": 705,
+            "bm25_rank": 11,
+            "dense_rank": null
+          }
+        ],
+        "coverage": {
+          "candidate_recall": 1.0,
+          "direct_evidence_hit": true,
+          "retrieved_gold_passage_ids": [
+            "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-001",
+            "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002"
+          ],
+          "missed_gold_passage_ids": [],
+          "bm25_only_gold_passage_ids": [],
+          "dense_only_gold_passage_ids": []
+        }
+      }
+    ]
+  }
+}
