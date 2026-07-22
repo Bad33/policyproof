@@ -200,3 +200,97 @@ The accepted real-model run completed in approximately 65 seconds on the
 reviewed Apple Silicon development machine. The artifact contains no benchmark
 document scope, evaluation tags, relevance judgments, fused scores, or final
 ranks.
+
+## Pinned cross-encoder reranker baseline
+
+The fourth retrieval experiment evaluates
+`cross-encoder/ms-marco-MiniLM-L6-v2` over the accepted hybrid candidate union.
+
+Contract:
+
+- candidate scope: accepted hybrid candidate union only
+- mean candidate count: `31.3125`
+- runtime: `onnxruntime==1.27.0`
+- array library: `numpy==2.5.1`
+- provider: `CPUExecutionProvider`
+- model revision:
+  `c5ee24cb16019beea0893ab7796b1df96625c6b8`
+- model SHA-256:
+  `5d3e70fd0c9ff14b9b5169a51e957b7a9c74897afd0a35ce4bd318150c1d4d4a`
+- pair encoding: `[CLS] query [SEP] passage [SEP]`
+- no query or passage instructions
+- no truncation; overlength pairs are rejected
+- raw scalar logit score
+- deterministic descending-score ordering
+- answerable queries evaluated: 16
+- abstention queries excluded from ranking metrics: 4
+
+Aggregate results:
+
+| Metric | Reranker | Dense | Reranker delta |
+| --- | ---: | ---: | ---: |
+| Mean Recall@1 | `0.4375000000` | `0.4583333333` | `-0.0208333333` |
+| Mean Recall@3 | `0.6562500000` | `0.8802083333` | `-0.2239583333` |
+| Mean Recall@5 | `0.8281250000` | `0.8802083333` | `-0.0520833333` |
+| Mean Recall@10 | `0.9270833333` | `0.9687500000` | `-0.0416666667` |
+| MRR@10 | `0.8250000000` | `0.9062500000` | `-0.0812500000` |
+| Direct-evidence hit rate@10 | `1.0000000000` | `1.0000000000` | `0.0000000000` |
+| Mean nDCG@10 | `0.7892557931` | `0.8866302400` | `-0.0973744469` |
+
+Accepted result artifact:
+
+`data/results/reranker-baseline-v0.1.0.json`
+
+Size:
+
+`222296` bytes
+
+SHA-256:
+
+`3c7e49f121422d3200822cdb328b349de28a2de3fcbd510f11ce43dc56611d8e`
+
+Two complete real-model executions produced byte-identical artifacts.
+
+The reranker preserves all 501 accepted hybrid candidates and their BM25 and
+dense source ranks. Every score is finite. All pairs fit the 512-token input
+limit, with a maximum observed pair length of 467 tokens.
+
+### Reranker residual-query audit
+
+Three answerable queries have partial Recall@10:
+
+- `rmf-002`: `0.5`
+- `rmf-004`: `0.6666666667`
+- `genai-003`: `0.6666666667`
+
+Manual review found both sparse-judgment effects and genuine ordering failures.
+
+Examples of sparse-judgment effects include detailed, unjudged GenAI Profile
+passages that repeat an accepted AI RMF control and add relevant practices.
+
+Genuine weaknesses include:
+
+- general bias discussion ranked above the requested GenAI evaluation actions
+- broad content-provenance mentions ranked above the principal provenance
+  techniques
+- Article 6 references ranked above the passage containing the complete
+  high-risk classification rule
+
+The result was not repaired through query-specific boosts, judgment changes,
+score fusion, model tuning, or benchmark `document_scope` filtering.
+
+## Retrieval-phase selection
+
+The accepted ranking for the next pipeline phase remains the dense baseline.
+
+The cross-encoder is retained because it is deterministic, reproducible,
+auditable, and materially better than BM25. It is not selected because it
+underperforms dense retrieval on Recall, reciprocal rank, and nDCG on the fixed
+benchmark.
+
+This is a negative but useful experimental result: architectural sophistication
+does not override measured ranking quality.
+
+The next correctness boundary is evidence-sufficiency assessment. Ranking scores
+are not calibrated answer-confidence values, and the four benchmark abstention
+queries have not yet been evaluated by a runtime abstention policy.

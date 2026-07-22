@@ -1,6 +1,6 @@
 # Architecture
 
-Status: Phase 1.4f persisted retrieval and citation text implemented, independently audited, and regression tested.
+Status: ingestion, passage materialization, retrieval evaluation, hybrid candidate generation, and cross-encoder comparison are implemented, independently audited, and regression tested.
 
 PolicyProof will use a framework-independent Python pipeline for ingestion,
 retrieval, reranking, evidence-sufficiency assessment, grounded generation,
@@ -286,8 +286,79 @@ SHA-256 checksums are:
 - `retrieval-passages-review.txt`:
   `8cd2574c360765a8eb8fdac1cae7232db97ce1cf372a7a24b89a69c9c6f29bec`
 
+## Implemented retrieval and ranking pipeline
+
+The accepted retrieval implementation consists of independently callable,
+framework-free Python stages:
+
+1. Load and validate the 707 accepted schema-`1.1` passage records.
+2. Build a full-corpus dense index with the pinned
+   `BAAI/bge-small-en-v1.5` ONNX model.
+3. Rank a user question against all passages with `rank_dense`.
+4. Resolve equal similarity scores by accepted passage order and passage ID.
+5. Return deterministic `DenseHit` records containing passage identity,
+   accepted order, similarity score, and relevance rank.
+
+BM25 remains an accepted lexical baseline. The top-20 BM25 and top-20 dense
+rankings can also be combined into a deduplicated candidate union with complete
+reviewed-evidence coverage on the current benchmark.
+
+The candidate union is bounded input for reranker experiments. It is not the
+selected production ranking and must not be interpreted as relevance-ordered
+output.
+
+## Cross-encoder comparison
+
+PolicyProof includes a deterministic comparison implementation for
+`cross-encoder/ms-marco-MiniLM-L6-v2` using direct CPU ONNX Runtime inference.
+
+The reranker:
+
+- scores only the accepted hybrid candidate union
+- encodes pairs as `[CLS] query [SEP] passage [SEP]`
+- uses raw classification logits without normalization
+- rejects pairs above the 512-token limit
+- preserves BM25 and dense source-rank provenance
+- resolves equal logits by accepted passage order and passage ID
+- requires an explicitly supplied, size- and SHA-256-verified model file
+- never downloads or commits the model asset
+
+All 501 accepted benchmark query-candidate pairs fit the model input limit; the
+maximum observed pair length is 467 tokens.
+
+The reranker improves over BM25 but underperforms the accepted dense ranking.
+It is retained as a reproducible experimental baseline rather than selected as
+the production ranking.
+
+## Selected retrieval contract
+
+Dense retrieval remains the selected ranking for the next pipeline phase.
+
+The selected runtime path is:
+
+- construct one `DenseIndex` from all accepted passages
+- use no benchmark `document_scope` filtering
+- apply the fixed query instruction only to the question
+- rank by normalized dot-product similarity
+- expose the top retrieved passages with stable IDs and accepted-order
+  provenance
+- use each passage's `citation_text`, not its label-prefixed `retrieval_text`,
+  when presenting evidence or constructing citations
+
+The current accepted benchmark measures ranking quality only for the 16
+answerable questions. The four abstention questions have not yet been used to
+set or validate an evidence-sufficiency policy.
+
+Retrieval scores therefore must not be interpreted as calibrated confidence,
+proof that an answer is supported, or permission to generate an answer.
+
 ## Deferred production stages
 
-Embeddings, vector indexing, retrieval, reranking,
-evidence-sufficiency checks, generation, and citation verification remain
-downstream stages.
+Evidence-sufficiency assessment, abstention policy, grounded answer generation,
+claim extraction, citation verification, structured tracing, API exposure, and
+UI remain downstream stages.
+
+Persisted embeddings and a local vector-index artifact also remain optional
+future optimizations. Their absence does not block the next correctness phase
+because the accepted dense index can be constructed deterministically from the
+passage corpus and explicitly supplied model asset.

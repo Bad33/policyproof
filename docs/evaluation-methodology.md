@@ -99,6 +99,69 @@ contains at least one grade-`2` passage.
 **Mean candidate count** is the arithmetic mean of deduplicated union size
 across answerable queries.
 
+## Cross-encoder reranking contract
+
+The comparison reranker uses:
+
+- model `cross-encoder/ms-marco-MiniLM-L6-v2`
+- revision `c5ee24cb16019beea0893ab7796b1df96625c6b8`
+- model file `onnx/model.onnx`
+- model SHA-256
+  `5d3e70fd0c9ff14b9b5169a51e957b7a9c74897afd0a35ce4bd318150c1d4d4a`
+- `onnxruntime==1.27.0`
+- `numpy==2.5.1`
+- `CPUExecutionProvider` only
+- one intra-op thread and one inter-op thread
+- sequential execution
+- deterministic compute enabled
+- the packaged PolicyProof BERT WordPiece tokenizer
+- pair template `[CLS] query [SEP] passage [SEP]`
+- query token-type ID `0`
+- passage token-type ID `1`
+- no query or passage instruction
+- maximum sequence length `512`
+- rejection rather than truncation for overlength pairs
+- raw scalar logit scoring
+- descending-logit ranking
+- equal-score resolution by accepted passage order and passage ID
+
+The model asset is supplied through an explicit local path and verified by
+exact byte size and SHA-256 before session creation. PolicyProof does not
+download the model automatically or commit the model binary.
+
+The reranker scores only the accepted hybrid candidate union. It does not
+search the corpus independently and does not remove or add candidates. Every
+ranked result retains its BM25 and dense source ranks.
+
+The current model and contract were evaluated without benchmark-specific query
+instructions, score fusion, query-specific boosting, or fine-tuning.
+
+All 501 accepted query-candidate pairs fit the model limit. The maximum observed
+pair length is 467 tokens.
+
+## Ranking-model selection rule
+
+A later pipeline stage is not accepted merely because it is more specialized.
+
+Ranking selection compares each candidate implementation against the strongest
+accepted baseline using:
+
+- mean Recall@1, Recall@3, Recall@5, and Recall@10
+- MRR@10
+- direct-evidence hit rate@10
+- mean nDCG@10
+- per-query residual failures
+- byte reproducibility
+- semantic review of high-ranked and missed passages
+- absence of benchmark-only production filtering or query-specific tuning
+
+The pinned cross-encoder improves over BM25 but underperforms dense retrieval on
+every graded aggregate ranking metric except tying direct-evidence hit rate@10.
+Dense retrieval therefore remains the selected ranking.
+
+The cross-encoder result remains a valid, immutable experimental baseline for
+future model comparison.
+
 ## Ranking metrics
 
 Let the gold set contain every passage with relevance grade `1` or `2`.
@@ -142,10 +205,17 @@ Result artifacts bind:
 - candidate scope and deterministic tie-breaking
 - aggregate and per-query metrics
 
-Ranking artifacts additionally record top-10 passage IDs, scores, ranks, and
-accepted-order positions. The hybrid candidate artifact instead records the
-deduplicated candidate IDs, accepted order, source-retriever ranks, and coverage
-measurements. It deliberately contains no fused score or final relevance rank.
+Full-corpus BM25 and dense ranking artifacts record top-10 passage IDs, scores,
+ranks, and accepted-order positions. The hybrid candidate artifact instead
+records the deduplicated candidate IDs, accepted order, source-retriever ranks,
+and coverage measurements. It deliberately contains no fused score or final
+relevance rank.
+
+The reranker artifact records the complete bounded candidate ranking for each
+answerable query, raw finite logits, accepted order, BM25 rank, dense rank, and
+ranking metrics. It binds the exact hybrid candidate artifact, model, tokenizer,
+runtime, corpus, passages, and benchmark. It contains no benchmark
+`document_scope`, evaluation tags, relevance judgments, or model binary.
 
 Result publication is atomic and non-overwriting. Repository regression tests
 lock exact accepted hashes. Baseline acceptance also requires a separate
