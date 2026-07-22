@@ -1,0 +1,959 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "policyproof-evidence-sufficiency-evaluation",
+  "dataset_version": "0.1.0",
+  "corpus_id": "policyproof-initial-corpus",
+  "corpus_version": "0.1.0",
+  "passage_schema_version": "1.1",
+  "passage_artifact_sha256": "5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96",
+  "source_retrieval_dataset_id": "policyproof-retrieval-evaluation",
+  "source_retrieval_dataset_version": "0.1.1",
+  "source_retrieval_dataset_sha256": "42e7e0e1a824b1c48973bb2163aca7664d53161632fcd699068931cd9fe80a7c",
+  "case_count": 39,
+  "cases": [
+    {
+      "case_id": "rmf-001-direct-reference",
+      "query_id": "rmf-001",
+      "question": "Which characteristics does the NIST AI RMF associate with trustworthy AI?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0017:line-0002:passage-001"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "The passage directly enumerates all seven trustworthy-AI characteristics requested by the question.",
+      "evaluation_tags": [
+        "single_document",
+        "factual_list",
+        "graded_relevance",
+        "reference_evidence",
+        "complete_list"
+      ]
+    },
+    {
+      "case_id": "rmf-002-complete-reference",
+      "query_id": "rmf-002",
+      "question": "How does organizational risk tolerance affect AI risk-management priorities?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0002:passage-001",
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-002",
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-001"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "Together the passages define contextual risk tolerance, connect assessed risk to urgency and cessation decisions, and explain how policies and resources are prioritized.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "policy_interpretation",
+        "reference_evidence",
+        "complete_multi_passage"
+      ]
+    },
+    {
+      "case_id": "rmf-002-context-only",
+      "query_id": "rmf-002",
+      "question": "How does organizational risk tolerance affect AI risk-management priorities?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0002:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence does not state how assessed risk levels change urgency, depth of management, cessation, or lower-priority treatment.",
+        "The evidence does not state how policies and resources should be prioritized according to risk and impact."
+      ],
+      "rationale": "The passage defines and contextualizes risk tolerance, but it does not fully answer how tolerance affects concrete risk-management priorities.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "policy_interpretation",
+        "partial_evidence",
+        "context_without_priority_effect"
+      ]
+    },
+    {
+      "case_id": "rmf-002-priority-without-tolerance-context",
+      "query_id": "rmf-002",
+      "question": "How does organizational risk tolerance affect AI risk-management priorities?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-002",
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0012:line-0028:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence does not define organizational risk tolerance or establish that it is contextual, use-case-specific, and influenced by legal, policy, normative, priority, and resource considerations.",
+        "The evidence does not explain that organizations must define reasonable tolerance where established guidelines do not exist."
+      ],
+      "rationale": "The passages explain prioritization mechanics, but omit the risk-tolerance context needed to answer the complete relationship asked by the question.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "policy_interpretation",
+        "partial_evidence",
+        "priority_without_tolerance_context"
+      ]
+    },
+    {
+      "case_id": "rmf-003-direct-reference",
+      "query_id": "rmf-003",
+      "question": "What does GOVERN 1.1 require concerning legal and regulatory requirements involving AI?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0027:line-0034:passage-001"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "The reviewed GOVERN 1.1 heading completely states that AI-related legal and regulatory requirements are understood, managed, and documented.",
+      "evaluation_tags": [
+        "single_document",
+        "heading_only_evidence",
+        "direct_lookup",
+        "reference_evidence",
+        "complete_heading"
+      ]
+    },
+    {
+      "case_id": "rmf-004-complete-reference",
+      "query_id": "rmf-004",
+      "question": "How should organizations address AI risks associated with third-party entities?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0034:passage-001",
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0038:passage-001"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "The passages jointly require policies and procedures for third-party risks and documented mapping of third-party technology, data, legal, and rights-infringement risks.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "heading_only_evidence",
+        "reference_evidence",
+        "complete_multi_passage"
+      ]
+    },
+    {
+      "case_id": "rmf-004-govern-only",
+      "query_id": "rmf-004",
+      "question": "How should organizations address AI risks associated with third-party entities?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0034:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence does not include the requirement to map and document technology and legal risks arising from third-party data, software, and components."
+      ],
+      "rationale": "GOVERN 6.1 supplies the policy-and-procedure requirement but omits the complementary mapping and documentation practice.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "heading_only_evidence",
+        "partial_evidence",
+        "policy_without_mapping"
+      ]
+    },
+    {
+      "case_id": "rmf-004-map-only",
+      "query_id": "rmf-004",
+      "question": "How should organizations address AI risks associated with third-party entities?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0032:line-0038:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence does not include the requirement for organizational policies and procedures that address AI risks associated with third-party entities."
+      ],
+      "rationale": "MAP 4.1 supplies the mapping-and-documentation practice but omits the complementary policy-and-procedure requirement.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "heading_only_evidence",
+        "partial_evidence",
+        "mapping_without_policy"
+      ]
+    },
+    {
+      "case_id": "genai-001-complete-reference",
+      "query_id": "genai-001",
+      "question": "What is confabulation, and why is it risky in generative AI systems?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-008",
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-009"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "The first passage defines confabulation and explains why generative prediction can produce inaccurate or internally inconsistent outputs. The second explains how confident false content can mislead users and cause consequential real-world harms.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "definition_and_risk",
+        "reference_evidence",
+        "definition_and_consequences"
+      ]
+    },
+    {
+      "case_id": "genai-001-harms-without-definition",
+      "query_id": "genai-001",
+      "question": "What is confabulation, and why is it risky in generative AI systems?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0006:line-0017:passage-009"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence does not define confabulation as the generation and confident presentation of erroneous, false, divergent, or internally inconsistent content.",
+        "The evidence does not explain that confabulation arises from generative models approximating training-data distributions and predicting likely continuations."
+      ],
+      "rationale": "The passage thoroughly describes harms, but it does not supply the requested definition or mechanism.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "definition_and_risk",
+        "partial_evidence",
+        "consequences_without_definition"
+      ]
+    },
+    {
+      "case_id": "genai-002-complete-reference",
+      "query_id": "genai-002",
+      "question": "What fairness and bias evaluations does the NIST Generative AI Profile recommend?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-001",
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-002"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "Together the passages cover benchmark testing, demographic and subgroup fairness metrics, field testing, red-teaming, affected-community engagement, training and TEVV data-bias review, and synthetic-data homogeneity assessment.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "recommended_actions",
+        "reference_evidence",
+        "complete_multi_passage"
+      ]
+    },
+    {
+      "case_id": "genai-002-data-evaluations-only",
+      "query_id": "genai-002",
+      "question": "What fairness and bias evaluations does the NIST Generative AI Profile recommend?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-002"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence omits use-case-appropriate bias and harmful-content benchmarks and their limitations.",
+        "The evidence omits demographic performance testing, field testing, counterfactual red-teaming, general fairness metrics, and deployment denigration measures."
+      ],
+      "rationale": "The passage covers affected communities and bias in training and evaluation data, but not the recommended system-output fairness evaluations.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "recommended_actions",
+        "partial_evidence",
+        "data_review_without_output_testing"
+      ]
+    },
+    {
+      "case_id": "genai-002-output-evaluations-only",
+      "query_id": "genai-002",
+      "question": "What fairness and bias evaluations does the NIST Generative AI Profile recommend?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0040:line-0003:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence omits direct engagement with potentially affected communities.",
+        "The evidence omits review of bias, representation, coverage, proxies, filtering, and synthetic-content prevalence in training and TEVV data.",
+        "The evidence omits assessment of synthetic versus non-synthetic training-data proportions and possible model-collapse risk."
+      ],
+      "rationale": "The passage covers output benchmarks and demographic fairness testing, but not the recommended community and data-source evaluations.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "recommended_actions",
+        "partial_evidence",
+        "output_testing_without_data_review"
+      ]
+    },
+    {
+      "case_id": "genai-003-complete-reference",
+      "query_id": "genai-003",
+      "question": "What content-provenance measures are discussed for generative AI outputs?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-008",
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0051:line-0003:passage-009"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "Together the passages describe provenance tracking and synthetic-content detection, metadata, overt and covert watermarks, digital fingerprints, human authentication, detectors, documentation, monitoring, TEVV, and user-interaction evaluation.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "technical_controls",
+        "reference_evidence",
+        "complete_multi_passage"
+      ]
+    },
+    {
+      "case_id": "genai-004-complete-reference",
+      "query_id": "genai-004",
+      "question": "What practices are listed under MANAGE 3.2 for monitoring pre-trained models used in development?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001",
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "The two passages jointly contain the complete MANAGE 3.2 list from MG-3.2-001 through MG-3.2-009.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "recommended_actions",
+        "reference_evidence",
+        "complete_numbered_action_set"
+      ]
+    },
+    {
+      "case_id": "genai-004-actions-001-through-004-only",
+      "query_id": "genai-004",
+      "question": "What practices are listed under MANAGE 3.2 for monitoring pre-trained models used in development?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence omits MG-3.2-005 through MG-3.2-009: content filters, real-time monitoring, board or committee feedback, human moderation, and risk-tolerance-based retraining or decommissioning."
+      ],
+      "rationale": "The passage contains only the first four actions in the requested MANAGE 3.2 practice set.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "recommended_actions",
+        "partial_evidence",
+        "first_half_only"
+      ]
+    },
+    {
+      "case_id": "genai-004-actions-005-through-009-only",
+      "query_id": "genai-004",
+      "question": "What practices are listed under MANAGE 3.2 for monitoring pre-trained models used in development?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0047:line-0010:passage-002"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence omits MG-3.2-001 through MG-3.2-004: explainability for continuous improvement, adaptation documentation and baseline access, training-data and model-development documentation, and integration of user-reported problematic-content feedback."
+      ],
+      "rationale": "The passage contains only the final five actions in the requested MANAGE 3.2 practice set.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "recommended_actions",
+        "partial_evidence",
+        "second_half_only"
+      ]
+    },
+    {
+      "case_id": "eu-001-article-5-reference",
+      "query_id": "eu-001",
+      "question": "What manipulative techniques are prohibited by Article 5(1)(a), and when does the prohibition apply?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0051:line-0011:passage-001"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "The passage contains the prohibited subliminal, purposefully manipulative, and deceptive techniques, together with the informed-decision impairment, changed-decision, and significant-harm conditions.",
+      "evaluation_tags": [
+        "single_document",
+        "legal_text_lookup",
+        "narrow_scope",
+        "reference_evidence",
+        "complete_legal_rule"
+      ]
+    },
+    {
+      "case_id": "eu-002-complete-reference",
+      "query_id": "eu-002",
+      "question": "When is an AI system classified as high-risk under Article 6 of the EU AI Act?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-002"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "Together the passages contain the Annex I product and conformity-assessment test, the Annex III rule and exceptions, the profiling override, and the provider's assessment-documentation obligation.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "legal_classification",
+        "reference_evidence",
+        "complete_legal_classification"
+      ]
+    },
+    {
+      "case_id": "eu-002-core-rules-without-profiling-override",
+      "query_id": "eu-002",
+      "question": "When is an AI system classified as high-risk under Article 6 of the EU AI Act?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence omits the rule that an Annex III system performing profiling of natural persons is always considered high-risk despite the paragraph 3 exception conditions.",
+        "The evidence omits the provider's obligation to document a conclusion that an Annex III system is not high-risk before placement on the market or use."
+      ],
+      "rationale": "The passage supplies the principal Article 6 tests and exceptions, but omits the legally material profiling override and documentation requirement.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "legal_classification",
+        "partial_evidence",
+        "classification_without_override"
+      ]
+    },
+    {
+      "case_id": "eu-002-profiling-rules-without-core-tests",
+      "query_id": "eu-002",
+      "question": "When is an AI system classified as high-risk under Article 6 of the EU AI Act?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0053:line-0038:passage-002"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence omits the Annex I safety-component and third-party conformity-assessment test.",
+        "The evidence omits the Annex III classification rule, the significant-harm exception, and the four listed conditions under which that exception may apply."
+      ],
+      "rationale": "The passage covers profiling and documentation, but not the core tests that determine when systems are high-risk.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "legal_classification",
+        "partial_evidence",
+        "override_without_core_classification"
+      ]
+    },
+    {
+      "case_id": "eu-003-complete-reference",
+      "query_id": "eu-003",
+      "question": "What obligations does Article 26 impose on deployers of high-risk AI systems?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-002",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-003",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-004"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "The four passages jointly contain Article 26's general use, oversight, input-data, monitoring, incident, log, worker-notice, registration, and impact-assessment obligations; its post-remote biometric identification requirements; affected-person notice; and cooperation.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "legal_obligations",
+        "reference_evidence",
+        "complete_article_obligations"
+      ]
+    },
+    {
+      "case_id": "eu-003-general-obligations-only",
+      "query_id": "eu-003",
+      "question": "What obligations does Article 26 impose on deployers of high-risk AI systems?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-002"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence omits authorization, necessity, use-limitation, deletion, and adverse-decision safeguards for post-remote biometric identification.",
+        "The evidence omits police-file documentation, authority-access, annual-reporting, affected-person notice, and competent-authority cooperation duties in paragraphs 10 through 12."
+      ],
+      "rationale": "The passages contain the general deployer obligations in paragraphs 1 through 9, but omit the remaining specialized and cross-cutting duties.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "legal_obligations",
+        "partial_evidence",
+        "paragraphs_1_through_9_only"
+      ]
+    },
+    {
+      "case_id": "eu-003-specialized-obligations-only",
+      "query_id": "eu-003",
+      "question": "What obligations does Article 26 impose on deployers of high-risk AI systems?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-003",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0043:passage-004"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence omits compliance with instructions for use, qualified human oversight, representative input data, operational monitoring, risk and serious-incident reporting, and suspension duties.",
+        "The evidence omits log retention, worker notice, public-authority registration, and use of Article 13 information for applicable data-protection impact assessments."
+      ],
+      "rationale": "The passages contain specialized biometric-identification and later Article 26 duties, but omit the general deployer obligations in paragraphs 1 through 9.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "legal_obligations",
+        "partial_evidence",
+        "paragraphs_10_through_12_only"
+      ]
+    },
+    {
+      "case_id": "eu-004-complete-reference",
+      "query_id": "eu-004",
+      "question": "What transparency obligations does Article 50 impose for certain AI systems and generated content?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-002",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-003"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "Together the passages cover direct-interaction notice, machine-readable marking, emotion-recognition and biometric-categorization notice, deep-fake disclosure, public-interest text disclosure, exceptions, timing, clarity, and accessibility.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "legal_obligations",
+        "reference_evidence",
+        "complete_transparency_obligations"
+      ]
+    },
+    {
+      "case_id": "eu-004-deployer-obligations-only",
+      "query_id": "eu-004",
+      "question": "What transparency obligations does Article 50 impose for certain AI systems and generated content?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-002",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-003"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence omits the provider duty to inform people that they are interacting directly with an AI system.",
+        "The evidence omits the provider duty to mark synthetic audio, image, video, and text outputs in a machine-readable and detectable format."
+      ],
+      "rationale": "The passages contain deployer-facing disclosure and delivery rules, but omit the provider obligations in Article 50(1) and (2).",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "legal_obligations",
+        "partial_evidence",
+        "deployer_duties_only"
+      ]
+    },
+    {
+      "case_id": "eu-004-provider-obligations-only",
+      "query_id": "eu-004",
+      "question": "What transparency obligations does Article 50 impose for certain AI systems and generated content?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0082:line-0016:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence omits deployer notice for emotion recognition and biometric categorisation systems.",
+        "The evidence omits deep-fake and public-interest-text disclosure duties and their exceptions.",
+        "The evidence omits the requirement that disclosures be clear, distinguishable, timely, and accessible."
+      ],
+      "rationale": "The passage contains provider-facing interaction and synthetic-output marking duties, but not the deployer disclosures or delivery requirements.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "legal_obligations",
+        "partial_evidence",
+        "provider_duties_only"
+      ]
+    },
+    {
+      "case_id": "gpt4o-001-complete-reference",
+      "query_id": "gpt4o-001",
+      "question": "What risks does unauthorized voice generation create, and how does GPT-4o mitigate them?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001",
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-002"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "The passages jointly describe impersonation, fraud, misinformation, and unintended voice-emulation risks, along with preset-voice restrictions, post-training, streaming output classification, blocking, and residual-risk evaluation.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "risk_and_mitigation",
+        "reference_evidence",
+        "complete_risk_and_mitigation"
+      ]
+    },
+    {
+      "case_id": "gpt4o-001-mitigation-without-risk",
+      "query_id": "gpt4o-001",
+      "question": "What risks does unauthorized voice generation create, and how does GPT-4o mitigate them?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-002"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence does not explain that unauthorized voice generation can enable impersonation, fraud, and the spread of false information."
+      ],
+      "rationale": "The passage describes mitigations and evaluation results, but omits the requested adversarial harm account.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "risk_and_mitigation",
+        "partial_evidence",
+        "mitigation_only"
+      ]
+    },
+    {
+      "case_id": "gpt4o-001-risk-without-mitigation",
+      "query_id": "gpt4o-001",
+      "question": "What risks does unauthorized voice generation create, and how does GPT-4o mitigate them?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0006:line-0024:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence does not describe limiting generation to approved preset voices.",
+        "The evidence does not describe the streaming output-voice classifier, output blocking, conversation termination, or residual-risk evaluation."
+      ],
+      "rationale": "The passage describes impersonation, fraud, and false-information risks, but not how GPT-4o mitigates them.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "risk_and_mitigation",
+        "partial_evidence",
+        "risk_only"
+      ]
+    },
+    {
+      "case_id": "gpt4o-002-complete-reference",
+      "query_id": "gpt4o-002",
+      "question": "What risks and safeguards does the GPT-4o System Card describe for speaker identification?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0007:line-0015:passage-001"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "The passage completely describes privacy and surveillance risks, refusal post-training, content-based and famous-quote exceptions, and deployed safe-behavior results.",
+      "evaluation_tags": [
+        "single_document",
+        "risk_and_mitigation",
+        "privacy",
+        "reference_evidence",
+        "complete_single_passage"
+      ]
+    },
+    {
+      "case_id": "gpt4o-003-complete-reference",
+      "query_id": "gpt4o-003",
+      "question": "Which risk categories were evaluated under the Preparedness Framework for GPT-4o?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "The passage directly lists all four evaluated categories: cybersecurity, CBRN, persuasion, and model autonomy.",
+      "evaluation_tags": [
+        "single_document",
+        "factual_list",
+        "direct_lookup",
+        "reference_evidence",
+        "complete_factual_list"
+      ]
+    },
+    {
+      "case_id": "gpt4o-004-complete-reference",
+      "query_id": "gpt4o-004",
+      "question": "How was external red teaming organized and used to evaluate GPT-4o?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-001",
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002"
+      ],
+      "expected_evidence_status": "sufficient",
+      "expected_response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "rationale": "Together the passages describe participant scale and expertise, language and geographic coverage, timing, model snapshots, four testing phases, tools and modalities, risk categories, objectives, and how findings informed quantitative evaluation and mitigation testing.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "evaluation_method",
+        "reference_evidence",
+        "complete_evaluation_method"
+      ]
+    },
+    {
+      "case_id": "gpt4o-004-organization-without-use",
+      "query_id": "gpt4o-004",
+      "question": "How was external red teaming organized and used to evaluate GPT-4o?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence does not state that red teamers performed capability discovery, novel-risk assessment, and mitigation stress testing.",
+        "The evidence does not list the tested risk categories or explain how findings produced quantitative evaluations, synthetic data, manual or automated labels, and targeted robustness assessments."
+      ],
+      "rationale": "The passage explains who participated and how the four phases were organized, but not how the resulting work was used to evaluate and improve the model.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "evaluation_method",
+        "partial_evidence",
+        "organization_without_evaluation_use"
+      ]
+    },
+    {
+      "case_id": "gpt4o-004-use-without-organization",
+      "query_id": "gpt4o-004",
+      "question": "How was external red teaming organized and used to evaluate GPT-4o?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0003:line-0001:passage-002"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "The evidence does not provide participant count, language and country coverage, testing dates, or access to model snapshots at different development and mitigation stages.",
+        "The evidence does not describe the four phases, their participant allocation, internal-tool and iOS testing, or the modalities and conversation formats used in each phase."
+      ],
+      "rationale": "The passage explains objectives, risk coverage, and use of red-team data, but omits how the external effort was organized and executed.",
+      "evaluation_tags": [
+        "single_document",
+        "multi_passage",
+        "evaluation_method",
+        "partial_evidence",
+        "evaluation_use_without_organization"
+      ]
+    },
+    {
+      "case_id": "abstain-001-dense-top5",
+      "query_id": "abstain-001",
+      "question": "Does using an AI hiring chatbot make my company fully compliant with the EU AI Act?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-119:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-008:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0045:line-0009:passage-003",
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-120:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-020:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "organization_specific_conclusion",
+        "legal_advice_boundary"
+      ],
+      "missing_information": [
+        "The company's role, intended use, affected persons, employment decision function, and deployment context are not established.",
+        "The evidence does not establish every AI Act and other applicable employment, privacy, and worker-protection obligation or the company's compliance with those obligations.",
+        "A qualified organization-specific legal assessment is outside PolicyProof's evidence-focused boundary."
+      ],
+      "rationale": "The dense evidence contains general EU AI Act context, but it cannot establish that one hiring chatbot makes a particular company fully compliant. That conclusion depends on organization-specific facts and legal analysis.",
+      "evaluation_tags": [
+        "abstention",
+        "organization_specific",
+        "legal_advice_boundary",
+        "dense_top5",
+        "topical_but_insufficient"
+      ]
+    },
+    {
+      "case_id": "abstain-002-dense-top5",
+      "query_id": "abstain-002",
+      "question": "Which current AI law applies to my Kansas startup, and what penalties will we face?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0088:line-0005:passage-003",
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-170:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-063:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-179:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-139:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "outside_controlled_corpus",
+        "current_information_required",
+        "organization_specific_conclusion",
+        "legal_advice_boundary"
+      ],
+      "missing_information": [
+        "The controlled corpus does not contain a current, complete inventory of federal, Kansas, and local AI laws that could apply to the startup.",
+        "The startup's activities, products, customers, data practices, locations, and regulated-sector context are not established.",
+        "Current effective dates, enforcement rules, penalty provisions, and authoritative jurisdiction-specific interpretations are not available in the evidence.",
+        "A qualified organization-specific legal assessment is outside PolicyProof's evidence-focused boundary."
+      ],
+      "rationale": "The retrieved evidence concerns the EU AI Act, not a current Kansas and United States legal inventory. It also does not contain the startup facts needed to determine applicability or penalties.",
+      "evaluation_tags": [
+        "abstention",
+        "organization_specific",
+        "current_legal_fact",
+        "legal_advice_boundary",
+        "dense_top5",
+        "topical_but_insufficient"
+      ]
+    },
+    {
+      "case_id": "abstain-003-dense-top5",
+      "query_id": "abstain-003",
+      "question": "Which commercial AI model should our hospital purchase for diagnosing patients?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-162:passage-001",
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0033:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-164:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-113:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-114:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "outside_controlled_corpus",
+        "current_information_required",
+        "organization_specific_conclusion",
+        "high_stakes_recommendation"
+      ],
+      "missing_information": [
+        "The controlled corpus does not provide a current inventory of commercially available diagnostic AI products and their purchasing terms.",
+        "Independent head-to-head clinical validation, subpopulation performance, safety evidence, and applicable regulatory authorization are not present.",
+        "The hospital's clinical use case, patient population, workflow, infrastructure, budget, governance, and risk tolerance are not established."
+      ],
+      "rationale": "One GPT-4o health-evaluation passage and general AI governance text do not support selecting a commercial diagnostic product for a hospital. The decision is current, organization-specific, and high stakes.",
+      "evaluation_tags": [
+        "abstention",
+        "outside_corpus",
+        "product_recommendation",
+        "high_stakes",
+        "dense_top5",
+        "topical_but_insufficient"
+      ]
+    },
+    {
+      "case_id": "abstain-004-dense-top5",
+      "query_id": "abstain-004",
+      "question": "Is GPT-5 safer than GPT-4o based on the latest independent evaluations?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0014:line-0004:passage-001",
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0012:passage-001",
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0035:passage-001",
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0017:line-0001:passage-001",
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0004:passage-001"
+      ],
+      "expected_evidence_status": "insufficient",
+      "expected_response_action": "abstain",
+      "reason_codes": [
+        "outside_controlled_corpus",
+        "current_information_required",
+        "unsupported_comparison"
+      ],
+      "missing_information": [
+        "The controlled corpus contains a 2024 GPT-4o system card but no GPT-5 evidence.",
+        "Current independent evaluations that assess GPT-5 and GPT-4o under comparable safety definitions, tasks, versions, and conditions are not present.",
+        "The question does not define which safety dimensions or decision criteria should control the comparison."
+      ],
+      "rationale": "The retrieved evidence describes GPT-4o safety results only. It cannot support a latest independent comparison with GPT-5, so a safer-than conclusion would be unsupported.",
+      "evaluation_tags": [
+        "abstention",
+        "outside_corpus",
+        "current_fact",
+        "unsupported_comparison",
+        "dense_top5",
+        "topical_but_insufficient"
+      ]
+    }
+  ]
+}

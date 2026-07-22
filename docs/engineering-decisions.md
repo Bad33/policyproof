@@ -2785,3 +2785,160 @@ selected ranking.
 **Date:**
 
 2026-07-22
+
+## PP-030: Publish a separate evidence-sufficiency evaluation dataset
+
+**Decision:**
+
+Publish a versioned evidence-sufficiency dataset that is separate from the
+retrieval-ranking benchmark.
+
+Accepted artifact:
+
+- `data/evaluation/evidence-sufficiency-evaluation-v0.1.0.json`
+- size: `46673` bytes
+- SHA-256:
+  `9ecd30e4ff829561b50d56bf4f1d3d44c79dcb043ec15661175842597d733a6a`
+
+The dataset defines reviewed targets for answering or abstaining from a given
+question and evidence set. It does not select a runtime classifier, similarity
+threshold, abstention policy, generator, API, or user interface.
+
+**Context:**
+
+Retrieval evaluation measures whether reviewed passages can be found and
+ranked. It does not establish whether the retrieved evidence supports the
+complete requested conclusion.
+
+A diagnostic run over the fixed 20-query benchmark also rejected the assumption
+that one dense-similarity threshold can separate answerable and abstention
+queries:
+
+- minimum answerable top-one score: `0.728191`
+- maximum abstention top-one score: `0.731699`
+
+Because these ranges overlap, retrieval score is not treated as calibrated
+answer confidence.
+
+**Schema contract:**
+
+Each dataset binds exactly to:
+
+- corpus ID and version
+- passage schema version
+- passage artifact SHA-256
+- source retrieval dataset ID and version
+- source retrieval dataset SHA-256
+
+Each case contains:
+
+- a stable case ID
+- its source query ID and exact question
+- an ordered evidence-passage set
+- expected evidence status: `sufficient` or `insufficient`
+- expected response action: `answer` or `abstain`
+- machine-readable reason codes
+- explicit missing-information statements
+- a manual rationale
+- evaluation tags
+
+Unknown fields are rejected.
+
+A sufficient case must:
+
+- originate from an answerable source query
+- contain nonempty reviewed evidence
+- use only passages reviewed for that query
+- include at least one grade-`2` passage
+- require the `answer` action
+- contain no reason codes or missing-information statements
+
+An insufficient case must:
+
+- require the `abstain` action
+- contain at least one allowed reason code
+- state at least one concrete item of missing information
+
+A source abstention query cannot be labeled sufficient.
+
+**Dataset construction:**
+
+Manual review covered all 20 source queries and the actual accepted passage
+text.
+
+For each of the 16 answerable queries, one complete reference-evidence set was
+selected. Partial sets were added only when an accepted strict subset omitted a
+material component of the question.
+
+No negative case was manufactured when:
+
+- one accepted passage already contained the complete answer
+- a lower-grade passage independently contained the complete requested facts
+- creating a negative case would require splitting below accepted passage
+  boundaries
+
+The four source abstention cases use the actual dense top-five results. These
+sets are topically related but lack facts required for the requested current,
+organization-specific, high-stakes, legal, or comparative conclusion.
+
+**Accepted dataset:**
+
+The dataset contains 39 cases over all 20 source queries:
+
+- 16 sufficient reference cases
+- 19 incomplete-evidence cases from answerable queries
+- 4 required-abstention cases using actual dense top-five evidence
+
+Reason-code distribution:
+
+- `incomplete_evidence_set`: `19`
+- `organization_specific_conclusion`: `3`
+- `outside_controlled_corpus`: `3`
+- `current_information_required`: `3`
+- `legal_advice_boundary`: `2`
+- `high_stakes_recommendation`: `1`
+- `unsupported_comparison`: `1`
+
+The dataset has:
+
+- complete source-query coverage
+- no duplicate case IDs
+- no duplicate query/evidence-set contracts
+- no conflicting labels
+
+**Why:**
+
+Evidence sufficiency is a property of a question and an evidence set, not of a
+retrieval score alone.
+
+Keeping this dataset separate prevents retrieval judgments from being overloaded
+with answer-policy semantics. Explicit missing-information statements also make
+abstention auditable and provide a future basis for clarification or additional
+retrieval.
+
+**Trade-offs:**
+
+The dataset is manually derived from the same fixed benchmark used during
+retrieval development. It is benchmark-informed and is not an out-of-sample
+estimate of runtime abstention performance.
+
+The 39 cases are curated rather than exhaustive. Sufficient cases are evidence
+labels, not approved generated answers. Insufficient cases do not prove that no
+answer exists outside the controlled corpus.
+
+No runtime sufficiency policy or threshold has been selected.
+
+**How we verified it:**
+
+- Failing-first tests cover schema and cross-field requirements.
+- Repository tests pin the exact artifact SHA-256.
+- Live corpus, passage, and retrieval-dataset bindings are validated.
+- Manual review covered all 20 source queries and selected evidence sets.
+- Audits verified counts, coverage, reason codes, duplicate IDs, duplicate
+  evidence contracts, and label consistency.
+- The complete project suite passes with 472 tests.
+- Ruff, dependency checks, JSON parsing, and `git diff --check` pass.
+
+**Date:**
+
+2026-07-22

@@ -13,7 +13,7 @@ only as explicitly labeled diagnostics.
 Passage-ranking metrics use the 16 queries whose `expected_behavior` is
 `answer`. The four required-abstention queries are excluded because passage
 ranking alone does not decide whether retrieved evidence is sufficient. They
-will be evaluated in a later evidence-sufficiency phase.
+are now represented by a separate, manually reviewed evidence-sufficiency evaluation dataset; runtime decision policy remains deferred.
 
 ## BM25 lexical contract
 
@@ -226,3 +226,176 @@ Retrieved but unjudged passages are not automatically benchmark errors. Any
 benchmark correction requires independent manual evidence review, a new
 immutable dataset version, an exact rationale, comparison against earlier
 versions, and regression tests preserving prior dataset hashes.
+
+## Evidence-sufficiency evaluation contract
+
+Evidence sufficiency is evaluated separately from retrieval ranking.
+
+Accepted artifact:
+
+`data/evaluation/evidence-sufficiency-evaluation-v0.1.0.json`
+
+Accepted artifact properties:
+
+- schema version: `1.0`
+- dataset version: `0.1.0`
+- size: `46673` bytes
+- SHA-256:
+  `9ecd30e4ff829561b50d56bf4f1d3d44c79dcb043ec15661175842597d733a6a`
+
+The artifact binds exactly to:
+
+- passage schema version `1.1`
+- passage artifact SHA-256:
+  `5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96`
+- source retrieval dataset version `0.1.1`
+- source retrieval dataset SHA-256:
+  `42e7e0e1a824b1c48973bb2163aca7664d53161632fcd699068931cd9fe80a7c`
+
+### Evaluation unit
+
+The evaluation unit is a source question plus an ordered set of accepted passage
+IDs.
+
+Each case is labeled as either:
+
+- `sufficient`, with expected response action `answer`; or
+- `insufficient`, with expected response action `abstain`
+
+A sufficient label means the reviewed evidence set supports the complete
+question at the accepted passage granularity.
+
+It does not evaluate:
+
+- generated answer wording
+- citation placement
+- language-model reasoning
+- factual consistency outside the supplied evidence
+- production answer quality
+
+An insufficient label means the selected evidence set does not support the
+complete requested conclusion.
+
+It does not claim that the answer is unknowable outside the controlled corpus.
+
+### Sufficient-case requirements
+
+A sufficient case must:
+
+- derive from a source retrieval query labeled `answer`
+- contain at least one accepted passage
+- use only passages reviewed for that source query
+- include at least one grade-`2` passage
+- require the `answer` action
+- contain no insufficiency reason codes
+- contain no missing-information statements
+
+Each of the 16 answerable source queries has exactly one sufficient reference
+case.
+
+### Insufficient-case requirements
+
+An insufficient case must:
+
+- require the `abstain` action
+- include at least one allowed reason code
+- state at least one concrete item of missing information
+- explain why the supplied evidence does not support the complete question
+
+Allowed reason codes are:
+
+- `outside_controlled_corpus`
+- `current_information_required`
+- `organization_specific_conclusion`
+- `legal_advice_boundary`
+- `high_stakes_recommendation`
+- `unsupported_comparison`
+- `incomplete_evidence_set`
+- `conflicting_evidence`
+
+The accepted dataset currently uses every code except
+`conflicting_evidence`.
+
+A source retrieval query labeled `abstain` cannot be relabeled sufficient.
+
+### Manual construction procedure
+
+All 20 source queries were manually reviewed against the actual accepted
+`citation_text`.
+
+For answerable queries:
+
+1. Review all grade-`2` passages and any grade-`1` supporting passages.
+2. Select one reference set sufficient for the complete question.
+3. Review strict subsets of multi-passage reference sets.
+4. Add an insufficient case only when the subset omits a material component of
+   the question.
+5. Do not manufacture an incomplete case when one accepted passage already
+   contains the complete answer.
+
+For source abstention queries:
+
+1. Use the actual top five passages returned by the selected dense retriever.
+2. Review whether those passages support the requested conclusion.
+3. Record the product or evidence boundary using reason codes.
+4. State the exact information that remains unavailable.
+
+No empty-evidence control cases were added.
+
+### Dataset composition
+
+The accepted dataset contains 39 cases over all 20 source queries:
+
+- 16 sufficient reference cases
+- 19 incomplete-evidence cases from answerable queries
+- 4 required-abstention cases using actual dense top-five evidence
+
+The dataset has:
+
+- complete source-query coverage
+- exactly one sufficient case for each answerable query
+- no sufficient cases for source abstention queries
+- no duplicate case IDs
+- no duplicate query/evidence-set contracts
+- no conflicting labels
+
+### Similarity diagnostic
+
+No retrieval-similarity threshold was selected.
+
+Under the exact pinned dense model:
+
+- minimum answerable top-one score: `0.728191`
+- maximum abstention top-one score: `0.731699`
+
+The ranges overlap. A cutoff high enough to reject the strongest abstention
+case would also reject at least one answerable case.
+
+Observed top-three means, top-five means, and score margins also overlap between
+the answerable and abstention groups.
+
+These measurements reject the assumption that one observed similarity cutoff is
+a sufficient production answer policy.
+
+### Current evaluation boundary
+
+The published artifact is a gold evaluation contract, not a runtime-policy
+result.
+
+It contains no:
+
+- selected sufficiency classifier
+- selected score threshold
+- prompt-based judge
+- language-model evaluator
+- confusion matrix
+- calibration result
+- grounded answer
+- generated abstention response
+
+Any future policy, classifier, prompt, or model evaluated on this fixed dataset
+must be described as benchmark-informed unless it is selected independently or
+evaluated on held-out cases.
+
+The dataset must not be changed merely to improve a future policy's measured
+performance.

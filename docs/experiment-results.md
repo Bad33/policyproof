@@ -291,6 +291,135 @@ benchmark.
 This is a negative but useful experimental result: architectural sophistication
 does not override measured ranking quality.
 
-The next correctness boundary is evidence-sufficiency assessment. Ranking scores
-are not calibrated answer-confidence values, and the four benchmark abstention
-queries have not yet been evaluated by a runtime abstention policy.
+The next correctness boundary was evidence-sufficiency assessment. A separate
+reviewed dataset now represents that boundary. Ranking scores remain
+uncalibrated answer-confidence values, and no runtime abstention policy has been
+selected or evaluated.
+
+## Evidence-sufficiency evaluation dataset
+
+PolicyProof now publishes a manually reviewed question-and-evidence-set
+benchmark:
+
+`data/evaluation/evidence-sufficiency-evaluation-v0.1.0.json`
+
+Artifact properties:
+
+- schema version: `1.0`
+- dataset version: `0.1.0`
+- size: `46673` bytes
+- SHA-256:
+  `9ecd30e4ff829561b50d56bf4f1d3d44c79dcb043ec15661175842597d733a6a`
+- source queries covered: `20`
+- total cases: `39`
+- sufficient cases: `16`
+- insufficient cases: `23`
+
+Every one of the 16 answerable retrieval queries has exactly one sufficient
+reference case.
+
+The 23 insufficient cases comprise:
+
+- 19 incomplete strict-subset cases over answerable queries
+- 4 dense-top-five cases for source queries that require abstention
+
+Reason-code distribution:
+
+| Reason code | Cases |
+| --- | ---: |
+| `incomplete_evidence_set` | `19` |
+| `organization_specific_conclusion` | `3` |
+| `outside_controlled_corpus` | `3` |
+| `current_information_required` | `3` |
+| `legal_advice_boundary` | `2` |
+| `high_stakes_recommendation` | `1` |
+| `unsupported_comparison` | `1` |
+
+The accepted dataset covers all 20 source queries and contains:
+
+- no duplicate case IDs
+- no duplicate query/evidence-set contracts
+- no conflicting labels
+- no sufficient cases for source abstention queries
+
+### Manual-review outcome
+
+Partial evidence cases were accepted only when an actual strict subset omitted a
+material part of the complete question.
+
+Proposed negative cases were omitted when the selected passage itself already
+contained the complete requested information. Examples include:
+
+- `rmf-001`, where a lower-grade summary passage independently states the full
+  requested function list
+- `genai-003`, where no defensible incomplete accepted subset was identified
+- `eu-001`, `gpt4o-002`, and `gpt4o-003`, where one accepted passage contains
+  the complete answer
+
+This avoids manufacturing insufficiency from relevance grade, passage count, or
+an arbitrary requirement for multiple citations.
+
+For multi-part questions, incomplete cases preserve the actual missing
+component. Examples include:
+
+- risk evidence without mitigation evidence
+- mitigation evidence without the requested risk description
+- general obligations without specialized obligations
+- provider responsibilities without deployer responsibilities
+- evaluation organization without an account of how results were used
+
+The four source abstention cases use the actual top five passages returned by
+the selected dense retriever. They therefore test topically related but
+insufficient evidence rather than empty context.
+
+### Dense-score diagnostic
+
+A diagnostic comparison used the exact accepted dense model over all 707
+passages and all 20 source questions.
+
+Top-one similarity distribution:
+
+| Query type | Minimum | Median | Maximum |
+| --- | ---: | ---: | ---: |
+| Answerable | `0.728191` | `0.839378` | `0.915742` |
+| Abstention | `0.676666` | `0.712515` | `0.731699` |
+
+The ranges overlap:
+
+- the minimum answerable top-one score is `0.728191`
+- the maximum abstention top-one score is `0.731699`
+
+A cutoff high enough to reject the strongest abstention result would reject at
+least one answerable query. A cutoff low enough to accept that answerable query
+would accept at least some required-abstention queries.
+
+Top-three means, top-five means, and measured score margins also overlap between
+the two groups.
+
+No retrieval-score threshold was accepted.
+
+### Interpretation
+
+The published result is the evaluation dataset itself, not the accuracy of a
+runtime sufficiency policy.
+
+The dataset establishes auditable targets for:
+
+- recognizing complete evidence
+- abstaining on partial evidence
+- enforcing controlled-corpus boundaries
+- identifying current-information gaps
+- identifying organization-specific conclusion gaps
+- identifying legal and high-stakes boundaries
+- rejecting unsupported comparisons
+- explaining what information is missing
+
+The following remain unimplemented and unmeasured:
+
+- a production sufficiency classifier or judge
+- threshold selection
+- confusion-matrix metrics
+- probability calibration
+- generated grounded answers
+- generated informative abstentions
+- held-out sufficiency evaluation

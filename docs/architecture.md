@@ -1,6 +1,6 @@
 # Architecture
 
-Status: ingestion, passage materialization, retrieval evaluation, hybrid candidate generation, and cross-encoder comparison are implemented, independently audited, and regression tested.
+Status: ingestion, passage materialization, retrieval evaluation, hybrid candidate generation, cross-encoder comparison, and the evidence-sufficiency evaluation contract are implemented, independently audited, and regression tested.
 
 PolicyProof will use a framework-independent Python pipeline for ingestion,
 retrieval, reranking, evidence-sufficiency assessment, grounded generation,
@@ -345,18 +345,94 @@ The selected runtime path is:
 - use each passage's `citation_text`, not its label-prefixed `retrieval_text`,
   when presenting evidence or constructing citations
 
-The current accepted benchmark measures ranking quality only for the 16
-answerable questions. The four abstention questions have not yet been used to
-set or validate an evidence-sufficiency policy.
+The current accepted retrieval benchmark measures ranking quality only for the
+16 answerable questions. The four abstention questions are now represented in
+the evidence-sufficiency evaluation dataset, but they have not been used to set
+or validate a runtime decision policy.
 
 Retrieval scores therefore must not be interpreted as calibrated confidence,
 proof that an answer is supported, or permission to generate an answer.
 
+## Evidence-sufficiency evaluation boundary
+
+PolicyProof implements a separate evaluation-only contract for deciding whether
+a reviewed passage set supports the complete source question.
+
+Implemented components:
+
+- `src/policyproof/evidence_sufficiency_evaluation.py`
+- `data/evaluation/evidence-sufficiency-evaluation-v0.1.0.json`
+- `tests/test_evidence_sufficiency_evaluation.py`
+
+The validator is fail-closed. It verifies:
+
+- exact corpus, passage, and retrieval-benchmark bindings
+- schema and dataset identity
+- source-query identity and exact question text
+- accepted passage IDs
+- source expected behavior
+- source relevance grades
+- sufficient/answer and insufficient/abstain cross-field rules
+- allowed reason codes
+- explicit missing-information statements
+- unique case IDs and evidence IDs
+- rejection of unknown fields
+
+The accepted artifact contains 39 manually reviewed cases over all 20 source
+queries:
+
+- 16 sufficient reference cases
+- 19 incomplete-evidence cases
+- 4 required-abstention cases using actual dense top-five evidence
+
+The evaluation layer is downstream of retrieval and upstream of any future
+runtime decision policy:
+
+    accepted passages
+            |
+    selected dense ranking
+            |
+    question + candidate evidence set
+            |
+    evidence-sufficiency evaluation contract
+            |
+    future runtime sufficiency policy
+            |
+    future grounded answer or informative abstention
+
+The committed dataset does not execute the sufficiency decision at runtime. It
+defines the expected result for reviewed question-and-evidence combinations.
+
+Retrieval similarity, BM25 score, dense score, cross-encoder logit, rank, and
+candidate count are not treated as calibrated answer confidence.
+
+Insufficient cases preserve two outputs needed by future policy evaluation:
+
+- machine-readable reason codes
+- concrete descriptions of missing information
+
+These outputs distinguish incomplete retrieved evidence from other boundaries,
+including:
+
+- information outside the controlled corpus
+- current information
+- organization-specific conclusions
+- legal-advice boundaries
+- high-stakes recommendations
+- unsupported comparisons
+
+The four source abstention cases use actual dense top-five passage sets. No
+production `document_scope` filter, query-specific threshold, benchmark label,
+or hidden evaluation metadata is used to construct retrieval candidates.
+
+No runtime classifier, threshold, prompt-based judge, language-model evaluator,
+grounded generator, or abstention response generator has been selected.
+
 ## Deferred production stages
 
-Evidence-sufficiency assessment, abstention policy, grounded answer generation,
-claim extraction, citation verification, structured tracing, API exposure, and
-UI remain downstream stages.
+Runtime evidence-sufficiency policy, abstention execution, grounded answer
+generation, claim extraction, citation verification, structured tracing, API
+exposure, and UI remain downstream stages.
 
 Persisted embeddings and a local vector-index artifact also remain optional
 future optimizations. Their absence does not block the next correctness phase
