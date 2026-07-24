@@ -1,6 +1,7 @@
 # Evidence-Sufficiency Research Protocol
 
-Status: proposed protocol for the next PolicyProof research phase.
+Status: accepted protocol for the current PolicyProof
+evidence-sufficiency research phase.
 
 This document defines how PolicyProof will expand, split, annotate, and evaluate
 evidence-sufficiency data without contaminating held-out results.
@@ -512,13 +513,43 @@ Permitted claims must be scoped to:
 Any broader claim requires additional corpora, annotators, and held-out
 evaluation.
 
-## Immediate next steps
+## Implementation status and next steps
 
-1. Review and accept this protocol.
-2. Create the versioned annotation guide.
-3. Define the new query inventory before labeling evidence cases.
-4. Implement a deterministic leakage-component builder.
-5. Add failing-first tests for component construction and split validation.
-6. Expand and independently annotate new development, validation, and test
-   query groups.
-7. Freeze split artifacts before runtime policy selection.
+Completed infrastructure:
+
+1. The research protocol has been reviewed and accepted.
+2. Annotation guide version `0.1.0` has been created and is immutable once used
+   for a published annotation round.
+3. Deterministic leakage-component construction and split-manifest validation
+   have been implemented.
+4. The existing 39-case dataset has been correctly classified as
+   development-only.
+5. Blinded annotation-batch validation has been implemented.
+6. Independent raw annotation-record validation has been implemented.
+7. Pre-adjudication comparison and agreement reporting have been implemented.
+8. Written adjudication validation has been implemented.
+9. Separate question-structure and evidence-structure analysis metadata has
+   been implemented.
+10. Deterministic, atomic, non-overwriting JSON artifact publication has been
+    implemented.
+
+Remaining controlled workflow:
+
+1. Define and review the new query inventory before any evidence labels are
+   created.
+2. Construct new cases from accepted passages without inspecting model
+   predictions.
+3. Publish blinded annotation batches bound to the accepted guide and passage
+   artifact.
+4. Obtain two independent annotations for every new case.
+5. Publish pre-adjudication agreement and structure-disagreement reports.
+6. Complete and publish written adjudication for every disagreement or
+   uncertainty case.
+7. Construct a new adjudicated evidence-sufficiency dataset version while
+   preserving both original annotations and the adjudication history.
+8. Reconstruct leakage components across existing and new cases.
+9. Assign components deterministically to development, validation, and test.
+10. Freeze the dataset, split manifest, hashes, and metric contracts before any
+    runtime policy selection.
+
+No new validation or test cases have yet been accepted.

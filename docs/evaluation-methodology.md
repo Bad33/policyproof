@@ -550,9 +550,89 @@ performance.
 When perfect stratification conflicts with leakage isolation, leakage isolation
 takes priority.
 
+### Implemented annotation infrastructure
+
+The repository now provides a fail-closed infrastructure for creating and
+reviewing future independently annotated evidence-sufficiency cases.
+
+Blinded annotation batches contain only:
+
+- case ID
+- source query ID
+- question
+- ordered evidence objects containing:
+  - passage ID
+  - citation text
+  - document ID
+  - neutral source label
+
+They do not contain expected labels, retrieval grades, evaluation tags,
+adjudicated outcomes, policy predictions, model scores, or internal retrieval
+fields.
+
+Each raw annotation-record set:
+
+- is bound to one exact annotation batch
+- is bound to one exact guide version and SHA-256
+- is bound to the accepted passage artifact SHA-256
+- contains one pseudonymous annotator ID
+- covers every assigned case exactly once
+- preserves reason codes, missing-information statements, rationale, uncertainty,
+  and a canonical UTC annotation timestamp
+- rejects fields that expose post-annotation or external evaluation information
+
+Two independently produced record sets can be compared deterministically before
+adjudication. The comparison:
+
+- requires distinct annotators
+- preserves annotation-batch case order
+- detects disagreement in evidence status, response action, reason-code sets,
+  and missing-information sets
+- treats reason-code and missing-information arrays as order-insensitive
+- keeps rationale wording outside machine disagreement scoring
+- routes any case with a label disagreement or uncertainty flag to adjudication
+
+Agreement reporting includes:
+
+- raw binary status agreement
+- Cohen's kappa, with undefined degenerate cases represented as `null`
+- exact reason-code-set agreement
+- mean reason-code Jaccard similarity
+- directional per-code precision, recall, and F1
+- macro-averaged reason-code precision, recall, and F1
+
+Question-structure and evidence-structure analysis metadata is stored separately
+from blinded assignments. That metadata can produce deterministic disagreement,
+uncertainty, and adjudication counts for each declared structure code without
+revealing labels to annotators.
+
+Written adjudication:
+
+- preserves both original annotation IDs
+- covers exactly the cases requiring adjudication
+- records one or more supported disagreement categories when labels disagree
+- permits an empty category list only for uncertainty-only review
+- records final status, action, reason codes, missing information, and rationale
+- records whether a guide change is required
+- never overwrites either raw annotation
+
+Annotation, adjudication, agreement, and structure-report artifacts can be
+published as UTF-8 JSON using:
+
+- two-space indentation
+- non-ASCII text preservation
+- one trailing newline
+- same-directory temporary files
+- file synchronization before publication
+- hard-link publication that cannot replace an existing destination
+- cleanup of temporary files after success or failure
+
+This infrastructure does not itself create new cases, perform annotation,
+adjudicate labels, assign splits, or select a runtime policy.
+
 ### Current boundary
 
-The split infrastructure does not:
+The current data-governance infrastructure does not:
 
 - choose a sufficiency policy
 - choose a model
@@ -563,4 +643,5 @@ The split infrastructure does not:
 - manufacture held-out cases
 - convert development cases into test cases
 
-It establishes the data-governance boundary required before those activities.
+It establishes the data-governance and annotation boundary required before
+those activities.

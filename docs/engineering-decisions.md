@@ -3103,3 +3103,246 @@ threshold, or generator.
 **Date:**
 
 2026-07-22
+
+## PP-032: Establish a blinded evidence-sufficiency annotation workflow
+
+**Decision:**
+
+Implement a deterministic, fail-closed annotation workflow before expanding the
+evidence-sufficiency dataset or populating validation and test splits.
+
+Accepted implementation:
+
+- `src/policyproof/evidence_sufficiency_annotations.py`
+- `tests/test_evidence_sufficiency_annotations.py`
+- `tests/test_evidence_sufficiency_annotation_records.py`
+- `tests/test_evidence_sufficiency_annotation_comparison.py`
+- `tests/test_evidence_sufficiency_adjudication.py`
+- `tests/test_evidence_sufficiency_annotation_agreement.py`
+- `tests/test_evidence_sufficiency_annotation_metadata.py`
+- `tests/test_evidence_sufficiency_structure_disagreement.py`
+- `tests/test_evidence_sufficiency_annotation_writer.py`
+
+No new annotation batch, raw annotation record, adjudication record, agreement
+report, structure report, evidence dataset version, validation case, or test case
+is accepted by this decision.
+
+**Context:**
+
+The existing evidence-sufficiency dataset is development-only and was inspected
+while its schema, reason codes, validation logic, research protocol, and
+annotation guide were developed.
+
+Future validation and test cases therefore require an independent annotation
+process that:
+
+- prevents annotator access to expected outcomes
+- preserves both original annotations
+- measures agreement before adjudication
+- records written adjudication
+- separates blinded assignment data from analysis-only structure metadata
+- binds every artifact to exact immutable inputs
+- publishes artifacts without overwriting prior output
+
+Using one combined record for assignment, annotation, analysis metadata,
+agreement, and adjudication would create avoidable leakage and make it difficult
+to distinguish original human labels from later decisions.
+
+**Blinded assignment contract:**
+
+Each annotation batch is bound to:
+
+- annotation-guide version and SHA-256
+- corpus ID and version
+- passage schema version and SHA-256
+
+Each assigned case contains exactly:
+
+- case ID
+- query ID
+- question
+- ordered evidence objects containing:
+  - passage ID
+  - document ID
+  - neutral source label
+  - citation text
+
+Every embedded evidence object must exactly match the accepted passage artifact.
+
+The batch rejects:
+
+- unknown cases or passages
+- duplicate case IDs
+- duplicate evidence passage IDs within a case
+- mismatched passage text or metadata
+- internal retrieval text
+- logical-source keys
+- expected labels
+- retrieval grades
+- policy predictions
+- model scores
+- other unknown fields
+
+**Raw annotation contract:**
+
+Each record set represents one pseudonymous annotator and must:
+
+- bind to one exact annotation batch
+- bind to one exact guide version and SHA-256
+- bind to the accepted passage artifact SHA-256
+- cover every batch case exactly once
+- preserve annotation ID, case ID, status, action, reason codes,
+  missing-information statements, rationale, uncertainty, optional adjudication
+  note, and timestamp
+- use canonical second-precision RFC 3339 UTC timestamps
+- reject post-annotation and external evaluation fields
+
+Sufficient annotations require:
+
+- `answer`
+- no reason codes
+- no missing-information statements
+
+Insufficient annotations require:
+
+- `abstain`
+- at least one supported reason code
+- at least one missing-information statement
+
+**Pre-adjudication comparison and agreement:**
+
+Two record sets must come from distinct annotators.
+
+Comparison preserves annotation-batch case order and detects disagreement in:
+
+- evidence status
+- response action
+- reason-code set
+- missing-information set
+
+Reason-code and missing-information arrays are compared as sets. Rationale
+wording is preserved but is not treated as a machine-scored label field.
+
+A case requires adjudication when:
+
+- any compared label field disagrees
+- either annotator sets the uncertainty flag
+
+Agreement reporting includes:
+
+- raw sufficient-versus-insufficient agreement
+- Cohen's kappa
+- exact reason-code-set agreement
+- mean reason-code Jaccard similarity
+- per-code directional precision, recall, and F1
+- macro-averaged reason-code precision, recall, and F1
+
+Degenerate kappa and unavailable macro metrics are represented explicitly as
+`null`, not replaced with misleading numeric values.
+
+**Analysis-metadata contract:**
+
+Question-structure and evidence-structure codes are stored in a separate
+analysis-only artifact.
+
+This artifact:
+
+- binds to the exact annotation batch
+- covers every case exactly once
+- requires supported, nonempty structure-code sets
+- rejects labels, reason codes, missing information, adjudicated outcomes,
+  predictions, and model scores
+
+Structure reporting counts, for each question or evidence structure:
+
+- total cases
+- cases with label disagreement
+- cases with uncertainty
+- cases requiring adjudication
+- disagreement counts for each compared label field
+
+A case assigned multiple structure codes is counted once under each code.
+
+**Adjudication contract:**
+
+The adjudication record set binds to:
+
+- the exact annotation batch
+- both exact raw annotation record sets
+- the exact guide version and SHA-256
+
+It must cover exactly the cases identified by comparison as requiring
+adjudication.
+
+Each adjudication record preserves:
+
+- both original annotation IDs
+- supported disagreement categories
+- final evidence status and response action
+- final reason codes and missing information
+- final rationale
+- adjudication rationale
+- guide-change decision and optional summary
+- canonical UTC timestamp
+
+Original annotations are never overwritten.
+
+**Publication contract:**
+
+JSON artifacts are serialized deterministically using:
+
+- UTF-8
+- two-space indentation
+- `ensure_ascii=False`
+- one trailing newline
+
+Publication uses:
+
+- a same-directory temporary file
+- flush and `fsync`
+- hard-link creation of the destination
+- refusal to replace an existing destination
+- temporary-file cleanup after success or failure
+
+The writer is serialization-only. Artifact-specific validation must occur before
+publication.
+
+**Consequences:**
+
+- blinded annotation data remains separate from analysis and adjudication data
+- original annotations remain auditable
+- pre-adjudication agreement cannot be reconstructed from overwritten labels
+- uncertainty is reviewed even when primary labels agree
+- question- and evidence-structure analysis does not leak into annotator
+  assignments
+- future dataset versions can bind to exact annotation inputs and reports
+- no held-out performance claim is enabled until new cases are independently
+  annotated, adjudicated, split, frozen, and published
+- this infrastructure does not select a model, prompt, threshold, generator, or
+  runtime sufficiency policy
+
+**How we verified it:**
+
+- failing-first tests established every contract before implementation
+- annotation batches reject hidden or mismatched evidence fields
+- raw record sets require complete and unique case coverage
+- raw and adjudication timestamps require canonical RFC 3339 UTC format
+- comparison requires distinct annotators
+- comparison and report ordering is deterministic
+- supplied records are verified not to mutate
+- reason-code and missing-information set ordering does not affect comparison
+- uncertainty-only cases are routed to adjudication
+- adjudication must preserve both original annotation IDs
+- adjudication coverage is derived from validated comparison results
+- agreement metrics cover perfect, disagreeing, and degenerate distributions
+- structure reports are invariant to input ordering
+- report artifacts preserve exact input IDs, versions, and SHA-256 values
+- JSON output is byte-stable
+- existing output cannot be overwritten
+- temporary files are removed after publication failure
+- the complete repository passes `653` tests
+- Ruff, Python compilation, and `git diff --check` pass
+
+**Date:**
+
+2026-07-24

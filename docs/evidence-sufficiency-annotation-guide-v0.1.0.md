@@ -2,7 +2,7 @@
 
 Version: `0.1.0`
 
-Status: proposed annotation contract for PolicyProof benchmark expansion.
+Status: accepted annotation contract for PolicyProof benchmark expansion.
 
 This guide defines how human annotators label whether a supplied evidence set
 supports a complete policy question.
