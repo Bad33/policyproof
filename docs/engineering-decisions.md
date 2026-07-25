@@ -3886,3 +3886,109 @@ evaluation, and application phases.
 **Date:**
 
 2026-07-25
+
+## PP-037: Publish the complete blinded annotation batch
+
+**Decision:**
+
+Publish annotation-batch version `0.2.0` as the immutable annotator-facing
+representation of all `160` accepted evidence-sufficiency cases.
+
+Accepted artifact:
+
+- `data/evaluation/evidence-sufficiency-annotation-batch-v0.2.0.json`
+- batch ID:
+  `policyproof-evidence-sufficiency-annotation-batch`
+- batch version: `0.2.0`
+- schema version: `1.0`
+- annotation-guide version: `0.1.0`
+- annotation-guide SHA-256:
+  `f188099ffa51b1005a5c607281426a13b5cd087dd51407bbe05808cd4dce893d`
+- passage schema version: `1.1`
+- passage-artifact SHA-256:
+  `5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96`
+- construction-artifact SHA-256:
+  `c78e947a231492ccfece538a234b40bd9a94ca07aacb1acf51d970cecffdf21f`
+- blinded cases: `160`
+- size: `441121` bytes
+- SHA-256:
+  `1bb6a7bed55a43f59a79ff4861c81c3d36ffa5ed78af1bf12292bceb927bf93c`
+
+Accepted repository test:
+
+- `tests/test_evidence_sufficiency_annotation_batch_v0_2_repository.py`
+
+**Context:**
+
+PP-036 completed the label-free construction manifest across all `80`
+source-query groups. Construction records contain internal evidence-structure
+and complete-reference relationships that must remain unavailable to
+annotators.
+
+The annotation batch transforms those records into the minimal blinded
+contract. Each case exposes only:
+
+- case ID
+- query ID
+- question
+- evidence snapshots
+
+Each evidence snapshot exposes only:
+
+- passage ID
+- document ID
+- citation label
+- citation text
+
+The batch preserves the construction artifact's case ordering and evidence
+ordering while removing all hidden construction metadata.
+
+**Consequences:**
+
+- all `160` cases can now be independently annotated
+- annotators receive accepted citation text rather than retrieval text
+- construction structures and canonical-reference relationships remain hidden
+- expected evidence status and response action remain hidden
+- reason codes and missing-information expectations remain hidden
+- retrieval scores, rankings, predictions, and split assignments remain hidden
+- every evidence snapshot is validated against the accepted passage corpus
+- every batch binding is cryptographically locked
+- the artifact is immutable and refuses overwrite
+- annotation submissions can be validated against one stable batch SHA-256
+
+**How we verified it:**
+
+- a failing-first repository test required the batch artifact to exist
+- the expected failure occurred before publication
+- publication used the accepted atomic no-overwrite JSON writer
+- the batch passes the accepted fail-closed annotation-batch validator
+- all `160` construction case IDs are preserved in exact order
+- all evidence passage IDs are preserved in exact order
+- every case has exactly the four allowed annotator-facing fields
+- every evidence snapshot has exactly the four allowed citation fields
+- hidden construction, annotation-label, retrieval, prediction, ranking, and
+  split fields are absent
+- the artifact is locked at `441121` bytes and the accepted SHA-256
+- the focused annotation suite passes `103` tests
+- the complete repository passes `790` tests
+- Ruff, Python compilation, and `git diff --check` pass
+
+**Limits:**
+
+This decision publishes only the blinded annotation batch. It does not create:
+
+- annotator assignments
+- completed annotations
+- inter-annotator agreement results
+- adjudication records
+- adjudicated labels
+- validation or test splits
+- evidence-sufficiency model results
+- policy thresholds
+- product-performance claims
+
+Those outputs require independent annotation and subsequent adjudication.
+
+**Date:**
+
+2026-07-25
