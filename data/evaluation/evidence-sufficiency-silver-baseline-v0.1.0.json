@@ -1,0 +1,376 @@
+{
+  "annotation_batch_sha256": "1bb6a7bed55a43f59a79ff4861c81c3d36ffa5ed78af1bf12292bceb927bf93c",
+  "feature_names": [
+    "evidence_count",
+    "log_evidence_word_count",
+    "question_content_coverage",
+    "citation_label_content_coverage",
+    "evidence_content_density"
+  ],
+  "label_provenance": "construction_derived",
+  "metrics": [
+    {
+      "accuracy": 0.615384615385,
+      "balanced_accuracy": 0.69387755102,
+      "case_count": 78,
+      "f1": 0.558823529412,
+      "false_negative": 30,
+      "false_positive": 0,
+      "precision": 1.0,
+      "recall": 0.387755102041,
+      "split_name": "train",
+      "true_negative": 29,
+      "true_positive": 19
+    },
+    {
+      "accuracy": 0.90243902439,
+      "balanced_accuracy": 0.88625,
+      "case_count": 41,
+      "f1": 0.866666666667,
+      "false_negative": 3,
+      "false_positive": 1,
+      "precision": 0.928571428571,
+      "recall": 0.8125,
+      "split_name": "validation",
+      "true_negative": 24,
+      "true_positive": 13
+    },
+    {
+      "accuracy": 0.90243902439,
+      "balanced_accuracy": 0.875,
+      "case_count": 41,
+      "f1": 0.857142857143,
+      "false_negative": 4,
+      "false_positive": 0,
+      "precision": 1.0,
+      "recall": 0.75,
+      "split_name": "test",
+      "true_negative": 25,
+      "true_positive": 12
+    }
+  ],
+  "model_type": "standardized_logistic_regression",
+  "result_id": "policyproof-evidence-sufficiency-silver-baseline",
+  "result_version": "0.1.0",
+  "schema_version": "1.0",
+  "silver_label_set_sha256": "aa7e12b43d2a9f1fbd93b266c7614cb13e3b486d2456fa450d57cf85d3599531",
+  "split_artifact_sha256": "6a0200c31b465bf2784d86e5383c83750ba358c6a83f9cb6b58313df22fa9482",
+  "test_predictions": [
+    {
+      "case_id": "genai-005-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.895583964181,
+      "query_id": "genai-005"
+    },
+    {
+      "case_id": "genai-005-incident-planning-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.490495826719,
+      "query_id": "genai-005"
+    },
+    {
+      "case_id": "genai-005-monitoring-fallback-contracts-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.309842618109,
+      "query_id": "genai-005"
+    },
+    {
+      "case_id": "rmf-006-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.971094114995,
+      "query_id": "rmf-006"
+    },
+    {
+      "case_id": "rmf-006-organizational-role-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.764708580591,
+      "query_id": "rmf-006"
+    },
+    {
+      "case_id": "rmf-006-continuity-without-full-role",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.671149766751,
+      "query_id": "rmf-006"
+    },
+    {
+      "case_id": "eu-010-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.434303981505,
+      "query_id": "eu-010"
+    },
+    {
+      "case_id": "eu-011-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.999124693029,
+      "query_id": "eu-011"
+    },
+    {
+      "case_id": "eu-011-candidate-01-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.547717321801,
+      "query_id": "eu-011"
+    },
+    {
+      "case_id": "eu-011-candidate-02-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.77088896124,
+      "query_id": "eu-011"
+    },
+    {
+      "case_id": "eu-011-candidate-03-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.64727713946,
+      "query_id": "eu-011"
+    },
+    {
+      "case_id": "eu-017-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.978680216477,
+      "query_id": "eu-017"
+    },
+    {
+      "case_id": "eu-017-candidate-01-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.601055459137,
+      "query_id": "eu-017"
+    },
+    {
+      "case_id": "eu-017-candidate-02-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.725401355962,
+      "query_id": "eu-017"
+    },
+    {
+      "case_id": "eu-026-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.999739692202,
+      "query_id": "eu-026"
+    },
+    {
+      "case_id": "eu-026-candidate-01-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.427690543795,
+      "query_id": "eu-026"
+    },
+    {
+      "case_id": "eu-026-candidate-02-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.280280585453,
+      "query_id": "eu-026"
+    },
+    {
+      "case_id": "eu-026-candidate-03-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.157945886435,
+      "query_id": "eu-026"
+    },
+    {
+      "case_id": "genai-010-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.918404340795,
+      "query_id": "genai-010"
+    },
+    {
+      "case_id": "genai-010-candidate-01-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.316999569457,
+      "query_id": "genai-010"
+    },
+    {
+      "case_id": "genai-010-candidate-02-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.465332382196,
+      "query_id": "genai-010"
+    },
+    {
+      "case_id": "genai-016-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.938641532696,
+      "query_id": "genai-016"
+    },
+    {
+      "case_id": "genai-016-candidate-01-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.397426414685,
+      "query_id": "genai-016"
+    },
+    {
+      "case_id": "genai-016-candidate-02-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.446907061304,
+      "query_id": "genai-016"
+    },
+    {
+      "case_id": "genai-019-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.326328696642,
+      "query_id": "genai-019"
+    },
+    {
+      "case_id": "gpt4o-007-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.995736303556,
+      "query_id": "gpt4o-007"
+    },
+    {
+      "case_id": "gpt4o-007-candidate-01-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.422978751737,
+      "query_id": "gpt4o-007"
+    },
+    {
+      "case_id": "gpt4o-007-candidate-02-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.399230857979,
+      "query_id": "gpt4o-007"
+    },
+    {
+      "case_id": "gpt4o-007-candidate-03-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.167988813762,
+      "query_id": "gpt4o-007"
+    },
+    {
+      "case_id": "gpt4o-008-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.530598693982,
+      "query_id": "gpt4o-008"
+    },
+    {
+      "case_id": "gpt4o-016-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.650262270791,
+      "query_id": "gpt4o-016"
+    },
+    {
+      "case_id": "gpt4o-020-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.807610301105,
+      "query_id": "gpt4o-020"
+    },
+    {
+      "case_id": "rmf-009-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.974452060262,
+      "query_id": "rmf-009"
+    },
+    {
+      "case_id": "rmf-009-candidate-01-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.496356756622,
+      "query_id": "rmf-009"
+    },
+    {
+      "case_id": "rmf-009-candidate-02-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.512919590665,
+      "query_id": "rmf-009"
+    },
+    {
+      "case_id": "rmf-012-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.949070779121,
+      "query_id": "rmf-012"
+    },
+    {
+      "case_id": "rmf-012-candidate-01-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.370434792815,
+      "query_id": "rmf-012"
+    },
+    {
+      "case_id": "rmf-012-candidate-02-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.444340787235,
+      "query_id": "rmf-012"
+    },
+    {
+      "case_id": "rmf-018-complete-reference",
+      "gold_evidence_status": "sufficient",
+      "predicted_evidence_status": "sufficient",
+      "probability_sufficient": 0.967709153874,
+      "query_id": "rmf-018"
+    },
+    {
+      "case_id": "rmf-018-candidate-01-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.501641261045,
+      "query_id": "rmf-018"
+    },
+    {
+      "case_id": "rmf-018-candidate-02-only",
+      "gold_evidence_status": "insufficient",
+      "predicted_evidence_status": "insufficient",
+      "probability_sufficient": 0.516201354412,
+      "query_id": "rmf-018"
+    }
+  ],
+  "training": {
+    "coefficients": [
+      1.489524495236,
+      -0.548196526247,
+      0.623788508726,
+      -0.154010443653,
+      -0.09190710529
+    ],
+    "feature_means": [
+      1.230769230769,
+      5.516658244776,
+      0.587892295613,
+      0.192250776499,
+      0.458675510103
+    ],
+    "feature_scales": [
+      0.478327130928,
+      0.534773105904,
+      0.156226662407,
+      0.143265964773,
+      0.093215874487
+    ],
+    "intercept": 0.879874180763,
+    "iterations": 2500,
+    "l2_penalty": 0.01,
+    "learning_rate": 0.05,
+    "selected_threshold": 0.772084750192,
+    "threshold_selection_metric": "validation_balanced_accuracy_then_f1"
+  }
+}

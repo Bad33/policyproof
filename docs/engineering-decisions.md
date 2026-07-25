@@ -4089,3 +4089,89 @@ results.
 **Date:**
 
 2026-07-25
+
+## PP-039: Freeze query-grouped silver splits and a lexical baseline
+
+**Decision:**
+
+Publish deterministic query-grouped train, validation, and test splits for the
+`160` construction-derived silver labels, then evaluate a transparent shallow
+lexical baseline without retrieval scores, model outputs, or hidden construction
+fields as input features.
+
+Accepted implementation:
+
+- `src/policyproof/evidence_sufficiency_silver_evaluation.py`
+- `tests/test_evidence_sufficiency_silver_evaluation.py`
+- `tests/test_evidence_sufficiency_silver_evaluation_repository.py`
+
+Accepted split artifact:
+
+- `data/evaluation/evidence-sufficiency-silver-splits-v0.1.0.json`
+- train: `48` queries and
+  `78` cases
+- validation: `16` queries and
+  `41` cases
+- test: `16` queries and
+  `41` cases
+- grouping key: `query_id`
+- label provenance: `construction_derived`
+- size: `9049` bytes
+- SHA-256: `6a0200c31b465bf2784d86e5383c83750ba358c6a83f9cb6b58313df22fa9482`
+
+Accepted baseline artifact:
+
+- `data/evaluation/evidence-sufficiency-silver-baseline-v0.1.0.json`
+- model: `standardized_logistic_regression`
+- validation balanced accuracy:
+  `0.88625`
+- test accuracy: `0.90243902439`
+- test balanced accuracy: `0.875`
+- test precision: `1.0`
+- test recall: `0.75`
+- test F1: `0.857142857143`
+- label provenance: `construction_derived`
+- size: `11940` bytes
+- SHA-256: `847c4dedb37ea5c77c94bdf964d408c8685387f43cc57c3acc90a5170146be80`
+
+The fixed features are evidence count, log evidence word count, question
+content-token coverage, citation-label content-token coverage, and evidence
+content-token density.
+
+**Context:**
+
+Complete and incomplete variants share a query. Random case-level splitting
+would therefore leak the same question across partitions. Every variant of one
+query is assigned to exactly one split.
+
+**Consequences:**
+
+- `48` query groups are used for training
+- `16` query groups are used for validation
+- `16` query groups are held out for test
+- no query ID or case ID crosses split boundaries
+- training uses only train cases
+- threshold selection uses only validation cases
+- test metrics are computed after threshold selection
+- baseline inputs are limited to annotator-visible question and citation data
+- metrics remain silver-label engineering metrics, not human gold results
+
+**How we verified it:**
+
+- failing-first repository tests required both artifacts
+- validators reject split leakage, missing coverage, binding changes, and
+  prediction-order changes
+- both artifacts are immutable and SHA-256 locked
+- the focused suite passes `7` tests
+- the full repository passes `820` tests
+- Ruff, compilation, and `git diff --check` pass
+
+**Limits:**
+
+The labels are construction-derived. These metrics do not establish
+human-validated production accuracy, retrieval quality, answer correctness,
+legal correctness, or adjudicated evidence sufficiency.
+
+**Date:**
+
+2026-07-25
