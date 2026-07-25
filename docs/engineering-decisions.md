@@ -3596,3 +3596,169 @@ assignments, or test assignments.
 **Date:**
 
 2026-07-25
+
+## PP-035: Accept a label-free pilot case-construction manifest
+
+**Decision:**
+
+Accept a fail-closed contract for pre-annotation evidence-case construction and
+publish a reviewed pilot manifest before expanding construction across the full
+query inventory.
+
+Accepted implementation:
+
+- `src/policyproof/evidence_sufficiency_case_construction.py`
+- `tests/test_evidence_sufficiency_case_construction.py`
+- `tests/test_evidence_sufficiency_case_construction_writer.py`
+- `tests/test_evidence_sufficiency_case_construction_repository.py`
+
+Accepted pilot artifact:
+
+- `data/evaluation/evidence-sufficiency-case-construction-pilot-v0.1.0.json`
+- construction ID:
+  `policyproof-evidence-sufficiency-case-construction`
+- construction version: `0.1.0`
+- schema version: `1.0`
+- query-inventory version: `0.2.0`
+- query-inventory SHA-256:
+  `a6e03c5b28f8a99124b3141c7d2fb6ef7e85f11dfab2477c151f05f4514970f0`
+- passage schema version: `1.1`
+- passage-artifact SHA-256:
+  `5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96`
+- pilot source-query groups: `8`
+- pilot evidence cases: `21`
+- size: `15859` bytes
+- SHA-256:
+  `a42e680e4b82ef8fd41b8cf3e7c6df4e405018c1bbf851515a9d1550422d0c57`
+
+The pilot contains:
+
+- `8` canonical complete-reference cases
+- `12` strict-subset incomplete-evidence cases
+- `1` complete case with a declared topically related distractor
+- `6` cases using multiple complementary passages
+- `3` cases declaring one complete passage
+- `12` canonical-reference edges, all targeting non-derived complete cases
+
+The eight reviewed query groups are:
+
+- `eu-005`
+- `eu-006`
+- `genai-005`
+- `genai-006`
+- `rmf-005`
+- `rmf-006`
+- `gpt4o-005`
+- `gpt4o-006`
+
+**Context:**
+
+PP-034 accepted 80 label-blind source-query groups before any evidence-case
+construction. Evidence construction now requires a separate auditable artifact
+because the blinded annotation batch must not expose construction decisions such
+as complete-reference relationships, incomplete-subset design, or distractor
+structure.
+
+The construction manifest therefore stores only the information needed to
+reproduce and audit evidence variants before annotation:
+
+- case ID
+- source query ID
+- the exact inventory question
+- ordered evidence passage IDs
+- inventory question-structure codes
+- evidence-structure codes
+- an internal canonical complete-reference case ID when required
+
+Construction metadata remains separate from the blinded annotation records
+provided to annotators.
+
+Complete evidence and incomplete variants were selected through manual review of
+the accepted citation text for the inventory's declared logical sources. No
+retrieval scores, retrieval rankings, model outputs, policy predictions, desired
+class balance, annotation outcomes, validation assignments, or test assignments
+were inspected during construction.
+
+**Consequences:**
+
+- evidence-case construction is cryptographically bound to the accepted query
+  inventory and passage corpus
+- questions and question-structure codes must match the query inventory exactly
+- referenced passages must exist in the accepted passage artifact
+- query and evidence-passage combinations must be unique regardless of passage
+  ordering
+- complete-reference targets must belong to the same query and declare a complete
+  evidence structure
+- complete-reference targets must be canonical and cannot themselves be derived
+  from another case
+- strict-subset cases must declare `incomplete_evidence_set`
+- strict-subset evidence must be an actual strict subset of its canonical
+  reference evidence
+- incomplete evidence must omit at least one canonical-reference passage
+- evidence spanning documents must declare `multiple_documents`
+- single-passage, complementary-passage, and distractor structure claims are
+  checked against observable passage cardinality
+- label, response-action, reason-code, rationale, missing-information,
+  evaluation, retrieval, prediction, score, ranking, and split fields are
+  rejected
+- the JSON writer publishes atomically, refuses overwrite, preserves UTF-8 text,
+  and cleans temporary files after publication failure
+- construction metadata remains unavailable to blinded annotators
+- the pilot artifact is immutable and independently SHA-256 locked
+
+**How we verified it:**
+
+- failing-first tests established the construction validator before artifact
+  publication
+- fail-closed tests cover top-level, case, query-inventory, source-manifest,
+  passage-corpus, binding, evidence-structure, and relationship contracts
+- a failing-first writer suite required deterministic UTF-8 output, atomic
+  publication, overwrite refusal, error translation, and temporary-file cleanup
+- a failing-first repository test required the reviewed pilot artifact to be
+  published
+- the repository artifact validates against `data/source_manifest.json`, query
+  inventory version `0.2.0`, and all `707` accepted passages
+- the published artifact exactly reproduces the previously reviewed temporary
+  pilot at `15859` bytes and the accepted SHA-256
+- manual review confirmed zero forbidden label, prediction, retrieval-score,
+  ranking, or split fields
+- manual review confirmed all `12` reference edges target canonical complete
+  cases
+- manual review covered all `21` case records and their evidence-structure codes
+- `77` case-construction contract tests pass
+- `6` writer tests pass
+- `2` repository-publication tests pass
+- the combined focused suite passes `85` tests
+- the complete repository passes `786` tests
+- Ruff, Python compilation, and `git diff --check` pass
+
+**Limits:**
+
+This decision accepts only a pilot construction manifest. It does not complete
+the research protocol's target of `160` to `240` new evidence cases. With `21`
+pilot cases accepted, between `139` and `219` additional cases remain to reach
+that target.
+
+This decision does not create:
+
+- annotation batches
+- annotator assignments
+- annotation records
+- sufficiency labels
+- response-action labels
+- reason codes
+- missing-information statements
+- adjudication records
+- leakage components
+- validation or test splits
+- policy thresholds
+- model training data
+- held-out evaluation results
+- performance claims
+
+The pilot must be expanded through additional manual evidence review before
+blinded annotation or split construction begins.
+
+**Date:**
+
+2026-07-25

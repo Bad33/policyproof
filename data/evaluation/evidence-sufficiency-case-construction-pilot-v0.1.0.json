@@ -1,0 +1,374 @@
+{
+  "schema_version": "1.0",
+  "construction_id": "policyproof-evidence-sufficiency-case-construction",
+  "construction_version": "0.1.0",
+  "query_inventory_id": "policyproof-evidence-sufficiency-query-inventory",
+  "query_inventory_version": "0.2.0",
+  "query_inventory_sha256": "a6e03c5b28f8a99124b3141c7d2fb6ef7e85f11dfab2477c151f05f4514970f0",
+  "corpus_id": "policyproof-initial-corpus",
+  "corpus_version": "0.1.0",
+  "passage_schema_version": "1.1",
+  "passage_artifact_sha256": "5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96",
+  "case_count": 21,
+  "cases": [
+    {
+      "case_id": "eu-005-complete-reference",
+      "query_id": "eu-005",
+      "question": "What must the Article 9 risk management system for high-risk AI systems include, and how must providers test and update it across the lifecycle?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0056:line-0011:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0056:line-0011:passage-002"
+      ],
+      "question_structure_codes": [
+        "legal_obligations",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "multiple_complementary_passages"
+      ]
+    },
+    {
+      "case_id": "eu-005-system-without-testing",
+      "query_id": "eu-005",
+      "question": "What must the Article 9 risk management system for high-risk AI systems include, and how must providers test and update it across the lifecycle?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0056:line-0011:passage-001"
+      ],
+      "question_structure_codes": [
+        "legal_obligations",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "eu-005-complete-reference"
+    },
+    {
+      "case_id": "eu-005-testing-without-system",
+      "query_id": "eu-005",
+      "question": "What must the Article 9 risk management system for high-risk AI systems include, and how must providers test and update it across the lifecycle?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0056:line-0011:passage-002"
+      ],
+      "question_structure_codes": [
+        "legal_obligations",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "eu-005-complete-reference"
+    },
+    {
+      "case_id": "eu-006-complete-reference",
+      "query_id": "eu-006",
+      "question": "When does Article 25 treat a distributor, importer, deployer, or other third party as the provider of a high-risk AI system, and what responsibilities follow?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-001"
+      ],
+      "question_structure_codes": [
+        "legal_classification",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "one_complete_passage"
+      ]
+    },
+    {
+      "case_id": "eu-006-complete-with-value-chain-distractor",
+      "query_id": "eu-006",
+      "question": "When does Article 25 treat a distributor, importer, deployer, or other third party as the provider of a high-risk AI system, and what responsibilities follow?",
+      "evidence_passage_ids": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-001",
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003:passage-002"
+      ],
+      "question_structure_codes": [
+        "legal_classification",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "one_complete_passage",
+        "topically_related_distractors"
+      ]
+    },
+    {
+      "case_id": "genai-005-complete-reference",
+      "query_id": "genai-005",
+      "question": "What contingency practices does the NIST Generative AI Profile recommend for failures or incidents involving high-risk third-party GAI data and systems?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-001",
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-002"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "evidence_structure_codes": [
+        "multiple_complementary_passages"
+      ]
+    },
+    {
+      "case_id": "genai-005-incident-planning-only",
+      "query_id": "genai-005",
+      "question": "What contingency practices does the NIST Generative AI Profile recommend for failures or incidents involving high-risk third-party GAI data and systems?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-001"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "genai-005-complete-reference"
+    },
+    {
+      "case_id": "genai-005-monitoring-fallback-contracts-only",
+      "query_id": "genai-005",
+      "question": "What contingency practices does the NIST Generative AI Profile recommend for failures or incidents involving high-risk third-party GAI data and systems?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048:passage-002"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "genai-005-complete-reference"
+    },
+    {
+      "case_id": "genai-006-complete-reference",
+      "query_id": "genai-006",
+      "question": "Which actions does MAP 2.3 recommend for scientific integrity and test, evaluation, verification, and validation of generative AI systems?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0028:line-0032:passage-001"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "process_or_evaluation_method"
+      ],
+      "evidence_structure_codes": [
+        "one_complete_passage"
+      ]
+    },
+    {
+      "case_id": "rmf-005-complete-reference",
+      "query_id": "rmf-005",
+      "question": "How do AI-specific risks differ from traditional software risks, and which existing risk frameworks can still inform AI risk management?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-001",
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-002",
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "multiple_complementary_passages"
+      ]
+    },
+    {
+      "case_id": "rmf-005-ai-risk-differences-only",
+      "query_id": "rmf-005",
+      "question": "How do AI-specific risks differ from traditional software risks, and which existing risk frameworks can still inform AI risk management?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-001"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "rmf-005-complete-reference"
+    },
+    {
+      "case_id": "rmf-005-framework-limitations-without-named-frameworks",
+      "query_id": "rmf-005",
+      "question": "How do AI-specific risks differ from traditional software risks, and which existing risk frameworks can still inform AI risk management?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002:passage-003"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "rmf-005-complete-reference"
+    },
+    {
+      "case_id": "rmf-006-complete-reference",
+      "query_id": "rmf-006",
+      "question": "How does the GOVERN function shape organizational AI risk management, and why must it operate continuously across the AI lifecycle?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-001",
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-002"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "multiple_complementary_passages"
+      ]
+    },
+    {
+      "case_id": "rmf-006-organizational-role-only",
+      "query_id": "rmf-006",
+      "question": "How does the GOVERN function shape organizational AI risk management, and why must it operate continuously across the AI lifecycle?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-001"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "rmf-006-complete-reference"
+    },
+    {
+      "case_id": "rmf-006-continuity-without-full-role",
+      "query_id": "rmf-006",
+      "question": "How does the GOVERN function shape organizational AI risk management, and why must it operate continuously across the AI lifecycle?",
+      "evidence_passage_ids": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023:passage-002"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "rmf-006-complete-reference"
+    },
+    {
+      "case_id": "gpt4o-005-complete-reference",
+      "query_id": "gpt4o-005",
+      "question": "How were text-based evaluations adapted for GPT-4o speech-to-speech testing, and what limitations did the System Card identify in that method?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-001",
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-002"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "multiple_complementary_passages"
+      ]
+    },
+    {
+      "case_id": "gpt4o-005-method-without-limitations",
+      "query_id": "gpt4o-005",
+      "question": "How were text-based evaluations adapted for GPT-4o speech-to-speech testing, and what limitations did the System Card identify in that method?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-001"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "gpt4o-005-complete-reference"
+    },
+    {
+      "case_id": "gpt4o-005-limitations-without-method",
+      "query_id": "gpt4o-005",
+      "question": "How were text-based evaluations adapted for GPT-4o speech-to-speech testing, and what limitations did the System Card identify in that method?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011:passage-002"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "gpt4o-005-complete-reference"
+    },
+    {
+      "case_id": "gpt4o-006-complete-reference",
+      "query_id": "gpt4o-006",
+      "question": "What is anthropomorphization, and why might GPT-4o's audio and memory-related capabilities increase emotional reliance or miscalibrated trust?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0005:passage-001",
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0005:passage-002"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "multiple_complementary_passages"
+      ]
+    },
+    {
+      "case_id": "gpt4o-006-definition-without-memory-reliance",
+      "query_id": "gpt4o-006",
+      "question": "What is anthropomorphization, and why might GPT-4o's audio and memory-related capabilities increase emotional reliance or miscalibrated trust?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0005:passage-001"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "gpt4o-006-complete-reference"
+    },
+    {
+      "case_id": "gpt4o-006-reliance-without-definition",
+      "query_id": "gpt4o-006",
+      "question": "What is anthropomorphization, and why might GPT-4o's audio and memory-related capabilities increase emotional reliance or miscalibrated trust?",
+      "evidence_passage_ids": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0005:passage-002"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "evidence_structure_codes": [
+        "strict_subset_of_complete_evidence",
+        "incomplete_evidence_set"
+      ],
+      "complete_reference_case_id": "gpt4o-006-complete-reference"
+    }
+  ]
+}
