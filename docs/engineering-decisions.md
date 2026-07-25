@@ -3992,3 +3992,100 @@ Those outputs require independent annotation and subsequent adjudication.
 **Date:**
 
 2026-07-25
+
+## PP-038: Publish disclosed construction-derived silver labels
+
+**Decision:**
+
+Publish a separate silver-label artifact for accelerated engineering evaluation
+without representing construction-derived labels as independent human
+annotations.
+
+Accepted implementation:
+
+- `src/policyproof/evidence_sufficiency_silver_labels.py`
+- `tests/test_evidence_sufficiency_silver_labels.py`
+- `tests/test_evidence_sufficiency_silver_labels_repository.py`
+
+Accepted artifact:
+
+- `data/evaluation/evidence-sufficiency-silver-labels-v0.1.0.json`
+- label-set ID:
+  `policyproof-evidence-sufficiency-silver-label-set`
+- label-set version: `0.1.0`
+- schema version: `1.0`
+- label provenance: `construction_derived`
+- construction version: `0.2.0`
+- construction SHA-256:
+  `c78e947a231492ccfece538a234b40bd9a94ca07aacb1acf51d970cecffdf21f`
+- annotation-batch version: `0.2.0`
+- annotation-batch SHA-256:
+  `1bb6a7bed55a43f59a79ff4861c81c3d36ffa5ed78af1bf12292bceb927bf93c`
+- cases: `160`
+- sufficient labels: `81`
+- insufficient labels: `79`
+- size: `53145` bytes
+- SHA-256:
+  `aa7e12b43d2a9f1fbd93b266c7614cb13e3b486d2456fa450d57cf85d3599531`
+
+**Context:**
+
+PP-037 published the complete blinded annotation batch but did not create
+human annotation records. Finishing the engineering system quickly requires a
+label set for split construction, abstention-baseline development, and
+end-to-end integration.
+
+The accepted construction manifest already distinguishes canonical complete
+evidence and complete evidence with a distractor from deliberately incomplete
+strict subsets. Version `0.1.0` therefore derives silver labels only from those
+explicit construction structures.
+
+This artifact is deliberately separate from the blinded annotation batch and
+from the human annotation, agreement, and adjudication schemas.
+
+**Consequences:**
+
+- `81` complete or complete-with-distractor cases derive `sufficient` and
+  `answer`
+- `79` incomplete strict subsets derive `insufficient`, `abstain`, and the
+  `incomplete_evidence_set` reason code
+- all `160` labels preserve construction order
+- every label is cryptographically bound to the accepted construction and
+  blinded batch
+- provenance is explicitly `construction_derived`
+- unknown fields, altered bindings, incorrect derivations, duplicate cases,
+  and order changes are rejected
+- silver labels may be used for engineering development and demonstration
+- silver labels must not be described as independent human judgments or gold
+  evaluation data
+
+**How we verified it:**
+
+- a failing-first repository test required publication
+- the expected failure occurred before the artifact existed
+- the artifact passes a fail-closed dedicated validator
+- sufficient and insufficient counts are repository locked
+- action and reason-code relationships are repository locked
+- construction and batch bindings are SHA-256 locked
+- publication is deterministic, atomic, and refuses overwrite
+- the focused silver-label suite passes `23` tests
+- the complete repository passes `813` tests
+- Ruff, Python compilation, and `git diff --check` pass
+
+**Limits:**
+
+This artifact does not provide:
+
+- independent human annotation
+- inter-annotator agreement
+- adjudication
+- human-validated gold labels
+- held-out product-performance claims
+
+The blinded batch remains available for later human validation. Any metrics
+computed from this artifact must be identified as silver-label engineering
+results.
+
+**Date:**
+
+2026-07-25

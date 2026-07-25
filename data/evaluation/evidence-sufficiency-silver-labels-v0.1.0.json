@@ -1,0 +1,1611 @@
+{
+  "schema_version": "1.0",
+  "label_set_id": "policyproof-evidence-sufficiency-silver-label-set",
+  "label_set_version": "0.1.0",
+  "label_provenance": "construction_derived",
+  "construction_id": "policyproof-evidence-sufficiency-case-construction",
+  "construction_version": "0.2.0",
+  "construction_sha256": "c78e947a231492ccfece538a234b40bd9a94ca07aacb1acf51d970cecffdf21f",
+  "annotation_batch_id": "policyproof-evidence-sufficiency-annotation-batch",
+  "annotation_batch_version": "0.2.0",
+  "annotation_batch_sha256": "1bb6a7bed55a43f59a79ff4861c81c3d36ffa5ed78af1bf12292bceb927bf93c",
+  "case_count": 160,
+  "labels": [
+    {
+      "case_id": "eu-005-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-005-system-without-testing",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-005-testing-without-system",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-006-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-006-complete-with-value-chain-distractor",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-005-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-005-incident-planning-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-005-monitoring-fallback-contracts-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-006-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-005-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-005-ai-risk-differences-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-005-framework-limitations-without-named-frameworks",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-006-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-006-organizational-role-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-006-continuity-without-full-role",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-005-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-005-method-without-limitations",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-005-limitations-without-method",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-006-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-006-definition-without-memory-reliance",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-006-reliance-without-definition",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-007-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-008-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-008-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-009-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-010-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-011-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-011-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-011-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-011-candidate-03-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-012-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-012-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-012-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-013-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-013-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-013-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-014-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-015-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-016-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-017-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-017-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-017-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-018-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-019-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-019-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-019-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-020-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-021-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-022-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-022-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-022-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-023-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-023-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-023-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-024-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-024-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-024-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-025-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-025-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-025-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-026-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "eu-026-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-026-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "eu-026-candidate-03-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-007-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-007-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-007-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-008-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-008-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-008-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-009-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-009-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-009-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-010-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-010-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-010-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-011-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-011-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-011-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-012-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-013-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-014-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-015-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-016-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-016-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-016-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-017-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-018-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-019-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-020-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-021-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-022-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-022-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-022-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "genai-023-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "genai-024-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-007-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-007-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-007-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-007-candidate-03-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-008-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-009-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-009-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-009-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-010-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-011-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-012-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-013-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-014-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-015-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-016-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-017-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-017-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-017-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "gpt4o-018-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-019-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-020-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-021-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "gpt4o-022-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-007-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-007-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-007-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-008-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-008-candidate-03-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-008-candidate-04-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-009-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-009-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-009-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-010-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-011-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-012-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-012-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-012-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-013-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-013-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-013-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-014-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-014-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-014-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-015-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-016-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-016-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-016-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-017-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-018-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-018-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-018-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-019-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-020-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-021-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-021-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-021-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-022-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-022-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-022-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-023-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-024-complete-reference",
+      "evidence_status": "sufficient",
+      "response_action": "answer",
+      "reason_codes": [],
+      "missing_information": [],
+      "derivation_rule": "canonical_complete_or_complete_with_distractor"
+    },
+    {
+      "case_id": "rmf-024-candidate-01-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-024-candidate-02-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    },
+    {
+      "case_id": "rmf-024-candidate-03-only",
+      "evidence_status": "insufficient",
+      "response_action": "abstain",
+      "reason_codes": [
+        "incomplete_evidence_set"
+      ],
+      "missing_information": [
+        "At least one passage from the canonical complete-reference evidence set is absent."
+      ],
+      "derivation_rule": "incomplete_strict_subset"
+    }
+  ]
+}
