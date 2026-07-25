@@ -3346,3 +3346,160 @@ publication.
 **Date:**
 
 2026-07-24
+
+## PP-033: Publish a label-blind evidence-sufficiency query inventory
+
+**Decision:**
+
+Accept a deterministic, label-blind query-inventory contract and publish the
+first reviewed inventory before constructing new evidence cases.
+
+Accepted implementation:
+
+- `src/policyproof/evidence_sufficiency_query_inventory.py`
+- `tests/test_evidence_sufficiency_query_inventory.py`
+- `data/evaluation/evidence-sufficiency-query-inventory-v0.1.0.json`
+
+Accepted artifact properties:
+
+- inventory ID: `policyproof-evidence-sufficiency-query-inventory`
+- inventory version: `0.1.0`
+- schema version: `1.0`
+- query count: `14`
+- distinct reviewed logical sources: `14`
+- size: `8013` bytes
+- SHA-256:
+  `168a23fdc3c6e6e9664bd112e37efe340f5e8e1099c30e1b94b0f3de95a937a3`
+
+The inventory binds exactly to:
+
+- corpus ID `policyproof-initial-corpus`
+- corpus version `0.1.0`
+- passage schema version `1.1`
+- passage artifact SHA-256:
+  `5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96`
+- development evidence dataset ID
+  `policyproof-evidence-sufficiency-evaluation`
+- development evidence dataset version `0.1.0`
+- development evidence dataset SHA-256:
+  `9ecd30e4ff829561b50d56bf4f1d3d44c79dcb043ec15661175842597d733a6a`
+
+No new evidence case, sufficiency label, annotation batch, annotation record,
+adjudication record, validation assignment, or test assignment is accepted by
+this decision.
+
+**Context:**
+
+The research protocol requires new query groups to be defined and reviewed
+before evidence cases or labels are created. This order reduces the risk that
+questions are selected or rewritten after inspecting model predictions,
+retrieval scores, expected sufficiency outcomes, or desired class balance.
+
+The existing 39-case evidence dataset is development-only. Its 20 source-query
+groups and their touched logical sources must not be silently recycled as
+nominally new held-out material.
+
+The reviewed inventory is the first controlled query batch toward the protocol's
+larger expansion target. Its 14 queries do not satisfy the target of at least 80
+new source-query groups by themselves.
+
+**Inventory contract:**
+
+Each query record contains exactly:
+
+- query ID
+- question text
+- document scope
+- one or more question-structure codes
+- zero or more reviewed source logical-source keys
+
+The logical-source keys are review metadata used before evidence-case
+construction. They must not be exposed in blinded annotation batches.
+
+The inventory contains no:
+
+- evidence passage IDs or embedded evidence
+- expected evidence status
+- expected response action
+- reason codes
+- missing-information statements
+- rationales or evaluation tags
+- retrieval relevance judgments
+- policy predictions
+- model scores
+- adjudication fields
+
+The accepted inventory covers all ten supported question structures:
+
+- direct factual lookup
+- definition
+- factual list
+- risk and mitigation
+- process or evaluation method
+- policy interpretation
+- legal classification
+- legal obligations
+- comparison
+- multi-part question
+
+The 14 queries use 14 distinct logical sources. Document distribution is:
+
+- NIST AI RMF 1.0: `3`
+- NIST Generative AI Profile: `3`
+- EU AI Act: `4`
+- GPT-4o System Card: `4`
+
+**Validation contract:**
+
+The validator is fail-closed and verifies:
+
+- exact schema, inventory ID, and semantic version format
+- exact corpus, passage, and development-dataset bindings
+- nonempty query collections and matching query counts
+- unique query IDs
+- normalized question uniqueness
+- no query ID or normalized question already used by development data
+- supported and unique question-structure codes
+- known and unique document-scope entries
+- known logical sources contained within the declared document scope
+- no logical source already touched by development evidence
+- passage schema compatibility
+- passage document membership in the accepted manifest
+- unique passage IDs
+- one document per logical source
+- rejection of label, evidence, retrieval, prediction, and unknown fields
+- validation without mutating supplied inputs
+
+**Consequences:**
+
+- query selection is auditable before case construction
+- the reviewed source boundary is separated from evidence labeling
+- development-touched logical sources cannot enter this inventory
+- all question-structure dimensions are represented in the first reviewed batch
+- evidence variants, distractors, incomplete sets, and labels remain future work
+- source logical keys remain internal and cannot leak into blinded assignments
+- the inventory does not create held-out data or enable performance claims
+- the inventory does not select a retriever, reranker, sufficiency policy,
+  prompt, model, generator, or threshold
+
+**How we verified it:**
+
+- failing-first tests established the validator and repository publication gate
+- the artifact validates against the accepted source manifest, passages, and
+  development evidence dataset
+- all 14 query IDs are distinct
+- all 14 logical sources are distinct
+- all ten supported question-structure codes are covered
+- development query IDs, questions, evidence passages, and touched logical
+  sources are rejected
+- forbidden label, evidence, retrieval, and prediction fields are rejected
+- passage schema and manifest-document mismatches are rejected
+- cross-document logical sources are rejected
+- the accepted artifact SHA-256 is locked by a repository regression test
+- JSON uses UTF-8, two-space indentation, and one trailing newline
+- the complete repository passes `699` tests
+- Ruff, Python compilation, and `git diff --check` pass
+
+**Date:**
+
+2026-07-24

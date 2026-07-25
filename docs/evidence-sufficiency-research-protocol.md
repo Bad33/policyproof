@@ -532,11 +532,15 @@ Completed infrastructure:
    been implemented.
 10. Deterministic, atomic, non-overwriting JSON artifact publication has been
     implemented.
+11. Query-inventory version `0.1.0` has been reviewed and published before
+    evidence-case construction. It contains 14 new query groups from 14 distinct
+    development-untouched logical sources and covers all ten question-structure
+    dimensions.
 
 Remaining controlled workflow:
 
-1. Define and review the new query inventory before any evidence labels are
-   created.
+1. Expand and review additional query groups toward the target of at least 80
+   new source-query groups without creating evidence labels.
 2. Construct new cases from accepted passages without inspecting model
    predictions.
 3. Publish blinded annotation batches bound to the accepted guide and passage
@@ -552,4 +556,5 @@ Remaining controlled workflow:
 10. Freeze the dataset, split manifest, hashes, and metric contracts before any
     runtime policy selection.
 
-No new validation or test cases have yet been accepted.
+The published query inventory is review-only. No evidence cases, annotation
+labels, validation assignments, or test assignments have yet been accepted.

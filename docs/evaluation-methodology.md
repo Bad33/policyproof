@@ -550,6 +550,50 @@ performance.
 When perfect stratification conflicts with leakage isolation, leakage isolation
 takes priority.
 
+### Reviewed query inventory
+
+New query groups must be reviewed before evidence cases, expected labels, or
+model outputs are created.
+
+Accepted artifact:
+
+`data/evaluation/evidence-sufficiency-query-inventory-v0.1.0.json`
+
+Artifact properties:
+
+- inventory version: `0.1.0`
+- schema version: `1.0`
+- query count: `14`
+- distinct reviewed logical sources: `14`
+- size: `8013` bytes
+- SHA-256:
+  `168a23fdc3c6e6e9664bd112e37efe340f5e8e1099c30e1b94b0f3de95a937a3`
+
+The inventory binds to the accepted passage artifact and the development-only
+evidence dataset. It rejects query IDs, normalized questions, and logical
+sources already used by development data.
+
+Each record contains only:
+
+- query ID
+- question
+- document scope
+- question-structure codes
+- internal reviewed logical-source keys
+
+It contains no evidence passage selection, sufficiency outcome, response action,
+reason code, missing-information statement, retrieval judgment, policy
+prediction, or model score.
+
+The accepted inventory covers all ten supported question structures and all four
+source documents. Its logical-source keys are pre-construction review metadata
+and must not appear in blinded annotation batches.
+
+This inventory is not an evidence-sufficiency dataset. It does not establish
+complete or incomplete evidence variants, annotation labels, leakage components,
+split assignments, or held-out performance. Its 14 query groups are an initial
+reviewed batch toward the protocol target of at least 80 new query groups.
+
 ### Implemented annotation infrastructure
 
 The repository now provides a fail-closed infrastructure for creating and

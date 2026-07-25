@@ -1,0 +1,214 @@
+{
+  "schema_version": "1.0",
+  "inventory_id": "policyproof-evidence-sufficiency-query-inventory",
+  "inventory_version": "0.1.0",
+  "corpus_id": "policyproof-initial-corpus",
+  "corpus_version": "0.1.0",
+  "passage_schema_version": "1.1",
+  "passage_artifact_sha256": "5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96",
+  "development_evidence_dataset_id": "policyproof-evidence-sufficiency-evaluation",
+  "development_evidence_dataset_version": "0.1.0",
+  "development_evidence_dataset_sha256": "9ecd30e4ff829561b50d56bf4f1d3d44c79dcb043ec15661175842597d733a6a",
+  "query_count": 14,
+  "queries": [
+    {
+      "query_id": "rmf-005",
+      "question": "How do AI-specific risks differ from traditional software risks, and which existing risk frameworks can still inform AI risk management?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002"
+      ]
+    },
+    {
+      "query_id": "rmf-006",
+      "question": "How does the GOVERN function shape organizational AI risk management, and why must it operate continuously across the AI lifecycle?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023"
+      ]
+    },
+    {
+      "query_id": "rmf-007",
+      "question": "Who are the primary and People & Planet audiences of the AI RMF, and how do they contribute to managing AI risk?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0014:line-0010"
+      ]
+    },
+    {
+      "query_id": "genai-005",
+      "question": "What contingency practices does the NIST Generative AI Profile recommend for failures or incidents involving high-risk third-party GAI data and systems?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048"
+      ]
+    },
+    {
+      "query_id": "genai-006",
+      "question": "Which actions does MAP 2.3 recommend for scientific integrity and test, evaluation, verification, and validation of generative AI systems?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0028:line-0032"
+      ]
+    },
+    {
+      "query_id": "genai-007",
+      "question": "How does MEASURE 2.7 recommend evaluating and documenting the security and resilience of generative AI systems?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0037:line-0003"
+      ]
+    },
+    {
+      "query_id": "eu-005",
+      "question": "What must the Article 9 risk management system for high-risk AI systems include, and how must providers test and update it across the lifecycle?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "legal_obligations",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0056:line-0011"
+      ]
+    },
+    {
+      "query_id": "eu-006",
+      "question": "When does Article 25 treat a distributor, importer, deployer, or other third party as the provider of a high-risk AI system, and what responsibilities follow?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "legal_classification",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003"
+      ]
+    },
+    {
+      "query_id": "eu-007",
+      "question": "What information, rights, and documentation must Article 61 provide for subjects who participate in real-world testing outside an AI regulatory sandbox?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_obligations"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0094:line-0003"
+      ]
+    },
+    {
+      "query_id": "eu-008",
+      "question": "How does Recital 27 relate the EU AI Act's binding risk-based rules to the non-binding ethical principles for trustworthy AI?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "policy_interpretation"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-027"
+      ]
+    },
+    {
+      "query_id": "gpt4o-005",
+      "question": "How were text-based evaluations adapted for GPT-4o speech-to-speech testing, and what limitations did the System Card identify in that method?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011"
+      ]
+    },
+    {
+      "query_id": "gpt4o-006",
+      "question": "What is anthropomorphization, and why might GPT-4o's audio and memory-related capabilities increase emotional reliance or miscalibrated trust?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0005"
+      ]
+    },
+    {
+      "query_id": "gpt4o-007",
+      "question": "How was GPT-4o evaluated on historically underrepresented languages, what improvements were observed over prior models, and what limitations remained?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004"
+      ]
+    },
+    {
+      "query_id": "gpt4o-008",
+      "question": "What did Apollo Research conclude about GPT-4o's capability for catastrophic scheming?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "direct_factual_lookup"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0001"
+      ]
+    }
+  ]
+}
