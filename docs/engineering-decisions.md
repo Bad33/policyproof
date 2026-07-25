@@ -3762,3 +3762,127 @@ blinded annotation or split construction begins.
 **Date:**
 
 2026-07-25
+
+## PP-036: Publish the complete label-free case-construction manifest
+
+**Decision:**
+
+Publish construction version `0.2.0` as the immutable expansion that reaches
+the research protocol minimum of `160` new evidence-sufficiency cases across
+all `80` accepted source-query groups.
+
+Accepted artifact:
+
+- `data/evaluation/evidence-sufficiency-case-construction-v0.2.0.json`
+- construction ID:
+  `policyproof-evidence-sufficiency-case-construction`
+- construction version: `0.2.0`
+- schema version: `1.0`
+- query-inventory version: `0.2.0`
+- query-inventory SHA-256:
+  `a6e03c5b28f8a99124b3141c7d2fb6ef7e85f11dfab2477c151f05f4514970f0`
+- passage schema version: `1.1`
+- passage-artifact SHA-256:
+  `5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96`
+- query groups: `80`
+- evidence cases: `160`
+- size: `117798` bytes
+- SHA-256:
+  `c78e947a231492ccfece538a234b40bd9a94ca07aacb1acf51d970cecffdf21f`
+
+Accepted repository test:
+
+- `tests/test_evidence_sufficiency_case_construction_v0_2_repository.py`
+
+The construction contains:
+
+- `80` canonical complete-reference cases
+- `79` incomplete strict-subset cases
+- `1` complete case with a declared topically related distractor
+- `43` cases declaring one complete passage
+- `38` cases using multiple complementary passages
+- all `21` pilot cases preserved as the exact immutable prefix
+- `139` newly constructed cases covering the remaining `72` query groups
+
+Document-level case distribution is:
+
+- EU AI Act: `48`
+- NIST Generative AI Profile: `36`
+- NIST AI RMF 1.0: `47`
+- GPT-4o System Card: `29`
+
+**Context:**
+
+PP-035 accepted the label-free construction contract and a `21`-case pilot.
+The research protocol requires between `160` and `240` new evidence cases.
+Version `0.2.0` deliberately targets the lower bound so the project can proceed
+to blinded annotation without unnecessary expansion.
+
+The remaining construction was produced from an immutable review packet bound
+to query-inventory version `0.2.0` and passage-schema version `1.1`. Candidate
+evidence came only from each query's previously reviewed logical source.
+
+No retrieval ranking, retrieval score, model output, expected annotation,
+desired class balance, validation assignment, or test assignment was used to
+construct the cases.
+
+**Consequences:**
+
+- the protocol's minimum evidence-case target is satisfied
+- all `80` query groups have one canonical complete-reference case
+- incomplete variants remain explicitly linked to canonical complete evidence
+- the accepted `21`-case pilot remains historically and cryptographically
+  preserved
+- the new artifact is independently immutable and SHA-256 locked
+- all questions and question structures remain exactly bound to the accepted
+  query inventory
+- all evidence passage IDs remain bound to the accepted passage corpus
+- duplicate query and evidence-passage combinations are rejected
+- complete-reference targets remain canonical and non-derived
+- strict-subset variants remain actual subsets and declare incomplete evidence
+- construction fields remain separate from blinded annotation records
+- construction now covers the complete intended annotation inventory
+- further expansion toward `240` cases is unnecessary for the current project
+  scope
+
+**How we verified it:**
+
+- a failing-first repository test required version `0.2.0` to exist
+- the expected failure occurred because the artifact had not yet been published
+- publication used the accepted atomic no-overwrite writer
+- the full artifact passes the accepted fail-closed construction validator
+- version `0.2.0` preserves all `21` pilot cases exactly as its prefix
+- all `160` case IDs and query/evidence combinations are unique
+- all `80` accepted query groups are represented
+- the evidence-structure distribution is locked by repository tests
+- the four document-level case totals are locked
+- no forbidden annotation, prediction, retrieval-score, ranking, or split
+  fields are present
+- the artifact is locked at `117798` bytes and the accepted SHA-256
+- the focused construction suite passes `87` tests
+- the complete repository passes `788` tests
+- Ruff, Python compilation, and `git diff --check` pass
+
+**Limits:**
+
+This artifact is a pre-annotation construction manifest. It does not create or
+claim:
+
+- human annotation results
+- inter-annotator agreement
+- adjudicated sufficiency labels
+- response-action labels
+- reason codes
+- missing-information statements
+- validation or test splits
+- evidence-sufficiency model performance
+- retrieval performance on the new cases
+- policy-threshold performance
+- end-to-end product performance
+
+Those outputs require the subsequent blinded annotation, adjudication, split,
+evaluation, and application phases.
+
+**Date:**
+
+2026-07-25
