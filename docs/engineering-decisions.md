@@ -3503,3 +3503,96 @@ The validator is fail-closed and verifies:
 **Date:**
 
 2026-07-24
+
+## PP-034: Expand the label-blind query inventory to the protocol target
+
+**Decision:**
+
+Publish query-inventory version `0.2.0` as an immutable expansion of version
+`0.1.0` before constructing any new evidence-sufficiency cases.
+
+Accepted artifact:
+
+- `data/evaluation/evidence-sufficiency-query-inventory-v0.2.0.json`
+- inventory ID: `policyproof-evidence-sufficiency-query-inventory`
+- inventory version: `0.2.0`
+- schema version: `1.0`
+- query count: `80`
+- distinct reviewed logical sources: `80`
+- size: `46771` bytes
+- SHA-256:
+  `a6e03c5b28f8a99124b3141c7d2fb6ef7e85f11dfab2477c151f05f4514970f0`
+
+Version `0.2.0` preserves all 14 version-`0.1.0` query records exactly in
+their original order and appends 66 additional reviewed records. The immutable
+version-`0.1.0` artifact and its SHA-256 remain unchanged.
+
+All 80 inventory groups are separate from the 20 source-query groups in the
+development-only evidence-sufficiency dataset. They therefore satisfy the
+protocol target of at least 80 new source-query groups relative to development
+data.
+
+Document distribution is:
+
+- NIST AI RMF 1.0: `20`
+- NIST Generative AI Profile: `20`
+- EU AI Act: `22`
+- GPT-4o System Card: `18`
+
+No evidence passage selection, evidence variant, sufficiency label, response
+action, reason code, missing-information statement, annotation batch,
+annotation record, adjudication record, leakage component, split assignment,
+retrieval output, model prediction, or policy threshold is accepted by this
+decision.
+
+**Context:**
+
+PP-033 established the label-blind inventory contract and published the first
+14 reviewed queries. The research protocol requires at least 80 new
+source-query groups before evidence-case construction. Expanding the accepted
+inventory while preserving its original prefix provides an auditable boundary
+between question selection and later evidence or label decisions.
+
+The expansion was performed without inspecting or adding expected sufficiency
+outcomes, retrieval rankings, model outputs, desired class balance, validation
+assignments, or test assignments.
+
+**Consequences:**
+
+- the protocol's query-group coverage target is now met
+- the 14 original records remain historically and cryptographically preserved
+- 66 additional records are appended without changing schema version `1.0`
+- all 80 query IDs, normalized questions, and reviewed logical sources are
+  distinct
+- every query has one document scope and one reviewed logical source
+- all four accepted source documents and all ten supported question structures
+  remain represented
+- all development query IDs, normalized questions, evidence passages, and
+  touched logical sources remain excluded
+- evidence construction and annotation remain separate future phases
+- the inventory still creates no validation or test dataset and supports no
+  held-out performance claim
+
+**How we verified it:**
+
+- a failing-first repository test required immutable expansion from 14 to 80
+  records
+- the original 14 records are preserved as the exact version-`0.2.0` prefix
+- the 66 additions appear in their reviewed order
+- the accepted validator passes against the source manifest, passage artifact,
+  and development evidence dataset
+- all 80 query IDs, normalized questions, and logical sources are distinct
+- document counts are exactly `20`, `20`, `22`, and `18`
+- all ten supported question-structure codes are covered
+- development query-ID, normalized-question, and logical-source overlap are
+  zero
+- the artifact contains only the permitted label-blind inventory fields
+- JSON uses UTF-8, two-space indentation, and one trailing newline
+- version `0.1.0` and version `0.2.0` SHA-256 values are locked independently
+  by repository regression tests
+- the complete repository passes `701` tests
+- Ruff, Python compilation, and `git diff --check` pass
+
+**Date:**
+
+2026-07-25

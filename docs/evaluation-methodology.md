@@ -550,24 +550,40 @@ performance.
 When perfect stratification conflicts with leakage isolation, leakage isolation
 takes priority.
 
+
 ### Reviewed query inventory
 
 New query groups must be reviewed before evidence cases, expected labels, or
 model outputs are created.
 
-Accepted artifact:
+Current accepted artifact:
 
-`data/evaluation/evidence-sufficiency-query-inventory-v0.1.0.json`
+`data/evaluation/evidence-sufficiency-query-inventory-v0.2.0.json`
 
 Artifact properties:
 
-- inventory version: `0.1.0`
+- inventory version: `0.2.0`
 - schema version: `1.0`
-- query count: `14`
-- distinct reviewed logical sources: `14`
-- size: `8013` bytes
+- query count: `80`
+- distinct reviewed logical sources: `80`
+- size: `46771` bytes
 - SHA-256:
-  `168a23fdc3c6e6e9664bd112e37efe340f5e8e1099c30e1b94b0f3de95a937a3`
+  `a6e03c5b28f8a99124b3141c7d2fb6ef7e85f11dfab2477c151f05f4514970f0`
+
+The immutable predecessor remains:
+
+`data/evaluation/evidence-sufficiency-query-inventory-v0.1.0.json`
+
+Version `0.2.0` preserves all 14 predecessor records exactly as its prefix and
+adds 66 reviewed records. The resulting 80 inventory groups are all separate
+from the 20 source-query groups in the development-only evidence dataset.
+
+Document distribution is:
+
+- NIST AI RMF 1.0: `20`
+- NIST Generative AI Profile: `20`
+- EU AI Act: `22`
+- GPT-4o System Card: `18`
 
 The inventory binds to the accepted passage artifact and the development-only
 evidence dataset. It rejects query IDs, normalized questions, and logical
@@ -591,8 +607,9 @@ and must not appear in blinded annotation batches.
 
 This inventory is not an evidence-sufficiency dataset. It does not establish
 complete or incomplete evidence variants, annotation labels, leakage components,
-split assignments, or held-out performance. Its 14 query groups are an initial
-reviewed batch toward the protocol target of at least 80 new query groups.
+split assignments, or held-out performance. Its 80 groups satisfy the protocol
+query-inventory target, but evidence-case construction and independent
+annotation remain future controlled phases.
 
 ### Implemented annotation infrastructure
 

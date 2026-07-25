@@ -406,6 +406,17 @@ REPOSITORY_QUERY_INVENTORY_SHA256 = (
     "f5e8e1099c30e1b94b0f3de95a937a3"
 )
 
+REPOSITORY_QUERY_INVENTORY_V0_2_PATH = (
+    REPOSITORY_QUERY_INVENTORY_PATH.with_name(
+        "evidence-sufficiency-query-inventory-v0.2.0.json"
+    )
+)
+
+REPOSITORY_QUERY_INVENTORY_V0_2_SHA256 = (
+    "a6e03c5b28f8a99124b3141c7d2fb6e"
+    "f7e85f11dfab2477c151f05f4514970f0"
+)
+
 
 def repository_sha256_file(file_path: Path) -> str:
     digest = hashlib.sha256()
@@ -489,6 +500,150 @@ def test_published_query_inventory_is_byte_stable() -> None:
         )
         == REPOSITORY_QUERY_INVENTORY_SHA256
     )
+
+
+def test_published_query_inventory_v0_2_is_byte_stable(
+) -> None:
+    assert (
+        repository_sha256_file(
+            REPOSITORY_QUERY_INVENTORY_V0_2_PATH
+        )
+        == REPOSITORY_QUERY_INVENTORY_V0_2_SHA256
+    )
+
+
+def test_repository_query_inventory_v0_2_expands_immutable_v0_1_0(
+) -> None:
+    assert REPOSITORY_QUERY_INVENTORY_V0_2_PATH.is_file(), (
+        "The reviewed v0.2.0 query inventory has not been published."
+    )
+
+    original_inventory = json.loads(
+        REPOSITORY_QUERY_INVENTORY_PATH.read_text(
+            encoding="utf-8"
+        )
+    )
+    expanded_inventory = json.loads(
+        REPOSITORY_QUERY_INVENTORY_V0_2_PATH.read_text(
+            encoding="utf-8"
+        )
+    )
+    repository_manifest = json.loads(
+        REPOSITORY_MANIFEST_PATH.read_text(
+            encoding="utf-8"
+        )
+    )
+    repository_passages = repository_load_jsonl(
+        REPOSITORY_PASSAGES_PATH
+    )
+    repository_development_dataset = json.loads(
+        REPOSITORY_DEVELOPMENT_DATASET_PATH.read_text(
+            encoding="utf-8"
+        )
+    )
+
+    validate_evidence_sufficiency_query_inventory(
+        expanded_inventory,
+        repository_development_dataset,
+        repository_manifest,
+        repository_passages,
+        repository_sha256_file(
+            REPOSITORY_PASSAGES_PATH
+        ),
+        repository_sha256_file(
+            REPOSITORY_DEVELOPMENT_DATASET_PATH
+        ),
+    )
+
+    assert original_inventory["inventory_version"] == "0.1.0"
+    assert expanded_inventory["inventory_version"] == "0.2.0"
+
+    binding_fields = (
+        "schema_version",
+        "inventory_id",
+        "corpus_id",
+        "corpus_version",
+        "passage_schema_version",
+        "passage_artifact_sha256",
+        "development_evidence_dataset_id",
+        "development_evidence_dataset_version",
+        "development_evidence_dataset_sha256",
+    )
+
+    for field_name in binding_fields:
+        assert (
+            expanded_inventory[field_name]
+            == original_inventory[field_name]
+        )
+
+    assert original_inventory["query_count"] == 14
+    assert (
+        expanded_inventory["query_count"]
+        == len(expanded_inventory["queries"])
+        == 80
+    )
+    assert (
+        expanded_inventory["queries"][
+            : original_inventory["query_count"]
+        ]
+        == original_inventory["queries"]
+    )
+
+    query_ids = {
+        query_record["query_id"]
+        for query_record in expanded_inventory["queries"]
+    }
+    expected_query_ids = (
+        {
+            f"eu-{number:03d}"
+            for number in range(5, 27)
+        }
+        | {
+            f"genai-{number:03d}"
+            for number in range(5, 25)
+        }
+        | {
+            f"rmf-{number:03d}"
+            for number in range(5, 25)
+        }
+        | {
+            f"gpt4o-{number:03d}"
+            for number in range(5, 23)
+        }
+    )
+
+    assert query_ids == expected_query_ids
+
+    logical_source_keys = [
+        source_key
+        for query_record in expanded_inventory["queries"]
+        for source_key in query_record[
+            "source_logical_source_keys"
+        ]
+    ]
+
+    assert len(logical_source_keys) == 80
+    assert len(set(logical_source_keys)) == 80
+
+    document_counts = {
+        "eu-ai-act-2024-1689": 0,
+        "nist-ai-600-1-genai-profile": 0,
+        "nist-ai-rmf-1.0": 0,
+        "openai-gpt-4o-system-card-2024-08-08": 0,
+    }
+
+    for query_record in expanded_inventory["queries"]:
+        document_scope = query_record["document_scope"]
+
+        assert len(document_scope) == 1
+        document_counts[document_scope[0]] += 1
+
+    assert document_counts == {
+        "eu-ai-act-2024-1689": 22,
+        "nist-ai-600-1-genai-profile": 20,
+        "nist-ai-rmf-1.0": 20,
+        "openai-gpt-4o-system-card-2024-08-08": 18,
+    }
 
 
 def test_repository_query_inventory_covers_all_question_structures() -> None:

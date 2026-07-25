@@ -1,0 +1,1239 @@
+{
+  "schema_version": "1.0",
+  "inventory_id": "policyproof-evidence-sufficiency-query-inventory",
+  "inventory_version": "0.2.0",
+  "corpus_id": "policyproof-initial-corpus",
+  "corpus_version": "0.1.0",
+  "passage_schema_version": "1.1",
+  "passage_artifact_sha256": "5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96",
+  "development_evidence_dataset_id": "policyproof-evidence-sufficiency-evaluation",
+  "development_evidence_dataset_version": "0.1.0",
+  "development_evidence_dataset_sha256": "9ecd30e4ff829561b50d56bf4f1d3d44c79dcb043ec15661175842597d733a6a",
+  "query_count": 80,
+  "queries": [
+    {
+      "query_id": "rmf-005",
+      "question": "How do AI-specific risks differ from traditional software risks, and which existing risk frameworks can still inform AI risk management?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0043:line-0002"
+      ]
+    },
+    {
+      "query_id": "rmf-006",
+      "question": "How does the GOVERN function shape organizational AI risk management, and why must it operate continuously across the AI lifecycle?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0026:line-0023"
+      ]
+    },
+    {
+      "query_id": "rmf-007",
+      "question": "Who are the primary and People & Planet audiences of the AI RMF, and how do they contribute to managing AI risk?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0014:line-0010"
+      ]
+    },
+    {
+      "query_id": "genai-005",
+      "question": "What contingency practices does the NIST Generative AI Profile recommend for failures or incidents involving high-risk third-party GAI data and systems?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0025:line-0048"
+      ]
+    },
+    {
+      "query_id": "genai-006",
+      "question": "Which actions does MAP 2.3 recommend for scientific integrity and test, evaluation, verification, and validation of generative AI systems?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0028:line-0032"
+      ]
+    },
+    {
+      "query_id": "genai-007",
+      "question": "How does MEASURE 2.7 recommend evaluating and documenting the security and resilience of generative AI systems?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0037:line-0003"
+      ]
+    },
+    {
+      "query_id": "eu-005",
+      "question": "What must the Article 9 risk management system for high-risk AI systems include, and how must providers test and update it across the lifecycle?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "legal_obligations",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0056:line-0011"
+      ]
+    },
+    {
+      "query_id": "eu-006",
+      "question": "When does Article 25 treat a distributor, importer, deployer, or other third party as the provider of a high-risk AI system, and what responsibilities follow?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "legal_classification",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0067:line-0003"
+      ]
+    },
+    {
+      "query_id": "eu-007",
+      "question": "What information, rights, and documentation must Article 61 provide for subjects who participate in real-world testing outside an AI regulatory sandbox?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_obligations"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0094:line-0003"
+      ]
+    },
+    {
+      "query_id": "eu-008",
+      "question": "How does Recital 27 relate the EU AI Act's binding risk-based rules to the non-binding ethical principles for trustworthy AI?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "policy_interpretation"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-027"
+      ]
+    },
+    {
+      "query_id": "gpt4o-005",
+      "question": "How were text-based evaluations adapted for GPT-4o speech-to-speech testing, and what limitations did the System Card identify in that method?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0004:line-0011"
+      ]
+    },
+    {
+      "query_id": "gpt4o-006",
+      "question": "What is anthropomorphization, and why might GPT-4o's audio and memory-related capabilities increase emotional reliance or miscalibrated trust?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0020:line-0005"
+      ]
+    },
+    {
+      "query_id": "gpt4o-007",
+      "question": "How was GPT-4o evaluated on historically underrepresented languages, what improvements were observed over prior models, and what limitations remained?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0023:line-0004"
+      ]
+    },
+    {
+      "query_id": "gpt4o-008",
+      "question": "What did Apollo Research conclude about GPT-4o's capability for catastrophic scheming?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "direct_factual_lookup"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0001"
+      ]
+    },
+    {
+      "query_id": "eu-009",
+      "question": "How does Recital 15 distinguish biometric identification from biometric verification or authentication?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "comparison",
+        "legal_classification"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-015"
+      ]
+    },
+    {
+      "query_id": "eu-010",
+      "question": "Which harms and capability-related factors does Recital 110 identify when explaining how general-purpose AI models can create systemic risk?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "policy_interpretation",
+        "legal_classification",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:eu-recital-110"
+      ]
+    },
+    {
+      "query_id": "eu-011",
+      "question": "What data-governance practices must providers apply to training, validation, and testing data for high-risk AI systems, and under what conditions may they process special categories of personal data for bias correction?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0057:line-0016"
+      ]
+    },
+    {
+      "query_id": "eu-012",
+      "question": "Which deployers must perform a fundamental-rights impact assessment before using a high-risk AI system, what must the assessment cover, and when must it be updated or notified?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_classification",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0069:line-0025"
+      ]
+    },
+    {
+      "query_id": "eu-013",
+      "question": "What obligations does Article 53 impose on providers of general-purpose AI models, and which documentation duties are waived for qualifying free and open-source models?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_classification",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0084:line-0023"
+      ]
+    },
+    {
+      "query_id": "eu-014",
+      "question": "When does an affected person have a right to an explanation of a high-risk AI-assisted decision, and what limits or exceptions apply?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "legal_classification",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0110:line-0013"
+      ]
+    },
+    {
+      "query_id": "genai-008",
+      "question": "What factors does GOVERN 1.3 recommend when setting GAI risk tiers, deployment thresholds, and plans to halt systems posing unacceptable risk?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0018:line-0020"
+      ]
+    },
+    {
+      "query_id": "genai-009",
+      "question": "What should organizations document about a GAI system's intended use and context before deployment, including foreseeable misuse and illegal uses?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0026:line-0042"
+      ]
+    },
+    {
+      "query_id": "genai-010",
+      "question": "What practices does MAP 4.1 recommend for managing privacy, intellectual-property, and third-party-model risks across training data, generated outputs, and domain adaptation?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0030:line-0003"
+      ]
+    },
+    {
+      "query_id": "genai-011",
+      "question": "How should organizations evaluate whether a GAI system is safe, including its training data, generated outputs, failure handling, and resistance to circumvention of safety measures?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0036:line-0003"
+      ]
+    },
+    {
+      "query_id": "genai-012",
+      "question": "How should feedback from end users and impacted communities be collected and incorporated into evaluations of GAI content quality, provenance, and bias?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0042:line-0027"
+      ]
+    },
+    {
+      "query_id": "genai-013",
+      "question": "Which post-deployment monitoring practices does MANAGE 4.1 recommend for detecting model failures, tracking provenance, escalating issues, and communicating system changes?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0048:line-0023"
+      ]
+    },
+    {
+      "query_id": "rmf-008",
+      "question": "What is the intended scope and purpose of the NIST AI RMF, and how are its four Core functions organized?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "direct_factual_lookup",
+        "factual_list",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:rmf-executive-summary"
+      ]
+    },
+    {
+      "query_id": "rmf-009",
+      "question": "Why can AI risk be difficult to measure, and what measurement challenges arise from third-party components, emergent risks, lifecycle stages, real-world deployment, and human baselines?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "policy_interpretation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0010:line-0008"
+      ]
+    },
+    {
+      "query_id": "rmf-010",
+      "question": "What practices does the AI RMF associate with safe AI operation, and how should safety risk management change for severe or context-specific risks?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "policy_interpretation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0019:line-0026"
+      ]
+    },
+    {
+      "query_id": "rmf-011",
+      "question": "How does the AI RMF distinguish transparency, explainability, and interpretability, and how does each help manage risk?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "comparison",
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0021:line-0024"
+      ]
+    },
+    {
+      "query_id": "rmf-012",
+      "question": "What does the MAP function establish, how do stakeholder perspectives improve it, and what decision should organizations be prepared to make after mapping?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0029:line-0041"
+      ]
+    },
+    {
+      "query_id": "rmf-013",
+      "question": "How does the MEASURE function use testing, metrics, uncertainty, independent review, and TEVV to inform AI risk-management decisions?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0033:line-0008"
+      ]
+    },
+    {
+      "query_id": "gpt4o-009",
+      "question": "What data sources and dataset components were used to pre-train GPT-4o, and which filtering and post-training measures were used to reduce harmful or sensitive content?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0001:line-0022"
+      ]
+    },
+    {
+      "query_id": "gpt4o-010",
+      "question": "What sequence did OpenAI use to identify, measure, and mitigate speech-to-speech risks before GPT-4o deployment?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0002:line-0035"
+      ]
+    },
+    {
+      "query_id": "gpt4o-011",
+      "question": "How was GPT-4o evaluated for disparate performance across voice inputs, and what did the capability and safety-behavior results show?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0008:line-0001"
+      ]
+    },
+    {
+      "query_id": "gpt4o-012",
+      "question": "How does the System Card distinguish ungrounded inference from sensitive-trait attribution, and how was GPT-4o trained and evaluated to respond to each?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "comparison",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0010:line-0001"
+      ]
+    },
+    {
+      "query_id": "gpt4o-013",
+      "question": "Which broad societal harms, benefits, and transformations does the GPT-4o System Card identify, and which additional case studies does it examine?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "direct_factual_lookup",
+        "factual_list",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0019:line-0057"
+      ]
+    },
+    {
+      "query_id": "gpt4o-014",
+      "question": "What scientific capabilities did GPT-4o demonstrate during red teaming, and what limitations did the System Card report for multimodal scientific interpretation?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0022:line-0001"
+      ]
+    },
+    {
+      "query_id": "gpt4o-015",
+      "question": "How did GPT-4o's text safety behavior transfer to audio, and how were audio inputs and outputs evaluated and blocked for violative content?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0013"
+      ]
+    },
+    {
+      "query_id": "gpt4o-016",
+      "question": "Why did OpenAI restrict GPT-4o from generating erotic or violent speech, and what moderation mechanism was used to block those requests?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0011:line-0031"
+      ]
+    },
+    {
+      "query_id": "gpt4o-017",
+      "question": "What additional audio risks and limitations did GPT-4o testing identify concerning robustness, misinformation, non-native accents, and copyrighted content, and what mitigations were described?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0012:line-0004"
+      ]
+    },
+    {
+      "query_id": "gpt4o-018",
+      "question": "How was GPT-4o evaluated on cybersecurity Capture the Flag tasks, what performance did it achieve at different difficulty levels, and why was its cybersecurity risk rated Low?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0013:line-0010"
+      ]
+    },
+    {
+      "query_id": "gpt4o-019",
+      "question": "How were GPT-4o's text and voice persuasion capabilities evaluated against human baselines, and why did the text and voice modalities receive different risk ratings?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0015:line-0001"
+      ]
+    },
+    {
+      "query_id": "gpt4o-020",
+      "question": "What long-horizon tasks did METR use to assess GPT-4o's agent capabilities, and how did its performance compare with GPT-4?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "comparison",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0018:line-0016"
+      ]
+    },
+    {
+      "query_id": "gpt4o-021",
+      "question": "Which safety, societal-impact, scientific, and dangerous-capability topics did the GPT-4o System Card identify for continued monitoring and future research?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "direct_factual_lookup",
+        "factual_list"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0025:line-0007"
+      ]
+    },
+    {
+      "query_id": "gpt4o-022",
+      "question": "Which metrics and high-severity submetrics were used in GPT-4o's full violative-content evaluation, and how did current text, new text, and new audio performance compare?",
+      "document_scope": [
+        "openai-gpt-4o-system-card-2024-08-08"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "comparison",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:openai-gpt-4o-system-card-2024-08-08:source:openai-gpt-4o-system-card-2024-08-08:page-0031:line-0030"
+      ]
+    },
+    {
+      "query_id": "eu-015",
+      "question": "When must technical documentation for a high-risk AI system be prepared and updated, what purpose must it serve, and what simplified option is available to SMEs?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0058:line-0023"
+      ]
+    },
+    {
+      "query_id": "eu-016",
+      "question": "Which events must high-risk AI systems be capable of logging, and what additional information must be recorded for certain remote biometric identification systems?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0059:line-0003"
+      ]
+    },
+    {
+      "query_id": "eu-017",
+      "question": "What accuracy, robustness, and cybersecurity requirements apply to high-risk AI systems, including feedback loops and attacks on data, models, inputs, or confidentiality?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0061:line-0014"
+      ]
+    },
+    {
+      "query_id": "eu-018",
+      "question": "What obligations must providers of high-risk AI systems complete before and after placing a system on the market or putting it into service?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_obligations"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0062:line-0005"
+      ]
+    },
+    {
+      "query_id": "eu-019",
+      "question": "Which policies, procedures, controls, monitoring systems, and accountability arrangements must a provider include in its quality management system under Article 17?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0062:line-0026"
+      ]
+    },
+    {
+      "query_id": "eu-020",
+      "question": "Under what conditions is a general-purpose AI model classified as having systemic risk, and what training-compute threshold creates a presumption of high-impact capabilities?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "legal_classification",
+        "factual_list",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0083:line-0018"
+      ]
+    },
+    {
+      "query_id": "eu-021",
+      "question": "How must providers design and operate post-market monitoring for high-risk AI systems, and when may they integrate it into an existing sectoral monitoring system?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "process_or_evaluation_method",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0101:line-0010"
+      ]
+    },
+    {
+      "query_id": "eu-022",
+      "question": "What deadlines and follow-up duties apply when providers report serious incidents involving high-risk AI systems?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "process_or_evaluation_method",
+        "legal_obligations"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0101:line-0035"
+      ]
+    },
+    {
+      "query_id": "genai-014",
+      "question": "What organizational roles, communication procedures, skills, specialist participation, and whistleblower protections does GOVERN 2.1 recommend for GAI incidents?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0021:line-0021"
+      ]
+    },
+    {
+      "query_id": "genai-015",
+      "question": "What governance practices does GOVERN 3.2 recommend for independent evaluation, lifecycle responsibilities, acceptable-use rules, user recourse, and threat modeling?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0022:line-0003"
+      ]
+    },
+    {
+      "query_id": "genai-016",
+      "question": "Which contractual controls, provenance requirements, supplier assessments, inventories, and procurement checks does GOVERN 6.1 recommend for third-party GAI entities?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0024:line-0023"
+      ]
+    },
+    {
+      "query_id": "genai-017",
+      "question": "How does MAP 1.2 recommend forming interdisciplinary teams and ensuring that benchmarks and public-feedback participants represent diverse in-context populations?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0027:line-0034"
+      ]
+    },
+    {
+      "query_id": "genai-018",
+      "question": "What should organizations document about a GAI system's upstream data dependencies and external-network interactions that could compromise content provenance?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0028:line-0015"
+      ]
+    },
+    {
+      "query_id": "genai-019",
+      "question": "Which privacy-related risks should GAI red teaming test for, and what stakeholder-feedback and training-data deduplication practices does MEASURE 2.10 recommend?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0039:line-0022"
+      ]
+    },
+    {
+      "query_id": "genai-020",
+      "question": "What must a GAI incident-response and recovery plan cover when a previously unknown risk or unanticipated use is identified?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0045:line-0024"
+      ]
+    },
+    {
+      "query_id": "genai-021",
+      "question": "How should organizations monitor and reassess third-party GAI resources after fine-tuning, retrieval augmentation, or deployment in a new use case?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0046:line-0021"
+      ]
+    },
+    {
+      "query_id": "rmf-014",
+      "question": "How does the AI RMF define validity, reliability, accuracy, and robustness, and how should organizations measure and monitor these characteristics?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "comparison",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0018:line-0028"
+      ]
+    },
+    {
+      "query_id": "rmf-015",
+      "question": "How does the AI RMF distinguish security from resilience, and which adversarial or exfiltration threats illustrate the need for both?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "comparison",
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0020:line-0010"
+      ]
+    },
+    {
+      "query_id": "rmf-016",
+      "question": "How are accountability and transparency related in the AI RMF, and how should transparency practices vary by actor, lifecycle stage, and severity of consequences?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "policy_interpretation",
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0020:line-0026"
+      ]
+    },
+    {
+      "query_id": "rmf-017",
+      "question": "What values and techniques support privacy-enhanced AI, and what tradeoffs can privacy-enhancing methods create for accuracy and fairness?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "comparison",
+        "risk_and_mitigation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0011"
+      ]
+    },
+    {
+      "query_id": "rmf-018",
+      "question": "Why is mitigating harmful bias not sufficient by itself to make an AI system fair, and what three categories of AI bias does NIST identify?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "comparison",
+        "factual_list",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0022:line-0028"
+      ]
+    },
+    {
+      "query_id": "rmf-019",
+      "question": "What does the MANAGE function do with mapped and measured risks, and what capabilities should organizations have after completing it?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "direct_factual_lookup",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0036:line-0027"
+      ]
+    },
+    {
+      "query_id": "rmf-020",
+      "question": "How do AI RMF use-case, Current, Target, and cross-sectoral profiles differ, and how can comparing profiles guide risk-management priorities and resources?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "comparison",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0038:line-0026"
+      ]
+    },
+    {
+      "query_id": "rmf-021",
+      "question": "Which human-AI interaction limitations can undermine AI risk management, and how can the GOVERN and MAP functions help address roles, contextual loss, bias, and oversight?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "policy_interpretation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0045:line-0002"
+      ]
+    },
+    {
+      "query_id": "eu-023",
+      "question": "What information must Article 13 instructions for use provide so deployers can interpret and appropriately use a high-risk AI system, including performance limits, foreseeable misuse, human oversight, maintenance, and logging?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0059:line-0018"
+      ]
+    },
+    {
+      "query_id": "eu-024",
+      "question": "When may providers use an internal-control conformity assessment, when must a notified body be involved, and when does a substantial modification require a new assessment?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_classification",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0078:line-0003"
+      ]
+    },
+    {
+      "query_id": "eu-025",
+      "question": "Under what cumulative conditions may personal data collected for other purposes be processed in an AI regulatory sandbox, and what safeguards, documentation, deletion, and publication duties apply?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "legal_classification",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0091:line-0008"
+      ]
+    },
+    {
+      "query_id": "eu-026",
+      "question": "What approval, registration, consent, oversight, duration, incident-response, and termination conditions govern testing of high-risk AI systems in real-world conditions outside regulatory sandboxes?",
+      "document_scope": [
+        "eu-ai-act-2024-1689"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "legal_obligations",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:eu-ai-act-2024-1689:source:eu-ai-act-2024-1689:page-0092:line-0014"
+      ]
+    },
+    {
+      "query_id": "genai-022",
+      "question": "Which measurement practices does MEASURE 1.1 recommend for content provenance, demographic disparities, public feedback, continuous monitoring, and risks that cannot be measured quantitatively?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0032:line-0021"
+      ]
+    },
+    {
+      "query_id": "genai-023",
+      "question": "How should organizations evaluate model performance and capability claims before fine-tuning or retrieval-augmented generation, and how should pre-deployment testing results be used and communicated?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0034:line-0034"
+      ]
+    },
+    {
+      "query_id": "genai-024",
+      "question": "What deactivation criteria, escalation paths, remediation procedures, and stakeholder communications should apply when a GAI system performs inconsistently with its intended use?",
+      "document_scope": [
+        "nist-ai-600-1-genai-profile"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-600-1-genai-profile:source:nist-ai-600-1-genai-profile:page-0045:line-0039"
+      ]
+    },
+    {
+      "query_id": "rmf-022",
+      "question": "How does the AI RMF define risk, impact, harm, and risk management, and how does it account for both positive and negative consequences of AI systems?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "definition",
+        "comparison",
+        "policy_interpretation",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0009:line-0008"
+      ]
+    },
+    {
+      "query_id": "rmf-023",
+      "question": "Why should AI risk management be integrated into broader enterprise risk management, and what accountability, roles, culture, incentives, and leadership commitment are needed to make it effective?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "risk_and_mitigation",
+        "policy_interpretation",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0013:line-0023"
+      ]
+    },
+    {
+      "query_id": "rmf-024",
+      "question": "How does Appendix A distinguish lifecycle responsibilities across AI design, development, deployment, operation, TEVV, human factors, and governance, and how does it characterize third-party entities, end users, and affected communities?",
+      "document_scope": [
+        "nist-ai-rmf-1.0"
+      ],
+      "question_structure_codes": [
+        "factual_list",
+        "comparison",
+        "process_or_evaluation_method",
+        "multi_part_question"
+      ],
+      "source_logical_source_keys": [
+        "candidate-v2:nist-ai-rmf-1.0:source:nist-ai-rmf-1.0:page-0040:line-0002"
+      ]
+    }
+  ]
+}
