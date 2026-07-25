@@ -4175,3 +4175,71 @@ legal correctness, or adjudicated evidence sufficiency.
 **Date:**
 
 2026-07-25
+
+## PP-040: Ship a portable and publicly deployable PolicyProof demo
+
+**Decision:**
+
+Finish the portfolio implementation with a zero-new-dependency CLI and browser
+application, a research-style architecture figure, current documentation, and
+a Hugging Face Docker Space deployment configuration.
+
+Accepted implementation:
+
+- `src/policyproof/demo.py`
+- `tests/test_demo.py`
+- `tests/test_demo_repository.py`
+- `Dockerfile`
+- `.dockerignore`
+- `docs/assets/policyproof-system-architecture.png`
+- `docs/architecture.md`
+- `docs/deployment.md`
+- updated `README.md`
+
+Run locally with:
+
+`./venv/bin/python -m policyproof.demo serve --open`
+
+**Context:**
+
+The benchmark-selected dense retriever requires a separately distributed ONNX
+asset. To make the portfolio directly reviewable, the public runtime uses the
+accepted deterministic BM25 implementation and the frozen silver-label
+sufficiency model. Hugging Face builds the Docker image remotely, so no local
+Docker installation is required.
+
+**Consequences:**
+
+- the exact finalized architecture diagram is version-controlled and displayed
+  in the README
+- the README reflects the latest retrieval, case-construction, annotation,
+  silver-label, split, evaluation, and demo phases
+- the repository contains a deployable public-demo configuration
+- runtime responses contain source-derived excerpts and explicit citations
+- weak evidence and unsupported questions produce abstentions
+- every response discloses BM25 portability and silver-label provenance
+- no hosted model, external inference API, API key, FastAPI, Flask, Streamlit,
+  or frontend build system is required
+
+**How we verified it:**
+
+- a failing-first repository test required the demo module
+- unit and repository tests cover answers, abstentions, inputs, determinism,
+  accepted assets, CLI JSON output, and the local page
+- a CLI smoke test returns positive-scoring citations
+- the finalized architecture image is locked by SHA-256
+- Docker and deployment documentation are included
+- the focused demo suite passes `12` tests
+- the complete repository passes `832` tests
+- Ruff, compilation, and `git diff --check` pass
+
+**Limits:**
+
+The public configuration is deployment-ready but the final hosted URL must be
+added only after the Hugging Face Space is created and successfully verified.
+The sufficiency metrics remain construction-derived rather than independently
+human-adjudicated.
+
+**Date:**
+
+2026-07-25

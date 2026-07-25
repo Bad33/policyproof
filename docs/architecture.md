@@ -1,3 +1,71 @@
+# PolicyProof Architecture
+
+## End-to-end system architecture
+
+![PolicyProof system architecture](assets/policyproof-system-architecture.png)
+
+**Figure 1. PolicyProof system architecture.** The offline pipeline constructs,
+validates, and evaluates immutable evidence artifacts. The portable runtime
+retrieves accepted passages, applies the frozen evidence-sufficiency gate, and
+returns cited source excerpts or an explicit abstention.
+
+## System decomposition
+
+### Offline evidence pipeline
+
+1. **Controlled corpus.** Four authoritative AI-governance sources are
+   allowlisted, downloaded, and SHA-256 verified.
+2. **Structure recovery.** Document-specific PDF extraction, heading
+   reconstruction, hierarchy assignment, and reviewed source spans preserve
+   page and line provenance.
+3. **Retrieval corpus.** Logical source units are transformed into 707
+   token-safe passages with separate retrieval text and source-derived citation
+   text.
+4. **Retrieval evaluation.** BM25, BGE-small dense retrieval, hybrid candidate
+   generation, and a MiniLM cross-encoder are compared on the frozen benchmark.
+5. **Evidence construction.** Eighty query groups produce 160 complete,
+   incomplete, and distractor evidence cases.
+6. **Annotation boundary.** A blinded annotation batch is retained for future
+   independent human review; construction metadata is hidden from annotators.
+7. **Silver evaluation.** Construction-derived labels are split by query ID,
+   preventing complete and incomplete variants from leaking across train,
+   validation, and test.
+8. **Frozen gate.** A transparent logistic-regression evidence-sufficiency
+   baseline is published as an immutable result artifact.
+
+### Portable runtime
+
+1. A user submits a question through the browser or CLI.
+2. Deterministic BM25 searches all 707 accepted passages.
+3. The strongest positive passages are converted to the annotator-visible
+   evidence representation.
+4. The frozen sufficiency model estimates whether the retrieved evidence is
+   adequate.
+5. PolicyProof returns exact source-derived excerpts with citations when the
+   threshold is met.
+6. PolicyProof abstains when no positive lexical match exists or evidence is
+   below threshold.
+
+The benchmark-selected dense retriever remains the strongest evaluated ranking,
+but its hash-verified ONNX asset is intentionally not committed. The public
+portable demo therefore defaults to BM25 and discloses that runtime choice.
+
+## Trust and provenance boundaries
+
+- Runtime answer text is source-derived rather than unconstrained generation.
+- Passage, benchmark, construction, label, split, and result artifacts are
+  versioned and SHA-256 bound.
+- Query-group isolation prevents evidence-variant leakage across partitions.
+- Runtime responses disclose `construction_derived` silver-label provenance.
+- PolicyProof does not provide legal advice or determine regulatory compliance.
+
+---
+
+## Detailed implementation architecture
+
+The material below is the original detailed architecture record. It is retained
+for implementation history, artifact contracts, and lower-level design detail.
+
 # Architecture
 
 Status: ingestion, passage materialization, retrieval evaluation, hybrid candidate generation, cross-encoder comparison, and the evidence-sufficiency evaluation contract are implemented, independently audited, and regression tested.
