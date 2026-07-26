@@ -5,7 +5,7 @@ AI-governance and regulatory documents. It retrieves accepted source passages,
 estimates whether the retrieved evidence is sufficient, returns source-derived
 excerpts with citations, and abstains when support is weak.
 
-[![Tests](https://img.shields.io/badge/tests-832%20passing-brightgreen)](#reproducibility)
+[![Tests](https://img.shields.io/badge/tests-881%20passing-brightgreen)](#reproducibility)
 [![Python](https://img.shields.io/badge/python-3.12-blue)](pyproject.toml)
 [![Demo](https://img.shields.io/badge/live%20demo-deployment%20ready-orange)](docs/deployment.md)
 
@@ -30,7 +30,7 @@ The repository now includes:
 - a frozen evidence-sufficiency baseline
 - a browser demo and JSON CLI
 - a Hugging Face Docker Space deployment configuration
-- 832 passing tests
+- 881 passing tests
 
 ## Run locally
 

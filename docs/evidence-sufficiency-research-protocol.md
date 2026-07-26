@@ -515,49 +515,66 @@ evaluation.
 
 ## Implementation status and next steps
 
-Completed infrastructure:
+Completed infrastructure and accepted artifacts:
 
 1. The research protocol has been reviewed and accepted.
 2. Annotation guide version `0.1.0` has been created and is immutable once used
    for a published annotation round.
 3. Deterministic leakage-component construction and split-manifest validation
    have been implemented.
-4. The existing 39-case dataset has been correctly classified as
-   development-only.
-5. Blinded annotation-batch validation has been implemented.
-6. Independent raw annotation-record validation has been implemented.
-7. Pre-adjudication comparison and agreement reporting have been implemented.
-8. Written adjudication validation has been implemented.
-9. Separate question-structure and evidence-structure analysis metadata has
-   been implemented.
+4. The original 39-case dataset remains development-only.
+5. Query-inventory versions `0.1.0` and `0.2.0` were reviewed and published
+   before evidence-case construction.
+6. Evidence-case construction produced annotation batch version `0.2.0` with
+   `160` blinded cases bound to the accepted guide and passage artifact.
+7. Construction-derived silver labels, query-grouped silver splits, and a
+   shallow lexical baseline were published separately from human annotation.
+8. Blinded annotation-batch and raw annotation-record validation have been
+   implemented.
+9. Pre-adjudication comparison, agreement reporting, structure-disagreement
+   analysis, and written adjudication validation have been implemented.
 10. Deterministic, atomic, non-overwriting JSON artifact publication has been
     implemented.
-11. Query-inventory version `0.1.0` was reviewed and published before
-    evidence-case construction. It contains the first 14 new query groups from
-    14 distinct development-untouched logical sources.
-12. Query-inventory version `0.2.0` has been reviewed and published. It
-    preserves all 14 version-`0.1.0` records and appends 66 additional groups,
-    producing 80 new source-query groups from 80 distinct
-    development-untouched logical sources while covering all ten
-    question-structure dimensions.
+11. Human-annotation operational readiness now includes full-overlap annotation-round manifests, isolated assignment packages, counterbalanced case ordering, and strict rejection of unexpected batch, case, or evidence fields.
+12. The workflow can generate blank record-set templates that preserve assigned
+    case order while excluding question text, evidence text, labels, scores,
+    and predictions.
+13. Submission intake includes immutable metadata receipts and record-set-bound
+    independence attestations.
+14. A round-completion kill-gate blocks agreement analysis unless every assigned
+    primary annotator has exactly one valid submission, a valid receipt, a valid
+    attestation, distinct record-set hashes, and all six independence statements
+    affirmed.
+15. The operational process, abort conditions, identity-separation rules, and
+    human-result claim boundaries are documented in
+    `docs/evidence-sufficiency-annotation-operations.md`.
+
+No real human annotations have been collected or accepted. No human
+inter-annotator agreement, adjudication result, or human-gold dataset currently
+exists.
 
 Remaining controlled workflow:
 
-1. Construct new cases from accepted passages without inspecting model
-   predictions or creating labels during query selection.
-3. Publish blinded annotation batches bound to the accepted guide and passage
-   artifact.
-4. Obtain two independent annotations for every new case.
-5. Publish pre-adjudication agreement and structure-disagreement reports.
-6. Complete and publish written adjudication for every disagreement or
-   uncertainty case.
-7. Construct a new adjudicated evidence-sufficiency dataset version while
-   preserving both original annotations and the adjudication history.
-8. Reconstruct leakage components across existing and new cases.
-9. Assign components deterministically to development, validation, and test.
-10. Freeze the dataset, split manifest, hashes, and metric contracts before any
-    runtime policy selection.
+1. Recruit two independent primary annotators and one distinct adjudicator.
+2. Create a real annotation-round manifest using pseudonymous IDs while keeping
+   the identity mapping outside Git and public artifacts.
+3. Distribute one isolated, blinded, counterbalanced assignment package and
+   blank record-set template to each primary annotator.
+4. Collect one complete raw submission from each primary annotator.
+5. Validate each submission, publish its metadata-only intake receipt, and
+   collect its record-set-bound independence attestation.
+6. Verify all six independence statements for both primary annotators and pass
+   the round-completion kill-gate.
+7. Measure pre-adjudication agreement and structure disagreement while
+   preserving both immutable raw submissions.
+8. Complete written adjudication for every disagreement and uncertainty case.
+9. Freeze a human-adjudicated dataset that preserves both original annotations
+   and the adjudication history.
+10. Reconstruct leakage components across the accepted human-adjudicated cases.
+11. Assign components deterministically to development, validation, and test.
+12. Freeze the human dataset, split manifest, hashes, and metric contracts
+    before any human-gold runtime policy selection.
 
-The published version-`0.2.0` query inventory is review-only. No evidence
-cases, annotation labels, validation assignments, or test assignments have yet
-been accepted.
+The published query inventory, blinded case batch, construction-derived silver
+labels, silver splits, and silver baseline are accepted engineering artifacts.
+They must not be represented as independently human-validated results.

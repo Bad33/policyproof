@@ -4243,3 +4243,92 @@ human-adjudicated.
 **Date:**
 
 2026-07-25
+
+## PP-041: Establish human-annotation operational readiness
+
+**Decision:**
+
+Implement and document the fail-closed operational workflow required to begin
+genuine independent human annotation of the frozen
+`160`-case evidence-sufficiency batch.
+
+Accepted implementation:
+
+- `src/policyproof/evidence_sufficiency_annotation_round.py`
+- `src/policyproof/evidence_sufficiency_annotation_submission.py`
+- `docs/evidence-sufficiency-annotation-operations.md`
+- focused round, assignment, blinding, submission, template, repository, and
+  documentation tests
+
+The workflow supports:
+
+- full-overlap annotation rounds with at least two distinct primary annotators
+- a distinct adjudicator
+- deterministic counterbalanced case order
+- isolated blinded assignment packages
+- strict batch, case, and evidence field allowlists
+- blank record-set templates in assigned order
+- completed-submission validation
+- metadata-only immutable intake receipts
+- record-set-bound independence attestations
+- a round-completion kill-gate before agreement analysis
+
+**Context:**
+
+The frozen annotation batch existed, but the repository did not yet provide a
+complete operational bridge from that artifact to real independent human
+annotation. In particular, it lacked round orchestration, isolated assignment
+packaging, practical blank submission templates, independence attestations,
+submission receipts, and a final readiness gate.
+
+A security review also found that assignment construction originally trusted
+nested caller-supplied case snapshots. The accepted implementation now rejects
+unexpected batch, case, or evidence fields before any content can be copied
+into an annotator package.
+
+**Consequences:**
+
+- both primary annotators must cover the complete frozen batch
+- case order may be counterbalanced without changing evidence order within a
+  case
+- assignment packages expose only one annotator pseudonym
+- real identity mappings remain outside Git and public artifacts
+- hidden labels, split assignments, retrieval scores, model scores, and
+  undeclared metadata are rejected
+- unfilled templates are not valid submissions
+- failed independence statements are preserved truthfully and block the round
+- agreement analysis cannot begin until every assigned annotator has one valid,
+  distinct, fully bound submission bundle
+- raw annotations remain immutable and separate from later adjudication
+
+**How we verified it:**
+
+- failing-first tests exposed every missing operational capability
+- the actual frozen `160`-case batch produces isolated counterbalanced
+  assignments and a blinded blank record-set template
+- altered batches containing unexpected top-level, case-level, or
+  evidence-level fields are rejected
+- the operational readiness suite passes `49` tests
+- the annotation subsystem passes `186` tests
+- the complete repository passes `881` tests
+- Ruff, Python compilation, frozen-artifact SHA-256 checks, text audits, and
+  `git diff --check` pass
+
+**Limits:**
+
+No real human annotations have been collected or accepted.
+
+This phase does not provide:
+
+- measured human inter-annotator agreement
+- completed human adjudication
+- a human-adjudicated gold dataset
+- human-gold validation or test metrics
+- evidence that pseudonymous IDs alone prove real-world independence
+
+Those claims require the controlled human workflow described in the operations
+guide.
+
+**Date:**
+
+2026-07-25
