@@ -157,3 +157,35 @@ The verified query used:
 These checks confirm that the deployed service can load the accepted corpus,
 validate its integrity bindings, retrieve evidence, evaluate silver-label
 evidence sufficiency, and return citations.
+
+## Post-selection-policy live verification
+
+The public service was manually reverified on 2026-07-27 after deployment of
+commit:
+
+`e3416c8 fix: tighten demo evidence selection`
+
+The updated homepage example asked:
+
+`What risks does unauthorized voice generation create, and how does GPT-4o mitigate them?`
+
+Observed live behavior:
+
+- homepage loaded successfully
+- action: `answer`
+- reason: `evidence_passed_silver_sufficiency_threshold`
+- silver sufficiency probability: `0.966787274217`
+- threshold: `0.772084750192`
+- returned citations: `2`
+- both citations came from document:
+  `openai-gpt-4o-system-card-2024-08-08`
+- both citations came from section:
+  `3.3.1 Unauthorized voice generation`
+
+The first passage describes unauthorized voice-generation risks. The second
+describes preset-voice restrictions, output classification, and blocking
+behavior. No unrelated passage was displayed.
+
+This confirms that the live service is using the conservative
+same-logical-source evidence-selection policy accepted in PP-046. It does not
+change the limitations of the construction-derived silver sufficiency model.

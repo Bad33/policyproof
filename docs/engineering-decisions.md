@@ -4591,8 +4591,50 @@ sufficiency.
 
 - focused structural-selection tests pass
 - reference and low-information passage exclusion tests pass
-- the complete repository contains `897` passing tests
+- the complete repository contains `898` passing tests
 - Ruff, Python compilation, and `git diff --check` pass
+
+**Date:**
+
+2026-07-27
+
+## PP-047: Accept the tightened live demo deployment
+
+**Decision:**
+
+Accept the Render deployment of commit `e3416c8` as the current public
+PolicyProof demo.
+
+**Context:**
+
+PP-046 replaced score-ratio second-passage selection with conservative
+same-logical-source selection and changed the homepage example to the GPT-4o
+unauthorized-voice query.
+
+After the commit reached `origin/main`, Render redeployed the service. The
+homepage and query endpoint were then checked directly.
+
+**Live verification:**
+
+- homepage returned HTTP `200`
+- the updated GPT-4o example appeared on the homepage
+- `/api/query` returned HTTP `200`
+- action: `answer`
+- reason: `evidence_passed_silver_sufficiency_threshold`
+- silver sufficiency probability: `0.966787274217`
+- threshold: `0.772084750192`
+- returned citations: `2`
+- both citations came from:
+  `3.3.1 Unauthorized voice generation`
+- no unrelated passage was displayed
+
+**Consequences:**
+
+- the public demo now serves the PP-046 evidence-selection policy
+- repository and public deployment are aligned at commit `e3416c8`
+- the original 2026-07-26 deployment verification remains a historical record
+- responsible-use and construction-derived silver-label limitations remain
+  unchanged
 
 **Date:**
 
