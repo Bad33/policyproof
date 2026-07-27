@@ -4476,3 +4476,54 @@ root, so changing application path-resolution code was unnecessary.
 **Date:**
 
 2026-07-26
+
+## PP-045: Accept the verified public Render deployment
+
+**Decision:**
+
+Accept the following Render Web Service as the verified public PolicyProof
+portable demo:
+
+https://policyproof-5uwv.onrender.com/
+
+**Context:**
+
+The Docker image built successfully after packaging the accepted passage corpus
+as a deterministic deployment archive. The first application startup then
+failed because the installed module derived `/usr/local/lib/python3.12` as its
+repository root. The Docker command was corrected to pass `--root /app`.
+
+After deployment of the corrected startup command, the public service passed
+live homepage, health, and query checks.
+
+**Live verification:**
+
+- `homepage: PASS (200)`
+- `health: PASS (200)`
+- `query: PASS (200)`
+- query action: `answer`
+- query reason: `evidence_passed_silver_sufficiency_threshold`
+- returned citations: `2`
+- ranking method: `bm25_portable_demo`
+- label provenance: `construction_derived`
+
+**Consequences:**
+
+- the README may link directly to the verified public service
+- the Render deployment is the accepted portfolio-demo endpoint
+- the service continues to use deterministic BM25
+- evidence-sufficiency provenance remains `construction_derived`
+- the service does not claim human-adjudicated accuracy, legal correctness,
+  legal advice, or current-information coverage
+- Render Free service cold starts remain an accepted deployment limitation
+
+**Verification:**
+
+- the live homepage returned HTTP `200`
+- `/api/health` returned the expected service contract
+- `/api/query` returned HTTP `200`, an answer, and two citations
+- the complete repository contains `891` tests
+
+**Date:**
+
+2026-07-26

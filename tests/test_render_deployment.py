@@ -57,7 +57,7 @@ def test_readme_targets_render_demo() -> None:
     required = (
         "Render",
         "docs/deployment.md",
-        "verified Render URL",
+        "https://policyproof-5uwv.onrender.com/",
         "tests-891%20passing-brightgreen",
         "- 891 passing tests",
     )
@@ -65,7 +65,9 @@ def test_readme_targets_render_demo() -> None:
     for phrase in required:
         assert phrase in text
 
+    assert "verified Render URL" not in text
     assert "Hugging Face" not in text
+
 
 def test_engineering_decision_records_render_deployment() -> None:
     text = ENGINEERING_DECISIONS.read_text(encoding="utf-8")
@@ -131,5 +133,15 @@ def test_render_archive_restores_accepted_passage_artifact() -> None:
     assert "891" in decisions
 
     assert "python -m policyproof.demo --root /app serve" in deployment
+    assert "https://policyproof-5uwv.onrender.com/" in deployment
+    assert "homepage: PASS (200)" in deployment
+    assert "health: PASS (200)" in deployment
+    assert "query: PASS (200)" in deployment
+
     assert "/usr/local/lib/python3.12" in decisions
     assert "--root /app" in decisions
+    assert (
+        "## PP-045: Accept the verified public Render deployment"
+        in decisions
+    )
+    assert "https://policyproof-5uwv.onrender.com/" in decisions

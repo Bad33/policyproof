@@ -61,7 +61,7 @@ The response includes:
 The repository is ready for deployment as a Render Web Service.
 See [docs/deployment.md](docs/deployment.md).
 
-**Live URL:** add the verified Render URL here after deployment.
+**Live URL:** add the https://policyproof-5uwv.onrender.com/ here after deployment.
 
 ## Evaluation summary
 

@@ -128,3 +128,32 @@ allows the demo to locate:
 - `/app/data/evaluation/evidence-sufficiency-silver-baseline-v0.1.0.json`
 
 This does not alter corpus selection or integrity validation.
+
+## Verified public deployment
+
+The accepted public deployment is:
+
+https://policyproof-5uwv.onrender.com/
+
+Live verification completed on 2026-07-26:
+
+- `homepage: PASS (200)`
+- `health: PASS (200)`
+- `query: PASS (200)`
+- query action: `answer`
+- query reason: `evidence_passed_silver_sufficiency_threshold`
+- returned citations: `2`
+- ranking method: `bm25_portable_demo`
+- label provenance: `construction_derived`
+
+The health endpoint is:
+
+https://policyproof-5uwv.onrender.com/api/health
+
+The verified query used:
+
+`Which characteristics does the NIST AI RMF associate with trustworthy AI?`
+
+These checks confirm that the deployed service can load the accepted corpus,
+validate its integrity bindings, retrieve evidence, evaluate silver-label
+evidence sufficiency, and return citations.
