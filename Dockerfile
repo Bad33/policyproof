@@ -17,4 +17,4 @@ RUN python -m gzip -d data/processed/retrieval-passages.jsonl.gz && \
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "python -m policyproof.demo serve --host 0.0.0.0 --port ${PORT:-10000}"]
+CMD ["sh", "-c", "python -m policyproof.demo --root /app serve --host 0.0.0.0 --port ${PORT:-10000}"]

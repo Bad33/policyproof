@@ -4436,3 +4436,43 @@ or removing its SHA verification would weaken the accepted integrity contract.
 **Date:**
 
 2026-07-26
+
+## PP-044: Set the container repository root explicitly
+
+**Decision:**
+
+Start the deployed demo with `--root /app`:
+
+`python -m policyproof.demo --root /app serve`
+
+**Context:**
+
+The first successful Render image build failed during application startup.
+Because PolicyProof was installed into the container, the default root
+calculation resolved relative to `/usr/local/lib/python3.12` instead of the
+Docker working directory `/app`.
+
+The accepted passage corpus had been restored correctly under `/app`, but the
+demo searched for it under:
+
+`/usr/local/lib/python3.12/data/processed/retrieval-passages.jsonl`
+
+The existing command-line interface already supports an explicit repository
+root, so changing application path-resolution code was unnecessary.
+
+**Consequences:**
+
+- the Docker startup command explicitly uses `--root /app`
+- local CLI behavior remains unchanged
+- accepted corpus and baseline SHA-256 checks remain unchanged
+- no additional environment variable or runtime abstraction is introduced
+
+**Verification:**
+
+- failing-first deployment test required the explicit root argument
+- focused Render deployment tests pass
+- the complete repository still contains `891` tests
+
+**Date:**
+
+2026-07-26

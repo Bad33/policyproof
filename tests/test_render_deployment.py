@@ -21,6 +21,10 @@ def test_dockerfile_uses_render_port_contract() -> None:
 
     assert "EXPOSE 10000" in text
     assert "--host 0.0.0.0" in text
+    assert (
+        "python -m policyproof.demo --root /app serve"
+        in text
+    )
     assert "${PORT:-10000}" in text
     assert 'CMD ["sh", "-c",' in text
     assert "--port 7860" not in text
@@ -125,3 +129,7 @@ def test_render_archive_restores_accepted_passage_artifact() -> None:
     )
     assert EXPECTED_PASSAGE_SHA256 in decisions
     assert "891" in decisions
+
+    assert "python -m policyproof.demo --root /app serve" in deployment
+    assert "/usr/local/lib/python3.12" in decisions
+    assert "--root /app" in decisions

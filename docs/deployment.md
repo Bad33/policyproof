@@ -109,3 +109,22 @@ Integrity bindings:
 The application continues to reject the corpus if the restored SHA-256 differs
 from the accepted passage binding. The archive is only a deployment transport
 format and does not define a new corpus version.
+
+## Container startup root
+
+The Docker container starts the demo with:
+
+`python -m policyproof.demo --root /app serve`
+
+PolicyProof normally derives its repository root from the location of the
+installed `policyproof.demo` module. Inside the production container, that
+module is installed under `/usr/local/lib/python3.12/site-packages`, while the
+deployment corpus and evaluation artifact are copied under `/app`.
+
+Passing `--root /app` makes the existing repository-root contract explicit and
+allows the demo to locate:
+
+- `/app/data/processed/retrieval-passages.jsonl`
+- `/app/data/evaluation/evidence-sufficiency-silver-baseline-v0.1.0.json`
+
+This does not alter corpus selection or integrity validation.
