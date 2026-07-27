@@ -81,3 +81,31 @@ The deployment does not claim:
 - legal advice
 - current-information coverage
 - comprehensive coverage beyond the frozen PolicyProof corpus
+
+## Deployment corpus packaging
+
+The accepted passage corpus remains generated locally under
+`data/processed/retrieval-passages.jsonl` and remains ignored by Git.
+
+For public Docker deployment, the repository includes the deterministic
+transport archive:
+
+`data/deployment/retrieval-passages-v1.1.jsonl.gz`
+
+The Docker build decompresses this archive into the original accepted runtime
+location:
+
+`data/processed/retrieval-passages.jsonl`
+
+Integrity bindings:
+
+- restored passage SHA-256:
+  `5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96`
+- deterministic gzip archive SHA-256:
+  `cfb26d3393089f8ea29b547961d322b73a4a1170d3fd7c9c1999bdcde417d8ee`
+- restored passage records: `707`
+- restored bytes: `2614040`
+
+The application continues to reject the corpus if the restored SHA-256 differs
+from the accepted passage binding. The archive is only a deployment transport
+format and does not define a new corpus version.

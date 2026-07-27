@@ -4385,3 +4385,54 @@ correctness, legal advice, or current-information coverage.
 **Date:**
 
 2026-07-26
+
+## PP-043: Package the accepted passage corpus for deployment
+
+**Decision:**
+
+Publish a deterministic gzip transport copy of the accepted retrieval-passage
+artifact under:
+
+`data/deployment/retrieval-passages-v1.1.jsonl.gz`
+
+The Docker build restores the archive to the existing accepted runtime path,
+`data/processed/retrieval-passages.jsonl`.
+
+**Context:**
+
+Generated artifacts under `data/processed/` are intentionally ignored by Git.
+Render builds only from the GitHub repository, so the original Dockerfile could
+not access the local passage artifact.
+
+Force-tracking the generated `data/processed/` corpus would contradict the
+established repository data policy. Changing the demo to accept another corpus
+or removing its SHA verification would weaken the accepted integrity contract.
+
+**Accepted bindings:**
+
+- restored passage SHA-256:
+  `5ca1db8d2dd56b92d378bdf315bad25ef83029b4d18017b3755f287bbc26bf96`
+- deployment archive SHA-256:
+  `cfb26d3393089f8ea29b547961d322b73a4a1170d3fd7c9c1999bdcde417d8ee`
+- restored passage records: `707`
+- restored bytes: `2614040`
+
+**Consequences:**
+
+- `data/processed/` remains local and ignored.
+- the accepted passage corpus and schema version remain unchanged.
+- the demo continues validating the restored artifact before serving requests.
+- the deployment archive is immutable and versioned independently as a
+  transport artifact.
+- Docker builds no longer depend on an unavailable local file.
+
+**Verification:**
+
+- deterministic decompression reproduces the accepted passage SHA-256
+- the deployment archive restores exactly `707` records
+- Render deployment tests validate the Docker copy and decompression contract
+- the complete repository contains `891` passing tests
+
+**Date:**
+
+2026-07-26
