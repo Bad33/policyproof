@@ -1,53 +1,83 @@
 # Public Demo Deployment
 
-PolicyProof is prepared for deployment as a Hugging Face Docker Space.
+PolicyProof is prepared for deployment as a Render Web Service using the
+repository's Docker configuration.
 
-## Create the Space
+## Prerequisites
 
-1. Sign in to Hugging Face.
-2. Create a new Space.
-3. Select **Docker** as the Space SDK.
-4. Use port `7860`.
-5. Choose a public Space for portfolio visibility.
-6. Clone the new Space repository locally.
+- a GitHub account containing the public PolicyProof repository
+- a Render account connected to GitHub
+- the repository's accepted `Dockerfile`
+- no API keys or external model credentials
 
-## Publish PolicyProof
+## Create the Render service
 
-Copy the PolicyProof repository contents into the Space repository, preserving:
+1. Sign in to Render.
+2. Select **New** and then **Web Service**.
+3. Connect the PolicyProof GitHub repository.
+4. Select **Docker** as the runtime.
+5. Choose the repository's `main` branch.
+6. Select the **Free** instance type.
+7. Use a descriptive service name such as `policyproof`.
+8. Leave the Dockerfile path as `./Dockerfile`.
+9. Create the Web Service.
 
-- `Dockerfile`
-- `.dockerignore`
-- `pyproject.toml`
-- `src/`
-- `data/processed/retrieval-passages.jsonl`
-- `data/evaluation/evidence-sufficiency-silver-baseline-v0.1.0.json`
+Render builds the container directly from the connected GitHub repository.
+Local Docker Desktop is not required.
 
-Commit and push to the Space. Hugging Face builds the container remotely; local
-Docker Desktop is not required.
+## Port contract
 
-## Verify
+Render supplies the runtime port through the `PORT` environment variable. The
+Docker image starts PolicyProof on `0.0.0.0` and uses port `10000` when `PORT`
+is not otherwise provided.
 
-After the build succeeds:
+The effective runtime command is:
 
-- open `/` and submit a policy question
-- open `/api/health`
-- verify the response reports `bm25_portable_demo`
-- verify `label_provenance` is `construction_derived`
-- confirm citations contain document, passage, label, excerpt, and BM25 score
+    python -m policyproof.demo serve --host 0.0.0.0 --port "${PORT:-10000}"
 
-Then replace the README's deployment placeholder with the final Space URL and
-add a screenshot of the live application.
+## Verify the deployment
 
-## Runtime command
+After the deployment reports that it is live:
 
-The Docker image starts:
+1. Open the generated `onrender.com` URL.
+2. Submit a supported AI-governance policy question.
+3. Open `/api/health`.
+4. Verify the response reports `bm25_portable_demo`.
+5. Verify `label_provenance` is `construction_derived`.
+6. Confirm each citation includes:
+   - document ID
+   - passage ID
+   - source label
+   - source-derived excerpt
+   - BM25 score
+7. Submit an unsupported question and confirm that PolicyProof abstains.
 
-```bash
-python -m policyproof.demo serve --host 0.0.0.0 --port 7860
-```
+Record the final verified Render URL only after these checks pass.
+
+## Free-service behavior
+
+A Free Render Web Service may spin down after approximately 15 minutes without
+inbound traffic. The first request after inactivity may therefore take longer
+while the service starts again.
+
+The service is stateless and does not require persistent storage, so this
+behavior is acceptable for the portfolio demo.
+
+## Automatic deployments
+
+By default, Render can redeploy when new commits reach the connected branch.
+Keep the production service connected to `main` only after changes pass the
+repository's full verification gates.
 
 ## Limits
 
-The hosted demo remains extractive and BM25-backed. It does not claim
-human-adjudicated gold accuracy, legal correctness, or current-information
-coverage.
+The hosted demo remains extractive and BM25-backed. Its evidence-sufficiency
+model uses construction-derived silver labels.
+
+The deployment does not claim:
+
+- independently human-adjudicated accuracy
+- legal correctness
+- legal advice
+- current-information coverage
+- comprehensive coverage beyond the frozen PolicyProof corpus

@@ -13,6 +13,6 @@ COPY data/evaluation/evidence-sufficiency-silver-baseline-v0.1.0.json ./data/eva
 
 RUN python -m pip install --upgrade pip &&     python -m pip install .
 
-EXPOSE 7860
+EXPOSE 10000
 
-CMD ["python", "-m", "policyproof.demo", "serve", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["sh", "-c", "python -m policyproof.demo serve --host 0.0.0.0 --port ${PORT:-10000}"]

@@ -5,9 +5,9 @@ AI-governance and regulatory documents. It retrieves accepted source passages,
 estimates whether the retrieved evidence is sufficient, returns source-derived
 excerpts with citations, and abstains when support is weak.
 
-[![Tests](https://img.shields.io/badge/tests-881%20passing-brightgreen)](#reproducibility)
+[![Tests](https://img.shields.io/badge/tests-890%20passing-brightgreen)](#reproducibility)
 [![Python](https://img.shields.io/badge/python-3.12-blue)](pyproject.toml)
-[![Demo](https://img.shields.io/badge/live%20demo-deployment%20ready-orange)](docs/deployment.md)
+[![Demo](https://img.shields.io/badge/live%20demo-Render%20ready-orange)](docs/deployment.md)
 
 ## System architecture
 
@@ -29,8 +29,8 @@ The repository now includes:
 - query-grouped train, validation, and test partitions with no query leakage
 - a frozen evidence-sufficiency baseline
 - a browser demo and JSON CLI
-- a Hugging Face Docker Space deployment configuration
-- 881 passing tests
+- a Render Web Service Docker deployment configuration
+- 890 passing tests
 
 ## Run locally
 
@@ -58,10 +58,10 @@ The response includes:
 
 ## Public demo
 
-The repository is ready for deployment to a Hugging Face Docker Space.
+The repository is ready for deployment as a Render Web Service.
 See [docs/deployment.md](docs/deployment.md).
 
-**Live URL:** add the verified Hugging Face Space URL here after deployment.
+**Live URL:** add the verified Render URL here after deployment.
 
 ## Evaluation summary
 
@@ -100,7 +100,7 @@ human-adjudicated gold-label results.
 - `data/evaluation/` — case construction, annotation, labels, splits, results
 - `data/results/` — retrieval and reranking baselines
 - `docs/architecture.md` — research-style system architecture
-- `docs/deployment.md` — public Hugging Face Space deployment
+- `docs/deployment.md` — public Render Web Service deployment
 - `docs/engineering-decisions.md` — accepted technical decisions and limits
 - `tests/` — regression, artifact-binding, and end-to-end tests
 
@@ -111,7 +111,7 @@ no-overwrite behavior. Tests enforce corpus, benchmark, split, model-contract,
 result, and byte-stability bindings.
 
 The portable demo introduces no new Python runtime dependency or external API
-key. The Docker configuration builds the application remotely on Hugging Face.
+key. The Docker configuration builds the application remotely on Render.
 
 ## Responsible-use notice
 

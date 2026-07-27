@@ -4332,3 +4332,56 @@ guide.
 **Date:**
 
 2026-07-25
+
+## PP-042: Deploy the public demo on Render
+
+**Decision:**
+
+Replace the unverified Hugging Face Docker Space deployment target with a
+Render Web Service deployment that can build directly from the public GitHub
+repository.
+
+Accepted implementation:
+
+- update `Dockerfile` to bind to `0.0.0.0`
+- read the runtime port from the `PORT` environment variable
+- use `10000` as the local fallback port
+- update `docs/deployment.md` with Render setup and verification steps
+- update `README.md` to identify Render as the public deployment target
+- add `tests/test_render_deployment.py`
+
+**Context:**
+
+Creating the originally documented Hugging Face compute-based Space required a
+paid account. Render provides a practical portfolio deployment path using the
+existing Docker configuration and a connected GitHub repository.
+
+The Render service can use the Free instance type. Free services may spin down
+after inactivity, so the first request after a quiet period may take longer.
+
+**Consequences:**
+
+- the container uses `${PORT:-10000}` instead of a fixed port
+- Render can build and redeploy directly from `main`
+- no API key, hosted model, or external inference service is introduced
+- local Docker Desktop remains unnecessary
+- the hosted application remains stateless, extractive, and BM25-backed
+- evidence-sufficiency labels retain `construction_derived` provenance
+- the README must include a live URL only after deployment verification passes
+
+**How we verified it:**
+
+- failing-first tests required the Render port contract and documentation
+- focused Render deployment tests pass
+- the complete repository passes `890` tests
+- Ruff, Python compilation, and `git diff --check` pass
+
+**Limits:**
+
+The Render Free service may sleep after inactivity and can have a cold-start
+delay. Deployment does not establish human-adjudicated accuracy, legal
+correctness, legal advice, or current-information coverage.
+
+**Date:**
+
+2026-07-26

@@ -12,10 +12,10 @@ ENGINEERING_DECISIONS = Path("docs/engineering-decisions.md")
 def test_readme_reports_current_repository_test_count() -> None:
     text = README.read_text(encoding="utf-8")
 
-    assert "tests-881%20passing-brightgreen" in text
-    assert "- 881 passing tests" in text
-    assert "tests-832%20passing-brightgreen" not in text
-    assert "- 832 passing tests" not in text
+    assert "tests-890%20passing-brightgreen" in text
+    assert "- 890 passing tests" in text
+    assert "tests-889%20passing-brightgreen" not in text
+    assert "- 889 passing tests" not in text
 
 
 def test_research_protocol_records_readiness_infrastructure() -> None:
