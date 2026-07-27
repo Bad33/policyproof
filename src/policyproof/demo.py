@@ -27,7 +27,6 @@ MAX_QUERY_CHARACTERS = 2_000
 MAX_REQUEST_BYTES = 16_384
 DEFAULT_LIMIT = 5
 MAX_LIMIT = 10
-SECOND_PASSAGE_SCORE_RATIO = 0.8
 
 RESPONSIBLE_USE_NOTICE = (
     "PolicyProof is a research and compliance-support demo. It does not "
@@ -192,14 +191,36 @@ class PolicyProofDemo:
     ) -> None:
         _validate_baseline(baseline)
 
-        self._passages = tuple(passages)
-        self._passages_by_id = {str(passage["passage_id"]): passage for passage in passages}
+        passages_by_id = {
+            str(passage["passage_id"]): passage
+            for passage in passages
+        }
 
-        if len(self._passages_by_id) != len(passages):
+        if len(passages_by_id) != len(passages):
             raise PolicyProofDemoError("Passages contain duplicate passage IDs.")
 
+        eligible_passages = [
+            passage
+            for passage in passages
+            if not (
+                (
+                    "reference_entry_start_ordinal" in passage
+                    and "reference_entry_end_ordinal" in passage
+                )
+                or (
+                    passage.get("unit_kind") == "heading_body"
+                    and len(passage["citation_text"]) <= 120
+                )
+            )
+        ]
+
+        self._passages = tuple(eligible_passages)
+        self._passages_by_id = {
+            str(passage["passage_id"]): passage
+            for passage in eligible_passages
+        }
         self._baseline = baseline
-        self._index = build_bm25_index(passages)
+        self._index = build_bm25_index(eligible_passages)
 
     @classmethod
     def from_repository(
@@ -270,11 +291,25 @@ class PolicyProofDemo:
 
         selected = [positive_hits[0]]
 
-        if (
-            len(positive_hits) > 1
-            and positive_hits[1].score >= positive_hits[0].score * SECOND_PASSAGE_SCORE_RATIO
-        ):
-            selected.append(positive_hits[1])
+        if len(positive_hits) > 1:
+            first_passage = self._passages_by_id[
+                positive_hits[0].passage_id
+            ]
+            second_passage = self._passages_by_id[
+                positive_hits[1].passage_id
+            ]
+            first_source = first_passage.get(
+                "logical_source_key"
+            )
+            second_source = second_passage.get(
+                "logical_source_key"
+            )
+
+            if (
+                first_source
+                and second_source == first_source
+            ):
+                selected.append(positive_hits[1])
 
         return tuple(selected)
 
@@ -506,7 +541,7 @@ def render_home_page() -> str:
 
   <section>
     <h2>Ask the corpus</h2>
-    <textarea id="question">Which characteristics does the NIST AI RMF associate with trustworthy AI?</textarea>
+    <textarea id="question">What risks does unauthorized voice generation create, and how does GPT-4o mitigate them?</textarea>
     <br>
     <button id="submit">Run PolicyProof</button>
     <p id="error" class="error"></p>

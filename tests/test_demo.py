@@ -5,6 +5,7 @@ from typing import Any
 
 import pytest
 
+from policyproof.bm25 import BM25Hit
 from policyproof.demo import (
     PolicyProofDemo,
     PolicyProofDemoError,
@@ -147,3 +148,247 @@ def test_home_page_contains_query_interface_and_disclosures() -> None:
     assert "/api/query" in page
     assert "construction-derived silver labels" in page
     assert "not legal advice" in page
+    assert (
+        "What risks does unauthorized voice generation create, "
+        "and how does GPT-4o mitigate them?"
+    ) in page
+
+
+def test_query_excludes_reference_passages() -> None:
+    value = passages()
+    value.append(
+        {
+            "passage_id": "reference-passage",
+            "document_id": "reference-document",
+            "label": "References",
+            "retrieval_text": (
+                "bibliography zephyr quokka xylophone"
+            ),
+            "citation_text": (
+                "A bibliography entry that must not be used as evidence."
+            ),
+            "reference_entry_start_ordinal": 1,
+            "reference_entry_end_ordinal": 1,
+        }
+    )
+
+    app = PolicyProofDemo(
+        value,
+        baseline(intercept=10.0),
+    )
+
+    result = app.query(
+        "bibliography zephyr quokka xylophone"
+    )
+
+    assert result["action"] == "abstain"
+    assert result["reason"] == "no_positive_lexical_match"
+    assert result["retrieval"]["citations"] == []
+
+
+def test_second_passage_is_selected_when_logical_source_matches() -> None:
+    value = passages()
+    value[0]["logical_source_key"] = "shared-source"
+    value[1]["logical_source_key"] = "shared-source"
+
+    app = PolicyProofDemo(
+        value,
+        baseline(intercept=10.0),
+    )
+
+    hits = (
+        BM25Hit(
+            passage_id="passage-a",
+            score=100.0,
+            accepted_order=0,
+        ),
+        BM25Hit(
+            passage_id="passage-b",
+            score=70.0,
+            accepted_order=1,
+        ),
+    )
+
+    assert tuple(
+        hit.passage_id
+        for hit in app._selected_hits(hits)
+    ) == ("passage-a", "passage-b")
+
+
+def test_second_passage_is_rejected_when_logical_source_differs() -> None:
+    value = passages()
+    value[0]["logical_source_key"] = "source-a"
+    value[1]["logical_source_key"] = "source-b"
+
+    app = PolicyProofDemo(
+        value,
+        baseline(intercept=10.0),
+    )
+
+    hits = (
+        BM25Hit(
+            passage_id="passage-a",
+            score=100.0,
+            accepted_order=0,
+        ),
+        BM25Hit(
+            passage_id="passage-b",
+            score=99.0,
+            accepted_order=1,
+        ),
+    )
+
+    assert tuple(
+        hit.passage_id
+        for hit in app._selected_hits(hits)
+    ) == ("passage-a",)
+
+
+def test_second_passage_is_rejected_when_logical_source_is_missing() -> None:
+    app = PolicyProofDemo(
+        passages(),
+        baseline(intercept=10.0),
+    )
+
+    hits = (
+        BM25Hit(
+            passage_id="passage-a",
+            score=100.0,
+            accepted_order=0,
+        ),
+        BM25Hit(
+            passage_id="passage-b",
+            score=99.0,
+            accepted_order=1,
+        ),
+    )
+
+    assert tuple(
+        hit.passage_id
+        for hit in app._selected_hits(hits)
+    ) == ("passage-a",)
+
+
+def test_second_passage_is_rejected_when_logical_source_is_empty() -> None:
+    value = passages()
+    value[0]["logical_source_key"] = ""
+    value[1]["logical_source_key"] = ""
+
+    app = PolicyProofDemo(
+        value,
+        baseline(intercept=10.0),
+    )
+
+    hits = (
+        BM25Hit(
+            passage_id="passage-a",
+            score=100.0,
+            accepted_order=0,
+        ),
+        BM25Hit(
+            passage_id="passage-b",
+            score=99.0,
+            accepted_order=1,
+        ),
+    )
+
+    assert tuple(
+        hit.passage_id
+        for hit in app._selected_hits(hits)
+    ) == ("passage-a",)
+
+
+def test_only_second_ranked_same_source_passage_is_selected() -> None:
+    value = passages()
+    value.append(
+        {
+            "passage_id": "passage-c",
+            "document_id": "document-c",
+            "logical_source_key": "shared-source",
+            "label": "Additional evidence",
+            "retrieval_text": "Additional trustworthy AI evidence.",
+            "citation_text": "Additional trustworthy AI evidence.",
+        }
+    )
+    value[0]["logical_source_key"] = "shared-source"
+    value[1]["logical_source_key"] = "shared-source"
+
+    app = PolicyProofDemo(
+        value,
+        baseline(intercept=10.0),
+    )
+
+    hits = (
+        BM25Hit(
+            passage_id="passage-a",
+            score=100.0,
+            accepted_order=0,
+        ),
+        BM25Hit(
+            passage_id="passage-b",
+            score=90.0,
+            accepted_order=1,
+        ),
+        BM25Hit(
+            passage_id="passage-c",
+            score=80.0,
+            accepted_order=2,
+        ),
+    )
+
+    assert tuple(
+        hit.passage_id
+        for hit in app._selected_hits(hits)
+    ) == ("passage-a", "passage-b")
+
+
+def test_demo_excludes_low_information_heading_body_passages() -> None:
+    value = passages()
+    value.extend(
+        [
+            {
+                "passage_id": "table-continuation",
+                "document_id": "nist-ai-rmf-1.0",
+                "label": (
+                    "MANAGE 3.2: Pre-trained models used for "
+                    "development are monitored."
+                ),
+                "unit_kind": "heading_body",
+                "retrieval_text": (
+                    "MANAGE 3.2: Pre-trained models used for "
+                    "development are monitored.\n\n"
+                    "Table 4: Categories and subcategories for "
+                    "the MANAGE function. (Continued)"
+                ),
+                "citation_text": (
+                    "Table 4: Categories and subcategories for "
+                    "the MANAGE function. (Continued)"
+                ),
+            },
+            {
+                "passage_id": "complete-heading-evidence",
+                "document_id": "nist-ai-rmf-1.0",
+                "label": (
+                    "GOVERN 1.1: Legal and regulatory requirements "
+                    "involving AI are understood and documented."
+                ),
+                "unit_kind": "heading_only",
+                "retrieval_text": (
+                    "GOVERN 1.1: Legal and regulatory requirements "
+                    "involving AI are understood and documented."
+                ),
+                "citation_text": (
+                    "GOVERN 1.1: Legal and regulatory requirements "
+                    "involving AI are understood and documented."
+                ),
+            },
+        ]
+    )
+
+    app = PolicyProofDemo(
+        value,
+        baseline(intercept=10.0),
+    )
+
+    assert "table-continuation" not in app._passages_by_id
+    assert "complete-heading-evidence" in app._passages_by_id

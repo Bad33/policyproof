@@ -4527,3 +4527,73 @@ live homepage, health, and query checks.
 **Date:**
 
 2026-07-26
+
+## PP-046: Select additional demo evidence by logical source
+
+**Decision:**
+
+The portable demo always selects the highest-ranked positive BM25 passage. It
+selects the second-ranked positive passage only when both passages have the
+same nonempty `logical_source_key`.
+
+The demo also excludes:
+
+- structurally marked reference-entry passages
+- `heading_body` passages whose citation text is at most `120` characters
+
+The homepage example is changed to the GPT-4o unauthorized-voice question,
+whose two required passages belong to the same logical source.
+
+**Context:**
+
+The previous policy selected a second passage when its BM25 score was at least
+`80%` of the top score. For the trustworthy-AI example, this added an unrelated
+NIST passage. The extra passage also increased the published silver
+evidence-sufficiency score because evidence count is one of that model's
+features.
+
+Audits of the independent `80`-query inventory found that same-logical-source
+selection had:
+
+- `17` relevant second passages
+- `0` irrelevant second passages
+
+Score-ratio branches recovered additional evidence but also selected unrelated
+second passages. Validation did not support adding a separate lexical support
+gate, and removing the evidence-count feature substantially degraded held-out
+silver-model performance.
+
+**Consequences:**
+
+- displayed citations and evidence used for sufficiency remain identical
+- unrelated passages are not added merely because their BM25 scores are close
+- split evidence from one logical source can still be combined
+- missing logical-source keys never match
+- no more than two passages are selected
+- the accepted passage artifact and silver baseline remain unchanged
+- the demo becomes more conservative and may abstain despite retrieving one
+  relevant passage
+
+**Measured tradeoff on the frozen 20-query retrieval benchmark:**
+
+- expected-answer matches: `8/16`
+- expected-abstention matches: `4/4`
+- total action matches: `12/20`
+- selected passages: `25`
+- judged-relevant selected passages: `15`
+- unjudged selected passages: `10`
+
+These figures describe the portable demo pipeline under the frozen benchmark.
+They are not held-out production accuracy or human-adjudicated evidence
+sufficiency.
+
+**Verification:**
+
+- focused structural-selection tests pass
+- reference and low-information passage exclusion tests pass
+- the complete repository contains `897` passing tests
+- Ruff, Python compilation, and `git diff --check` pass
+
+**Date:**
+
+2026-07-27

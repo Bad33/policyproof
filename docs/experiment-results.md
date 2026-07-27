@@ -584,3 +584,53 @@ It reports no:
 
 Those measurements remain blocked until new independently annotated validation
 and test components exist.
+
+## Portable demo structural evidence-selection result
+
+The deployed portable demo was audited after replacing its second-passage
+BM25 score-ratio rule with a same-logical-source rule.
+
+### Evaluated policy
+
+For each question, the demo:
+
+1. excludes structurally marked reference entries
+2. excludes short `heading_body` continuation fragments
+3. selects the highest-ranked positive BM25 passage
+4. adds the second-ranked positive passage only when both passages share the
+   same nonempty `logical_source_key`
+5. evaluates silver evidence sufficiency over exactly the passages displayed
+   to the user
+
+### Frozen 20-query benchmark result
+
+| Measure | Result |
+| --- | ---: |
+| Total action matches | `12/20` |
+| Expected-answer matches | `8/16` |
+| Expected-abstention matches | `4/4` |
+| Selected passages | `25` |
+| Judged-relevant selected passages | `15` |
+| Unjudged selected passages | `10` |
+| Judged relevance rate over selected passages | `0.600000` |
+
+The trustworthy-AI query now selects only its relevant Executive Summary
+passage. Its silver sufficiency probability is `0.746388900954`, below the
+published threshold `0.772084750192`, so the demo abstains rather than adding
+an unrelated passage to force an answer.
+
+The unauthorized-voice query selects two passages from the same logical source
+and answers with silver sufficiency probability `0.966787274217`.
+
+### Interpretation
+
+The structural policy improves citation coherence and eliminates false answers
+for all four frozen abstention queries, but reduces answer coverage.
+
+It must not be interpreted as an unconditional retrieval-quality improvement.
+The result is a precision-oriented public-demo policy chosen to keep retrieval,
+displayed citations, and sufficiency evidence internally consistent.
+
+The benchmark is frozen development data and the sufficiency labels are
+construction-derived silver labels. These measurements do not establish
+human-adjudicated accuracy, production safety, or legal correctness.

@@ -45,7 +45,7 @@ Open `http://127.0.0.1:8000/`.
 Run one terminal query:
 
 ```bash
-./venv/bin/python -m policyproof.demo query   "Which characteristics does the NIST AI RMF associate with trustworthy AI?"
+./venv/bin/python -m policyproof.demo query   "What risks does unauthorized voice generation create, and how does GPT-4o mitigate them?"
 ```
 
 The response includes:
