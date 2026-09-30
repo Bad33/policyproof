@@ -1,9 +1,15 @@
 # PolicyProof
 
-PolicyProof is an evidence-first RAG and citation-verification system for public
-AI-governance and regulatory documents. It retrieves accepted source passages,
-estimates whether the retrieved evidence is sufficient, returns source-derived
-excerpts with citations, and abstains when support is weak.
+# PolicyProof
+
+PolicyProof is an evidence-first RAG and citation-verification system for
+AI-governance and regulatory documents. It benchmarks retrieval strategies,
+estimates whether retrieved evidence is sufficient, returns source-derived
+citations, and abstains when support is weak.
+
+The project emphasizes deterministic evaluation, provenance, reproducibility,
+failure-aware AI behavior, and production deployment rather than unrestricted
+LLM generation.
 
 [![Tests](https://img.shields.io/badge/tests-891%20passing-brightgreen)](#reproducibility)
 [![Python](https://img.shields.io/badge/python-3.12-blue)](pyproject.toml)
