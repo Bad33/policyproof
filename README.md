@@ -21,6 +21,30 @@ LLM generation.
 A research-paper-style explanation of the offline and runtime components is
 available in [docs/architecture.md](docs/architecture.md).
 
+## AWS deployment
+
+The public deployment runs on AWS using:
+
+- EC2 (`t3.small`, Ubuntu) for compute
+- Docker for application packaging
+- Nginx as the public reverse proxy
+- a private S3 bucket for deployment artifacts
+- an EC2 IAM instance role with least-privilege S3 read access
+- port `10000` bound only to loopback; public traffic enters through Nginx
+
+```mermaid
+flowchart LR
+    U[Browser] -->|HTTP :80| N[Nginx]
+    N -->|127.0.0.1:10000| D[PolicyProof Docker Container]
+
+    G[GitHub Repository] --> E[EC2 Deployment Host]
+    S[Private S3 Artifacts] -->|IAM Instance Role| E
+    E --> D
+
+    D --> R[BM25 Retrieval]
+    R --> Q[Evidence Sufficiency Gate]
+    Q --> A[Answer + Citations / Abstain]
+
 ## Current build
 
 The repository now includes:
