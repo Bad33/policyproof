@@ -34,7 +34,7 @@ The repository now includes:
 - query-grouped train, validation, and test partitions with no query leakage
 - a frozen evidence-sufficiency baseline
 - a browser demo and JSON CLI
-- a Render Web Service Docker deployment configuration
+- a production-style AWS deployment using EC2, Docker, Nginx, S3, and IAM
 - 891 passing tests
 
 ## Run locally
