@@ -7,7 +7,8 @@ excerpts with citations, and abstains when support is weak.
 
 [![Tests](https://img.shields.io/badge/tests-891%20passing-brightgreen)](#reproducibility)
 [![Python](https://img.shields.io/badge/python-3.12-blue)](pyproject.toml)
-[![Demo](https://img.shields.io/badge/live%20demo-Render%20ready-orange)](docs/deployment.md)
+[![Deployment](https://img.shields.io/badge/deployed-AWS%20EC2-orange)](docs/deployment.md)
+[![Docker](https://img.shields.io/badge/container-Docker-blue)](Dockerfile)
 
 ## System architecture
 
