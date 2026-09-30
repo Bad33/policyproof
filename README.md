@@ -1,7 +1,5 @@
 # PolicyProof
 
-# PolicyProof
-
 PolicyProof is an evidence-first RAG and citation-verification system for
 AI-governance and regulatory documents. It benchmarks retrieval strategies,
 estimates whether retrieved evidence is sufficient, returns source-derived
